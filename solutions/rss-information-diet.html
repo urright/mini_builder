@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS 信息节食方案 | Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
+        .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5em; color: #00d9ff; margin-bottom: 15px; }
+        .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .back-link { color: #00d9ff; text-decoration: none; margin-bottom: 30px; display: inline-block; }
+        .section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; margin-bottom: 25px; }
+        .section h2 { color: #00ff88; font-size: 1.4em; margin-bottom: 20px; }
+        .section h3 { color: #e8e8e8; margin: 20px 0 10px; }
+        .section ul { list-style: none; padding: 0; }
+        .section li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0b0; }
+        .section li::before { content: "→"; color: #00d9ff; margin-right: 10px; }
+        code { background: rgba(0,217,255,0.1); color: #00d9ff; padding: 3px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 15px 0; }
+        pre code { background: none; padding: 0; color: #c9d1d9; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .metric-box { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px; padding: 20px; text-align: center; }
+        .metric-box .value { font-size: 2em; font-weight: 700; color: #00ff88; }
+        .metric-box .label { color: #8b949e; font-size: 0.9em; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 15px; font-size: 0.8em; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>📖 RSS 信息节食方案</h1>
+        <p class="subtitle">用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量</p>
+        <div style="margin-top:20px;">
+            <span class="tag">📚 信息</span>
+            <span class="tag">专注</span>
+            <span class="tag">推荐</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="../index.html" class="back-link">← 返回首页</a>
+        
+        <div class="section">
+            <h2>📊 效果量化</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="value">-50%</div>
+                    <div class="label">无效阅读时间</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">+80%</div>
+                    <div class="label">信息来源质量</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">100%</div>
+                    <div class="label">内容可控性</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">∞</div>
+                    <div class="label">稍后读队列</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 真实案例</h2>
+            <div style="background:rgba(0,217,255,0.05);border-left:3px solid #00d9ff;padding:20px;margin:20px 0;border-radius:0 8px 8px 0;">
+                <h4 style="color:#00d9ff;">案例:Productivity Blog</h4>
+                <p style="color:#8b949e;font-style:italic;margin:10px 0;">"我从 Twitter/微博刷 4 小时/天，到现在 RSS 阅读 45 分钟/天。信息质量大幅提升，焦虑感明显下降。关键是：只订阅真正有价值的来源，而不是被算法投喂。"</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 实施方案</h2>
+            
+            <h3>第一步：选择 RSS 服务</h3>
+            <pre><code># 推荐 Newsblur (免费额度足够)
+# https://newsblur.com
+# 注册账号，免费版支持 64 个订阅源
+
+# 其他选择
+# - Inoreader: 免费 150 个源
+# - Feedly: 免费 100 个源
+# - The Old Reader: 免费无限（社交功能）</code></pre>
+            
+            <h3>第二步：安装 Reeder</h3>
+            <pre><code># App Store 搜索 "Reeder"
+# 价格: ¥68 (一次性买断)
+# 支持 Mac + iOS 同步
+
+# 替代: NetNewsWire (免费开源)
+brew install --cask netnewswire</code></pre>
+            
+            <h3>第三步：配置 Reeder + Newsblur</h3>
+            <pre><code># 1. 打开 Reeder
+# 2. 添加账户选择 Newsblur
+# 3. 输入 Newsblur 用户名密码
+# 4. 开始同步</code></pre>
+            
+            <h3>第四步：订阅优质来源</h3>
+            <pre><code># 推荐的 RSS 来源类型
+# 技术博客: 知名工程师博客、官方博客
+# 行业新闻: 垂直领域头部媒体
+# 工具更新: 你使用的工具官方发布
+# 学术论文: arXiv、Google Scholar (用 Zotero connector)
+
+# 避免
+# - 社交媒体转帖 (重复内容多)
+# - 标题党媒体 (质量差)
+# - 更新过于频繁的源 (>10篇/天)</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>📖 使用指南</h2>
+            <ul>
+                <li><strong>每日限额</strong>: 设定每天最多阅读时间，如 45 分钟</li>
+                <li><strong>快速浏览</strong>: 用快捷键 J/K 跳转，Space 展开，不感兴趣直接 N</li>
+                <li><strong>稍后读</strong>: 用 Reeder 内置的 Readability 功能保存完整文章</li>
+                <li><strong>标签管理</strong>: 为不同来源打标签，如 #技术 #产品 #行业</li>
+                <li><strong>定期清理</strong>: 每月检查订阅源，移除低质量或长期不看的</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>✨ 方案优势</h2>
+            <ul>
+                <li><strong>算法退散</strong>: 不再被 TikTok/微博算法控制阅读内容</li>
+                <li><strong>信息可控</strong>: 自己决定看什么，不被流量标题党</li>
+                <li><strong>时间可控</strong>: 设定阅读时段和时长，不再沉迷</li>
+                <li><strong>长期积累</strong>: 有价值的文章保存稍后读，慢慢消化</li>
+                <li><strong>专注力提升</strong>: 减少信息碎片输入，提升深度阅读能力</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

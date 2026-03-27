@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Builder - Mac Mini M4 增效方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(120deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #a0a0a0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .specs-badge {
+            display: inline-flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        .category-section {
+            margin-bottom: 60px;
+        }
+        
+        .category-title {
+            font-size: 2em;
+            color: #00d9ff;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0,217,255,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .category-icon {
+            font-size: 1.2em;
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .solution-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(0,217,255,0.4);
+            box-shadow: 0 10px 40px rgba(0,217,255,0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .card-tag {
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #1a1a2e;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        
+        .card-desc {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+        
+        .card-metrics {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            color: #00ff88;
+        }
+        
+        .metric-icon {
+            opacity: 0.8;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #707070;
+        }
+        
+        .footer-note {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .solutions-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mini Builder</h1>
+            <p class="subtitle">为 Mac Mini M4（基础款 16G+256G）挖掘最大价值的增效方案库。每方案基于真实案例，附带实施细节与量化效果。</p>
+            <div class="specs-badge">
+                <span class="badge">🍎 Mac Mini M4</span>
+                <span class="badge">🧠 16GB Unified Memory</span>
+                <span class="badge">💾 256GB SSD</span>
+                <span class="badge">🤖 OpenClaw AI</span>
+                <span class="badge">📱 Lark 飞书</span>
+            </div>
+        </header>
+
+        <!-- 分类: AI & 本地LLM -->
+        <section class="category-section">
+            <h2 class="category-title"><span class="category-icon">🧠</span> AI & 本地大模型</h2>
+            <div class="solutions-grid">
+                <a href="solutions/local-llm-ollama.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
+                        <span class="card-tag">🔥 热门</span>
+                    </div>
+                    <p class="card-desc">在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先、多模型切换。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">⚡</span> 20+ tok/s</span>
+                        <span class="metric"><span class="metric-icon">💰</span> 省 $20/月</span>
+                        <span class="metric"><span class="metric-icon">🔒</span> 完全隐私</span>
+                    </div>
+                </a>
+                <a href="solutions/openclaw-productivity-assistant.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">OpenClaw 个人效率助手</span>
+                        <span class="card-tag">⭐ 必备</span>
+                    </div>
+                    <p class="card-desc">配置 OpenClaw 实现日程管理、邮件处理、任务自动化、飞书通知，成为你的全天候数字秘书。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">⏰</span> +3h/天</span>
+                        <span class="metric"><span class="metric-icon">📊</span> 60% 自动化</span>
+                        <span class="metric"><span class="metric-icon">🔗</span> 50+ 技能</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 分类: 自动化工作流 -->
+        <section class="category-section">
+            <h2 class="category-title"><span class="category-icon">⚙️</span> 自动化工作流</h2>
+            <div class="solutions-grid">
+                <a href="solutions/home-assistant-smart-home.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">Home Assistant 智能家居中枢</span>
+                        <span class="card-tag">🏠 家居</span>
+                    </div>
+                    <p class="card-desc">用 UTM 虚拟机在 Mac Mini 上跑 Home Assistant，统一控制所有智能设备，本地化运行无订阅费。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">🏠</span> 100+ 设备</span>
+                        <span class="metric"><span class="metric-icon">💡</span> 自动化场景</span>
+                        <span class="metric"><span class="metric-icon">🔒</span> 本地控制</span>
+                    </div>
+                </a>
+                <a href="solutions/n8n-workflow-automation.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">n8n 工作流自动化</span>
+                        <span class="card-tag">🚀 新增</span>
+                    </div>
+                    <p class="card-desc">开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">⚡</span> 400+ 集成</span>
+                        <span class="metric"><span class="metric-icon">💰</span> 省 90%</span>
+                        <span class="metric"><span class="metric-icon">🔧</span> 自托管</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 分类: 个人信息管理 -->
+        <section class="category-section">
+            <h2 class="category-title"><span class="category-icon">📚</span> 知识与信息管理</h2>
+            <div class="solutions-grid">
+                <a href="solutions/obsidian-second-brain.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">Obsidian 第二大脑</span>
+                        <span class="card-tag">🧠 知识</span>
+                    </div>
+                    <p class="card-desc">用 Obsidian 建立 PKM 系统，链接笔记、每日回顾、项目追踪，成为真正的第二大脑。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">📈</span> 300% 记忆</span>
+                        <span class="metric"><span class="metric-icon">🔗</span> 双向链接</span>
+                        <span class="metric"><span class="metric-icon">📝</span> 免订阅</span>
+                    </div>
+                </a>
+                <a href="solutions/rss-information diet.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">RSS 信息节食方案</span>
+                        <span class="card-tag">📖 阅读</span>
+                    </div>
+                    <p class="card-desc">用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">⏱️</span> -50% 阅读时间</span>
+                        <span class="metric"><span class="metric-icon">📰</span> 精准来源</span>
+                        <span class="metric"><span class="metric-icon">🧠</span> 专注力↑</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 分类: 数据备份与安全 -->
+        <section class="category-section">
+            <h2 class="category-title"><span class="category-icon">🛡️</span> 数据备份与安全</h2>
+            <div class="solutions-grid">
+                <a href="solutions/rsync-time-machine.html" class="solution-card">
+                    <div class="card-header">
+                        <span class="card-title">rsync + 外置硬盘增量备份</span>
+                        <span class="card-tag">💾 备份</span>
+                    </div>
+                    <p class="card-desc">用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。</p>
+                    <div class="card-metrics">
+                        <span class="metric"><span class="metric-icon">💾</span> 增量仅 MB</span>
+                        <span class="metric"><span class="metric-icon">📅</span> 版本快照</span>
+                        <span class="metric"><span class="metric-icon">🔧</span> 免费开源</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p>Mini Builder - 为 Mac Mini M4 基础款挖掘最大价值</p>
+            <p class="footer-note">每 2 小时自动更新最新方案 | OpenClaw + Lark 提供支持</p>
+        </footer>
+    </div>
+</body>
+</html>

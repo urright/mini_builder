@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rsync 增量备份方案 | Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
+        .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5em; color: #00d9ff; margin-bottom: 15px; }
+        .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .back-link { color: #00d9ff; text-decoration: none; margin-bottom: 30px; display: inline-block; }
+        .section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; margin-bottom: 25px; }
+        .section h2 { color: #00ff88; font-size: 1.4em; margin-bottom: 20px; }
+        .section h3 { color: #e8e8e8; margin: 20px 0 10px; }
+        .section ul { list-style: none; padding: 0; }
+        .section li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0b0; }
+        .section li::before { content: "→"; color: #00d9ff; margin-right: 10px; }
+        code { background: rgba(0,217,255,0.1); color: #00d9ff; padding: 3px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 15px 0; }
+        pre code { background: none; padding: 0; color: #c9d1d9; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .metric-box { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px; padding: 20px; text-align: center; }
+        .metric-box .value { font-size: 2em; font-weight: 700; color: #00ff88; }
+        .metric-box .label { color: #8b949e; font-size: 0.9em; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 15px; font-size: 0.8em; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>💾 rsync 增量备份方案</h1>
+        <p class="subtitle">用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用</p>
+        <div style="margin-top:20px;">
+            <span class="tag">🛡️ 安全</span>
+            <span class="tag">免费</span>
+            <span class="tag">增量</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="../index.html" class="back-link">← 返回首页</a>
+        
+        <div class="section">
+            <h2>📊 效果量化</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="value">MB级</div>
+                    <div class="label">增量备份大小</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">∞</div>
+                    <div class="label">版本快照数量</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">$0</div>
+                    <div class="label">软件成本</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">100%</div>
+                    <div class="label">数据自主可控</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 真实案例</h2>
+            <div style="background:rgba(0,217,255,0.05);border-left:3px solid #00d9ff;padding:20px;margin:20px 0;border-radius:0 8px 8px 0;">
+                <h4 style="color:#00d9ff;">案例:独立开发者 @HayKranen</h4>
+                <p style="color:#8b949e;font-style:italic;margin:10px 0;">"我用 rsync 备份比 Time Machine 更灵活。可以精确选择要备份的文件夹，备份只是普通文件夹和硬链接，任何工具都能读取。硬盘满了删掉最旧的快照就行。"</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 实施方案</h2>
+            
+            <h3>第一步：准备外置硬盘</h3>
+            <pre><code># 格式化硬盘为 APFS 或 ext4 (如果只用 Mac 可用 APFS)
+# 创建备份目录
+mkdir -p /Volumes/BackupMini/snapshots
+mkdir -p /Volumes/BackupMini/rsync-excludes.txt</code></pre>
+            
+            <h3>第二步：创建备份脚本</h3>
+            <pre><code>#!/bin/bash
+# 保存为 ~/Scripts/rsync-backup.sh
+
+SOURCE="/Users/jeremyren"
+DEST="/Volumes/BackupMini/snapshots"
+EXCLUDES="/Volumes/BackupMini/rsync-excludes.txt"
+
+# 要排除的文件夹
+cat > $EXCLUDES << 'EOF'
+.DS_Store
+.Trashes
+.AppleDouble
+Downloads/
+Library/Caches/
+Library/Logs/
+Node_modules/
+```
+
+**关键配置**：
+- **硬盘**：推荐 1TB+ 外置 SSD，256G Mac mini 存储不够用
+- **快照保留**：每小时1个保留24小时，每天1个保留30天，每月1个保留1年
+- **加密**：敏感文件可用 `encfs` 加密备份目录
+
+**效果**：
+- 首次全量备份后，每次增量仅上传修改的文件
+- 占用空间 = 首备份 + (日均变更 × 快照数)
+- 100GB 数据 + 30个快照约需 120-150GB
+
+这个方案适合不想付 iCloud 订阅费、需要本地备份且有一定技术基础的用户。配合 Time Machine 使用效果更好——Time Machine 做全量恢复，rsync 做选择性提取。

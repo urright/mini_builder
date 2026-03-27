@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n 工作流自动化 | Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
+        .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5em; color: #00d9ff; margin-bottom: 15px; }
+        .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .back-link { color: #00d9ff; text-decoration: none; margin-bottom: 30px; display: inline-block; }
+        .section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; margin-bottom: 25px; }
+        .section h2 { color: #00ff88; font-size: 1.4em; margin-bottom: 20px; }
+        .section h3 { color: #e8e8e8; margin: 20px 0 10px; }
+        .section ul { list-style: none; padding: 0; }
+        .section li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0b0; }
+        .section li::before { content: "→"; color: #00d9ff; margin-right: 10px; }
+        code { background: rgba(0,217,255,0.1); color: #00d9ff; padding: 3px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 15px 0; }
+        pre code { background: none; padding: 0; color: #c9d1d9; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .metric-box { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px; padding: 20px; text-align: center; }
+        .metric-box .value { font-size: 2em; font-weight: 700; color: #00ff88; }
+        .metric-box .label { color: #8b949e; font-size: 0.9em; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 15px; font-size: 0.8em; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>⚡ n8n 工作流自动化</h1>
+        <p class="subtitle">开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本</p>
+        <div style="margin-top:20px;">
+            <span class="tag">🚀 自动化</span>
+            <span class="tag">开源</span>
+            <span class="tag">省钱</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="../index.html" class="back-link">← 返回首页</a>
+        
+        <div class="section">
+            <h2>📊 效果量化</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="value">400+</div>
+                    <div class="label">应用集成</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">-90%</div>
+                    <div class="label">对比 Zapier 成本</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">$0</div>
+                    <div class="label">自托管费用</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">∞</div>
+                    <div class="label">工作流数量</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 真实案例</h2>
+            <div style="background:rgba(0,217,255,0.05);border-left:3px solid #00d9ff;padding:20px;margin:20px 0;border-radius:0 8px 8px 0;">
+                <h4 style="color:#00d9ff;">案例: n8n 社区论坛</h4>
+                <p style="color:#8b949e;font-style:italic;margin:10px 0;">"我用 n8n 自动化了整个销售流程：从 Lead 捕获 → CRM 更新 → Slack 通知 → 日历预约 → 后续邮件，全自动。以前每条线索需要 15 分钟手动处理，现在系统自动跑，我只需要跟进成交。"</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 实施方案</h2>
+            
+            <h3>第一步：安装 Docker</h3>
+            <pre><code># Homebrew 安装 Docker
+brew install --cask docker
+
+# 或者去 https://docker.com 下载 Desktop 版</code></pre>
+            
+            <h3>第二步：安装 n8n</h3>
+            <pre><code># 方法1: Docker Compose (推荐)
+# 创建 docker-compose.yml
+version: '3'
+services:
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - ~/.n8n:/home/node/.n8n
+    environment:
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
+
+# 启动
+docker-compose up -d</code></pre>
+            
+            <h3>第三步：访问 n8n</h3>
+            <pre><code># 浏览器打开
+http://localhost:5678
+
+# 首次使用创建账户</code></pre>
+            
+            <h3>第四步：创建第一个工作流</h3>
+            <pre><code># 示例: 收到邮件 → 创建任务 → 发送 Slack 通知
+
+# 1. 点击 "New Workflow"
+# 2. 添加 Trigger: Email (IMAP)
+# 3. 添加 Node: Notion (创建任务)
+# 4. 添加 Node: Slack (发送消息)
+# 5. 连接并激活</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>📖 使用指南</h2>
+            <ul>
+                <li><strong>工作流模板</strong>: n8n 社区有大量预制模板，直接导入使用</li>
+                <li><strong>条件分支</strong>: 用 IF 节点做条件判断，复杂逻辑也能可视化</li>
+                <li><strong>代码节点</strong>: 需要自定义时，可用 JavaScript/Python 写代码</li>
+                <li><strong>错误处理</strong>: 设置 Error Trigger，自动通知工作流失败</li>
+                <li><strong>定时触发</strong>: 用 Schedule Trigger 做定时任务，如每日报告</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>✨ 方案优势</h2>
+            <ul>
+                <li><strong>成本低</strong>: 自托管免费，对比 Zapier $20-500/月 节省 90%+</li>
+                <li><strong>开源透明</strong>: 代码可审计，无供应商锁定</li>
+                <li><strong>灵活定制</strong>: 支持自定义代码节点，功能无上限</li>
+                <li><strong>本地运行</strong>: 数据在本地处理，隐私安全</li>
+                <li><strong>社区活跃</strong>:  thousands of workflow templates from community</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
