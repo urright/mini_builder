@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
-        .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 60px 20px; text-align: center; }
+        .fav-btn{position:absolute;top:20px;right:20px;background:none;border:2px solid rgba(255,200,0,0.4);color:#ffd700;cursor:pointer;font-size:1.5em;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;background:rgba(255,200,0,0.1)}.fav-btn:hover{background:rgba(255,200,0,0.2);transform:scale(1.1)}.fav-btn.favorited{background:rgba(255,200,0,0.3);border-color:#ffd700}.hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:60px 20px;text-align:center;position:relative}
         .hero h1 { font-size: 2.5em; color: #00d9ff; margin-bottom: 15px; }
         .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
         .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <div class="hero">
+    <div class="hero"><button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏">☆</button>
         <h1>📖 RSS 信息节食方案</h1>
         <p class="subtitle">用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量</p>
         <div style="margin-top:20px;">
@@ -134,5 +134,5 @@ brew install --cask netnewswire</code></pre>
             </ul>
         </div>
     </div>
-</body>
+<script>const SOLUTION_ID="202603271635";const FAV_KEY="mini_builder_favorites";function getFavorites(){return JSON.parse(localStorage.getItem(FAV_KEY)||"[]");}function saveFavorites(favs){localStorage.setItem(FAV_KEY,JSON.stringify(favs));}function toggleFav(){let favs=getFavorites();if(favs.includes(SOLUTION_ID))favs=favs.filter(f=>f!==SOLUTION_ID);else favs.push(SOLUTION_ID);saveFavorites(favs);render();}function render(){const favs=getFavorites();const btn=document.getElementById("favBtn");if(favs.includes(SOLUTION_ID)){btn.classList.add("favorited");btn.textContent="★";}else{btn.classList.remove("favorited");btn.textContent="☆";}}render();</script></body>
 </html>

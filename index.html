@@ -60,7 +60,33 @@
             backdrop-filter: blur(10px);
         }
         
-        /* 最新方案 - 特色展示区 */
+        /* 收藏按钮 */
+        .fav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4em;
+            transition: transform 0.2s, filter 0.2s;
+            padding: 4px;
+            line-height: 1;
+            filter: grayscale(1) opacity(0.4);
+        }
+        
+        .fav-btn:hover {
+            transform: scale(1.2);
+            filter: grayscale(0) opacity(1);
+        }
+        
+        .fav-btn.favorited {
+            filter: grayscale(0) opacity(1);
+            transform: scale(1.1);
+        }
+        
+        .fav-btn.favorited::after {
+            content: '⭐';
+        }
+        
+        /* 方案卡片 */
         .featured-section {
             margin-bottom: 70px;
         }
@@ -162,7 +188,17 @@
             color: #00ff88;
         }
         
-        /* 分类列表区 */
+        /* 收藏卡片特殊样式 */
+        .featured-card.is-favorite {
+            border-color: rgba(255, 200, 0, 0.5);
+            background: rgba(255, 200, 0, 0.05);
+        }
+        
+        .featured-card.is-favorite::before {
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+        }
+        
+        /* 分类列表 */
         .category-section {
             margin-bottom: 50px;
         }
@@ -178,10 +214,7 @@
             gap: 12px;
         }
         
-        .category-icon {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
+        .category-icon { font-size: 1.1em; opacity: 0.9; }
         
         .category-list {
             display: flex;
@@ -215,14 +248,8 @@
             gap: 12px;
         }
         
-        .category-item .item-icon {
-            font-size: 1.1em;
-            opacity: 0.7;
-        }
-        
-        .category-item .item-title {
-            font-size: 1em;
-        }
+        .category-item .item-icon { font-size: 1.1em; opacity: 0.7; }
+        .category-item .item-title { font-size: 1em; }
         
         .category-item .item-tag {
             font-size: 0.7em;
@@ -236,6 +263,31 @@
             font-size: 0.75em;
             color: #505050;
             font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .category-item .item-fav {
+            margin-left: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 2px 6px;
+            transition: transform 0.2s;
+            filter: grayscale(1) opacity(0.3);
+        }
+        
+        .category-item .item-fav:hover {
+            transform: scale(1.3);
+            filter: grayscale(0) opacity(1);
+        }
+        
+        .category-item .item-fav.favorited {
+            filter: grayscale(0) opacity(1);
+        }
+        
+        .category-item.is-favorite {
+            border-color: rgba(255, 200, 0, 0.4);
+            background: rgba(255, 200, 0, 0.04);
         }
         
         footer {
@@ -272,14 +324,20 @@
             </div>
         </header>
 
-        <!-- 最新方案展示 (最新3个) -->
+        <!-- 我的收藏 -->
+        <section class="featured-section" id="favorites-section" style="display:none;">
+            <h2 class="section-title">⭐ 我的收藏</h2>
+            <div class="featured-grid" id="favorites-grid"></div>
+        </section>
+
+        <!-- 最新方案 -->
         <section class="featured-section">
             <h2 class="section-title">✨ 最新方案</h2>
             <div class="featured-grid">
-                <a href="202603271630/index.html" class="featured-card">
+                <a href="202603271630/index.html" class="featured-card" data-id="202603271630">
                     <div class="card-header">
                         <span class="card-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
-                        <span class="card-tag">🔥 热门</span>
+                        <button class="fav-btn" onclick="toggleFav('202603271630',event)" title="收藏">☆</button>
                     </div>
                     <div class="card-dir">📁 202603271630/</div>
                     <p class="card-desc">在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。</p>
@@ -289,10 +347,10 @@
                         <span class="metric">🔒 完全隐私</span>
                     </div>
                 </a>
-                <a href="202603271631/index.html" class="featured-card">
+                <a href="202603271631/index.html" class="featured-card" data-id="202603271631">
                     <div class="card-header">
                         <span class="card-title">OpenClaw 个人效率助手</span>
-                        <span class="card-tag">⭐ 必备</span>
+                        <button class="fav-btn" onclick="toggleFav('202603271631',event)" title="收藏">☆</button>
                     </div>
                     <div class="card-dir">📁 202603271631/</div>
                     <p class="card-desc">配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。</p>
@@ -302,10 +360,10 @@
                         <span class="metric">🔗 50+ 技能</span>
                     </div>
                 </a>
-                <a href="202603271633/index.html" class="featured-card">
+                <a href="202603271633/index.html" class="featured-card" data-id="202603271633">
                     <div class="card-header">
                         <span class="card-title">n8n 工作流自动化</span>
-                        <span class="card-tag">🚀 新增</span>
+                        <button class="fav-btn" onclick="toggleFav('202603271633',event)" title="收藏">☆</button>
                     </div>
                     <div class="card-dir">📁 202603271633/</div>
                     <p class="card-desc">开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。</p>
@@ -318,13 +376,13 @@
             </div>
         </section>
 
-        <!-- 分类列表区 -->
+        <!-- 分类列表 -->
         
         <!-- AI & 本地大模型 -->
         <section class="category-section">
             <h3 class="category-header"><span class="category-icon">🧠</span> AI & 本地大模型</h3>
             <div class="category-list">
-                <a href="202603271630/index.html" class="category-item">
+                <a href="202603271630/index.html" class="category-item" data-id="cat-202603271630">
                     <div class="item-left">
                         <span class="item-icon">🧠</span>
                         <span class="item-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
@@ -332,9 +390,10 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">🔥 热门</span>
                         <span class="item-dir">202603271630</span>
+                        <button class="item-fav" onclick="toggleFav('202603271630',event)" title="收藏">☆</button>
                     </div>
                 </a>
-                <a href="202603271631/index.html" class="category-item">
+                <a href="202603271631/index.html" class="category-item" data-id="cat-202603271631">
                     <div class="item-left">
                         <span class="item-icon">🤖</span>
                         <span class="item-title">OpenClaw 个人效率助手</span>
@@ -342,6 +401,7 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">⭐ 必备</span>
                         <span class="item-dir">202603271631</span>
+                        <button class="item-fav" onclick="toggleFav('202603271631',event)" title="收藏">☆</button>
                     </div>
                 </a>
             </div>
@@ -351,7 +411,7 @@
         <section class="category-section">
             <h3 class="category-header"><span class="category-icon">⚙️</span> 自动化工作流</h3>
             <div class="category-list">
-                <a href="202603271632/index.html" class="category-item">
+                <a href="202603271632/index.html" class="category-item" data-id="cat-202603271632">
                     <div class="item-left">
                         <span class="item-icon">🏠</span>
                         <span class="item-title">Home Assistant 智能家居中枢</span>
@@ -359,9 +419,10 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">🏠 家居</span>
                         <span class="item-dir">202603271632</span>
+                        <button class="item-fav" onclick="toggleFav('202603271632',event)" title="收藏">☆</button>
                     </div>
                 </a>
-                <a href="202603271633/index.html" class="category-item">
+                <a href="202603271633/index.html" class="category-item" data-id="cat-202603271633">
                     <div class="item-left">
                         <span class="item-icon">⚡</span>
                         <span class="item-title">n8n 工作流自动化</span>
@@ -369,6 +430,7 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">🚀 新增</span>
                         <span class="item-dir">202603271633</span>
+                        <button class="item-fav" onclick="toggleFav('202603271633',event)" title="收藏">☆</button>
                     </div>
                 </a>
             </div>
@@ -378,7 +440,7 @@
         <section class="category-section">
             <h3 class="category-header"><span class="category-icon">📚</span> 知识与信息管理</h3>
             <div class="category-list">
-                <a href="202603271634/index.html" class="category-item">
+                <a href="202603271634/index.html" class="category-item" data-id="cat-202603271634">
                     <div class="item-left">
                         <span class="item-icon">🧠</span>
                         <span class="item-title">Obsidian 第二大脑</span>
@@ -386,9 +448,10 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">🧠 知识</span>
                         <span class="item-dir">202603271634</span>
+                        <button class="item-fav" onclick="toggleFav('202603271634',event)" title="收藏">☆</button>
                     </div>
                 </a>
-                <a href="202603271635/index.html" class="category-item">
+                <a href="202603271635/index.html" class="category-item" data-id="cat-202603271635">
                     <div class="item-left">
                         <span class="item-icon">📖</span>
                         <span class="item-title">RSS 信息节食方案</span>
@@ -396,6 +459,7 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">📖 阅读</span>
                         <span class="item-dir">202603271635</span>
+                        <button class="item-fav" onclick="toggleFav('202603271635',event)" title="收藏">☆</button>
                     </div>
                 </a>
             </div>
@@ -405,7 +469,7 @@
         <section class="category-section">
             <h3 class="category-header"><span class="category-icon">🛡️</span> 数据备份与安全</h3>
             <div class="category-list">
-                <a href="202603271636/index.html" class="category-item">
+                <a href="202603271636/index.html" class="category-item" data-id="cat-202603271636">
                     <div class="item-left">
                         <span class="item-icon">💾</span>
                         <span class="item-title">rsync + 外置硬盘增量备份</span>
@@ -413,6 +477,7 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <span class="item-tag">💾 备份</span>
                         <span class="item-dir">202603271636</span>
+                        <button class="item-fav" onclick="toggleFav('202603271636',event)" title="收藏">☆</button>
                     </div>
                 </a>
             </div>
@@ -423,5 +488,97 @@
             <p class="footer-note">每 2 小时自动更新最新方案 | OpenClaw + Lark 提供支持</p>
         </footer>
     </div>
+
+    <script>
+    // 收藏方案元数据
+    const solutionMeta = {
+        '202603271630': { title:'本地 LLM 方案：用 Ollama 跑私有 AI 助手', dir:'202603271630', tag:'🔥 热门', desc:'在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。', metrics:['⚡ 20+ tok/s','💰 省 $20/月','🔒 完全隐私'] },
+        '202603271631': { title:'OpenClaw 个人效率助手', dir:'202603271631', tag:'⭐ 必备', desc:'配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。', metrics:['⏰ +3h/天','📊 60% 自动化','🔗 50+ 技能'] },
+        '202603271632': { title:'Home Assistant 智能家居中枢', dir:'202603271632', tag:'🏠 家居', desc:'用 UTM 虚拟机在 Mac Mini 上跑 Home Assistant，统一控制所有智能设备，本地化运行无订阅费。', metrics:['🏠 100+ 设备','💡 自动化场景','🔒 本地控制'] },
+        '202603271633': { title:'n8n 工作流自动化', dir:'202603271633', tag:'🚀 新增', desc:'开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。', metrics:['⚡ 400+ 集成','💰 省 90%','🔧 自托管'] },
+        '202603271634': { title:'Obsidian 第二大脑', dir:'202603271634', tag:'🧠 知识', desc:'用 Obsidian 建立 PKM 系统，链接笔记、每日回顾、项目追踪，成为真正的第二大脑。', metrics:['📈 300% 记忆','🔗 双向链接','📝 免订阅'] },
+        '202603271635': { title:'RSS 信息节食方案', dir:'202603271635', tag:'📖 阅读', desc:'用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。', metrics:['⏱️ -50% 阅读','📰 精准来源','🧠 专注力↑'] },
+        '202603271636': { title:'rsync + 外置硬盘增量备份', dir:'202603271636', tag:'💾 备份', desc:'用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。', metrics:['💾 增量仅 MB','📅 版本快照','🔧 免费开源'] }
+    };
+
+    const FAV_KEY = 'mini_builder_favorites';
+
+    function getFavorites() {
+        return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    }
+
+    function saveFavorites(favs) {
+        localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    }
+
+    function toggleFav(id, e) {
+        if (e) e.preventDefault();
+        let favs = getFavorites();
+        if (favs.includes(id)) {
+            favs = favs.filter(f => f !== id);
+        } else {
+            favs.push(id);
+        }
+        saveFavorites(favs);
+        renderFavorites();
+        updateAllButtons();
+        updateCardStyles();
+    }
+
+    function updateAllButtons() {
+        const favs = getFavorites();
+        document.querySelectorAll('.fav-btn, .item-fav').forEach(btn => {
+            // 每个按钮通过 onclick 的参数区分，跳过通过 title 属性判断
+        });
+        // 遍历所有有 data-id 的卡片和列表项
+        document.querySelectorAll('[data-id]').forEach(el => {
+            const id = el.getAttribute('data-id').replace('cat-','');
+            const isFav = favs.includes(id);
+            const btn = el.querySelector('.fav-btn, .item-fav');
+            if (btn) btn.classList.toggle('favorited', isFav);
+            el.classList.toggle('is-favorite', isFav);
+        });
+    }
+
+    function updateCardStyles() {
+        const favs = getFavorites();
+        document.querySelectorAll('.featured-card, .category-item').forEach(el => {
+            const id = el.getAttribute('data-id') || '';
+            const cleanId = id.replace('cat-','');
+            const isFav = favs.includes(cleanId);
+            el.classList.toggle('is-favorite', isFav);
+            const btn = el.querySelector('.fav-btn, .item-fav');
+            if (btn) btn.classList.toggle('favorited', isFav);
+        });
+    }
+
+    function renderFavorites() {
+        const favs = getFavorites();
+        const section = document.getElementById('favorites-section');
+        const grid = document.getElementById('favorites-grid');
+        if (favs.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        section.style.display = 'block';
+        grid.innerHTML = favs.map(id => {
+            const m = solutionMeta[id];
+            if (!m) return '';
+            return `<a href="${m.dir}/index.html" class="featured-card is-favorite" data-id="${id}">
+                <div class="card-header">
+                    <span class="card-title">${m.title}</span>
+                    <button class="fav-btn favorited" onclick="toggleFav('${id}',event)" title="取消收藏">★</button>
+                </div>
+                <div class="card-dir">📁 ${m.dir}/</div>
+                <p class="card-desc">${m.desc}</p>
+                <div class="card-metrics">${m.metrics.map(x => `<span class="metric">${x}</span>`).join('')}</div>
+            </a>`;
+        }).join('');
+    }
+
+    // 初始化
+    renderFavorites();
+    updateCardStyles();
+    </script>
 </body>
 </html>
