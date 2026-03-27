@@ -60,101 +60,182 @@
             backdrop-filter: blur(10px);
         }
         
-        .category-section {
-            margin-bottom: 60px;
+        /* 最新方案 - 特色展示区 */
+        .featured-section {
+            margin-bottom: 70px;
         }
         
-        .category-title {
-            font-size: 2em;
+        .section-title {
+            font-size: 1.5em;
             color: #00d9ff;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(0,217,255,0.3);
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         
-        .category-icon {
-            font-size: 1.2em;
-        }
-        
-        .solutions-grid {
+        .featured-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
         
-        .solution-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+        .featured-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(0,217,255,0.25);
             border-radius: 16px;
-            padding: 25px;
+            padding: 28px;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+            overflow: hidden;
         }
         
-        .solution-card:hover {
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+        }
+        
+        .featured-card:hover {
             transform: translateY(-5px);
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(0,217,255,0.4);
-            box-shadow: 0 10px 40px rgba(0,217,255,0.15);
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(0,217,255,0.5);
+            box-shadow: 0 15px 50px rgba(0,217,255,0.2);
         }
         
-        .card-header {
+        .featured-card .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
-        .card-title {
-            font-size: 1.3em;
+        .featured-card .card-title {
+            font-size: 1.25em;
             font-weight: 600;
             color: #fff;
         }
         
-        .card-tag {
+        .featured-card .card-tag {
             background: linear-gradient(135deg, #00d9ff, #00ff88);
             color: #1a1a2e;
             padding: 4px 12px;
             border-radius: 12px;
-            font-size: 0.75em;
+            font-size: 0.7em;
             font-weight: 600;
+            white-space: nowrap;
         }
         
-        .card-dir {
-            font-size: 0.8em;
-            color: #707070;
-            margin-top: 5px;
+        .featured-card .card-dir {
+            font-size: 0.75em;
+            color: #606060;
+            margin-bottom: 12px;
             font-family: 'SF Mono', Monaco, monospace;
         }
         
-        .card-desc {
+        .featured-card .card-desc {
             color: #b0b0b0;
-            font-size: 0.95em;
-            margin-bottom: 20px;
+            font-size: 0.9em;
+            margin-bottom: 18px;
+            line-height: 1.5;
         }
         
-        .card-metrics {
+        .featured-card .card-metrics {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         
-        .metric {
+        .featured-card .metric {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.85em;
+            gap: 5px;
+            font-size: 0.82em;
             color: #00ff88;
         }
         
-        .metric-icon {
-            opacity: 0.8;
+        /* 分类列表区 */
+        .category-section {
+            margin-bottom: 50px;
+        }
+        
+        .category-header {
+            font-size: 1.4em;
+            color: #e8e8e8;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .category-icon {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            text-decoration: none;
+            color: #c0c0c0;
+            transition: all 0.2s ease;
+        }
+        
+        .category-item:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(0,217,255,0.3);
+            color: #fff;
+            padding-left: 28px;
+        }
+        
+        .category-item .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .category-item .item-icon {
+            font-size: 1.1em;
+            opacity: 0.7;
+        }
+        
+        .category-item .item-title {
+            font-size: 1em;
+        }
+        
+        .category-item .item-tag {
+            font-size: 0.7em;
+            padding: 3px 10px;
+            border-radius: 10px;
+            background: rgba(0,217,255,0.15);
+            color: #00d9ff;
+        }
+        
+        .category-item .item-dir {
+            font-size: 0.75em;
+            color: #505050;
+            font-family: 'SF Mono', Monaco, monospace;
         }
         
         footer {
@@ -162,7 +243,7 @@
             margin-top: 60px;
             padding-top: 40px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            color: #707070;
+            color: #606060;
         }
         
         .footer-note {
@@ -172,7 +253,8 @@
         
         @media (max-width: 768px) {
             h1 { font-size: 2.5em; }
-            .solutions-grid { grid-template-columns: 1fr; }
+            .featured-grid { grid-template-columns: 1fr; }
+            .category-item { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
     </style>
 </head>
@@ -190,57 +272,37 @@
             </div>
         </header>
 
-        <!-- 分类: AI & 本地LLM -->
-        <section class="category-section">
-            <h2 class="category-title"><span class="category-icon">🧠</span> AI & 本地大模型</h2>
-            <div class="solutions-grid">
-                <a href="202603271630/index.html" class="solution-card">
+        <!-- 最新方案展示 (最新3个) -->
+        <section class="featured-section">
+            <h2 class="section-title">✨ 最新方案</h2>
+            <div class="featured-grid">
+                <a href="202603271630/index.html" class="featured-card">
                     <div class="card-header">
                         <span class="card-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
                         <span class="card-tag">🔥 热门</span>
                     </div>
                     <div class="card-dir">📁 202603271630/</div>
-                    <p class="card-desc">在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先、多模型切换。</p>
+                    <p class="card-desc">在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。</p>
                     <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">⚡</span> 20+ tok/s</span>
-                        <span class="metric"><span class="metric-icon">💰</span> 省 $20/月</span>
-                        <span class="metric"><span class="metric-icon">🔒</span> 完全隐私</span>
+                        <span class="metric">⚡ 20+ tok/s</span>
+                        <span class="metric">💰 省 $20/月</span>
+                        <span class="metric">🔒 完全隐私</span>
                     </div>
                 </a>
-                <a href="202603271631/index.html" class="solution-card">
+                <a href="202603271631/index.html" class="featured-card">
                     <div class="card-header">
                         <span class="card-title">OpenClaw 个人效率助手</span>
                         <span class="card-tag">⭐ 必备</span>
                     </div>
                     <div class="card-dir">📁 202603271631/</div>
-                    <p class="card-desc">配置 OpenClaw 实现日程管理、邮件处理、任务自动化、飞书通知，成为你的全天候数字秘书。</p>
+                    <p class="card-desc">配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。</p>
                     <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">⏰</span> +3h/天</span>
-                        <span class="metric"><span class="metric-icon">📊</span> 60% 自动化</span>
-                        <span class="metric"><span class="metric-icon">🔗</span> 50+ 技能</span>
+                        <span class="metric">⏰ +3h/天</span>
+                        <span class="metric">📊 60% 自动化</span>
+                        <span class="metric">🔗 50+ 技能</span>
                     </div>
                 </a>
-            </div>
-        </section>
-
-        <!-- 分类: 自动化工作流 -->
-        <section class="category-section">
-            <h2 class="category-title"><span class="category-icon">⚙️</span> 自动化工作流</h2>
-            <div class="solutions-grid">
-                <a href="202603271632/index.html" class="solution-card">
-                    <div class="card-header">
-                        <span class="card-title">Home Assistant 智能家居中枢</span>
-                        <span class="card-tag">🏠 家居</span>
-                    </div>
-                    <div class="card-dir">📁 202603271632/</div>
-                    <p class="card-desc">用 UTM 虚拟机在 Mac Mini 上跑 Home Assistant，统一控制所有智能设备，本地化运行无订阅费。</p>
-                    <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">🏠</span> 100+ 设备</span>
-                        <span class="metric"><span class="metric-icon">💡</span> 自动化场景</span>
-                        <span class="metric"><span class="metric-icon">🔒</span> 本地控制</span>
-                    </div>
-                </a>
-                <a href="202603271633/index.html" class="solution-card">
+                <a href="202603271633/index.html" class="featured-card">
                     <div class="card-header">
                         <span class="card-title">n8n 工作流自动化</span>
                         <span class="card-tag">🚀 新增</span>
@@ -248,62 +310,109 @@
                     <div class="card-dir">📁 202603271633/</div>
                     <p class="card-desc">开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。</p>
                     <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">⚡</span> 400+ 集成</span>
-                        <span class="metric"><span class="metric-icon">💰</span> 省 90%</span>
-                        <span class="metric"><span class="metric-icon">🔧</span> 自托管</span>
+                        <span class="metric">⚡ 400+ 集成</span>
+                        <span class="metric">💰 省 90%</span>
+                        <span class="metric">🔧 自托管</span>
                     </div>
                 </a>
             </div>
         </section>
 
-        <!-- 分类: 个人信息管理 -->
+        <!-- 分类列表区 -->
+        
+        <!-- AI & 本地大模型 -->
         <section class="category-section">
-            <h2 class="category-title"><span class="category-icon">📚</span> 知识与信息管理</h2>
-            <div class="solutions-grid">
-                <a href="202603271634/index.html" class="solution-card">
-                    <div class="card-header">
-                        <span class="card-title">Obsidian 第二大脑</span>
-                        <span class="card-tag">🧠 知识</span>
+            <h3 class="category-header"><span class="category-icon">🧠</span> AI & 本地大模型</h3>
+            <div class="category-list">
+                <a href="202603271630/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">🧠</span>
+                        <span class="item-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
                     </div>
-                    <div class="card-dir">📁 202603271634/</div>
-                    <p class="card-desc">用 Obsidian 建立 PKM 系统，链接笔记、每日回顾、项目追踪，成为真正的第二大脑。</p>
-                    <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">📈</span> 300% 记忆</span>
-                        <span class="metric"><span class="metric-icon">🔗</span> 双向链接</span>
-                        <span class="metric"><span class="metric-icon">📝</span> 免订阅</span>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">🔥 热门</span>
+                        <span class="item-dir">202603271630</span>
                     </div>
                 </a>
-                <a href="202603271635/index.html" class="solution-card">
-                    <div class="card-header">
-                        <span class="card-title">RSS 信息节食方案</span>
-                        <span class="card-tag">📖 阅读</span>
+                <a href="202603271631/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">🤖</span>
+                        <span class="item-title">OpenClaw 个人效率助手</span>
                     </div>
-                    <div class="card-dir">📁 202603271635/</div>
-                    <p class="card-desc">用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。</p>
-                    <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">⏱️</span> -50% 阅读</span>
-                        <span class="metric"><span class="metric-icon">📰</span> 精准来源</span>
-                        <span class="metric"><span class="metric-icon">🧠</span> 专注力↑</span>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">⭐ 必备</span>
+                        <span class="item-dir">202603271631</span>
                     </div>
                 </a>
             </div>
         </section>
 
-        <!-- 分类: 数据备份与安全 -->
+        <!-- 自动化工作流 -->
         <section class="category-section">
-            <h2 class="category-title"><span class="category-icon">🛡️</span> 数据备份与安全</h2>
-            <div class="solutions-grid">
-                <a href="202603271636/index.html" class="solution-card">
-                    <div class="card-header">
-                        <span class="card-title">rsync + 外置硬盘增量备份</span>
-                        <span class="card-tag">💾 备份</span>
+            <h3 class="category-header"><span class="category-icon">⚙️</span> 自动化工作流</h3>
+            <div class="category-list">
+                <a href="202603271632/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">🏠</span>
+                        <span class="item-title">Home Assistant 智能家居中枢</span>
                     </div>
-                    <div class="card-dir">📁 202603271636/</div>
-                    <p class="card-desc">用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。</p>
-                    <div class="card-metrics">
-                        <span class="metric"><span class="metric-icon">💾</span> 增量仅 MB</span>
-                        <span class="metric"><span class="metric-icon">📅</span> 版本快照</span>
-                        <span class="metric"><span class="metric-icon">🔧</span> 免费开源</span>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">🏠 家居</span>
+                        <span class="item-dir">202603271632</span>
+                    </div>
+                </a>
+                <a href="202603271633/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">⚡</span>
+                        <span class="item-title">n8n 工作流自动化</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">🚀 新增</span>
+                        <span class="item-dir">202603271633</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 知识与信息管理 -->
+        <section class="category-section">
+            <h3 class="category-header"><span class="category-icon">📚</span> 知识与信息管理</h3>
+            <div class="category-list">
+                <a href="202603271634/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">🧠</span>
+                        <span class="item-title">Obsidian 第二大脑</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">🧠 知识</span>
+                        <span class="item-dir">202603271634</span>
+                    </div>
+                </a>
+                <a href="202603271635/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">📖</span>
+                        <span class="item-title">RSS 信息节食方案</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">📖 阅读</span>
+                        <span class="item-dir">202603271635</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 数据备份与安全 -->
+        <section class="category-section">
+            <h3 class="category-header"><span class="category-icon">🛡️</span> 数据备份与安全</h3>
+            <div class="category-list">
+                <a href="202603271636/index.html" class="category-item">
+                    <div class="item-left">
+                        <span class="item-icon">💾</span>
+                        <span class="item-title">rsync + 外置硬盘增量备份</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span class="item-tag">💾 备份</span>
+                        <span class="item-dir">202603271636</span>
                     </div>
                 </a>
             </div>
