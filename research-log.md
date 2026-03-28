@@ -805,6 +805,126 @@
 
 ---
 
+## 研究时间: 2026-03-28 17:30 UTC
+
+### 发现 #054
+- **主题**: OpenClaw 服务器备份策略 — 分层备份 + 恢复脚本
+- **来源**: Tencent Cloud Techopedia (2026)
+- **核心数据**:
+  - 分层备份策略：实例级快照（快速全量恢复）+ 应用级备份（精细化还原）+ 异地复制（灾难恢复）
+  - 备份清单：config/、dot-env、skills/、Docker volumes（对话历史、数据库）、TLS 证书
+  - 保留策略：仅保留最近 14 天备份
+  - 恢复三步走：解压备份 → 恢复配置 → 重启 OpenClaw
+- **实施要点**:
+  - 备份脚本（crontab 每日执行）：
+    ```bash
+    #!/bin/bash
+    BACKUP_DIR="/backup/openclaw/$(date +%Y%m%d_%H%M%S)"
+    mkdir "$BACKUP_DIR"
+    cp -r ~/.openclaw/config "$BACKUP_DIR/"
+    cp ~/.openclaw/dot-env "$BACKUP_DIR/"
+    cp -r ~/.openclaw/skills "$BACKUP_DIR/"
+    docker compose cp openclaw:/data/postgres "$BACKUP_DIR/postgres_data/"
+    tar czf "$BACKUP_DIR/openclaw_data.tar.gz" -C /backup/openclaw "$(basename $BACKUP_DIR)"
+    find /backup/openclaw -type d -mtime +14 -exec rm -rf {} \;
+    ```
+  - macOS Time Machine + 外置 HDD 组合实现物理备份
+- **效果量化**: 14 天滚动备份，每天仅增量写入变更文件，恢复时间 < 5 分钟
+
+### 发现 #055
+- **主题**: OpenClaw 真实案例 — 物理世界物品目录 + 儿童内容策展 App
+- **来源**: sidsaladi.substack "50+ OpenClaw Use Cases Part 2" (2026)
+- **核心数据**:
+  - **物理物品目录系统**：给房间拍照（玩具、工具、食材、办公设备）→ AI 自动构建可搜索分类目录
+  - **儿童安全内容策展**：描述想要的内容类型 → coding agent 零代码构建无算法推荐、无广告、无自动播放的定制 App
+  - **家庭教育 Agent 网络**：5 个专业 OpenClaw agents，分别跑在各自的 Mac Mini 上，管理 homeschool 课程、家庭财务、日程、开发项目和家务运营
+  - **过夜 MVP 工厂**：睡前提交 App 需求 → 醒来查看生成的 MVP，完全自动化
+- **实施要点**:
+  - 物理目录：拍照 + OpenClaw 图像分析 + 结构化输出到 Obsidian/Notion
+  - 儿童内容 App：OpenClaw coding agent 调用 Claude Code/_cursor 生成 React Native/Web app
+  - 多 Mac Mini 分工：每个 agent 独立机器，避免内存争抢，稳定 24/7 运行
+- **效果量化**: 物理目录省去"找不到东西"的搜索时间；儿童内容策展替代算法平台，保护专注力
+
+### 发现 #056
+- **主题**: OpenClaw 媒体服务器优化 — Mac Mini 影音中心
+- **来源**: openclawn.com "Media Powerhouse: Optimizing OpenClaw Mac Mini" (2026)
+- **核心数据**:
+  - Mac Mini M4 Pro (Revision 3) 作为媒体服务器：同时跑 Plex/Jellyfin + OpenClaw + Ollama
+  - 统一内存架构：媒体转码和 LLM 推理共用内存池，无 VRAM 瓶颈
+  - 推荐配置：M4 Pro 48GB，媒体流 + 本地 LLM 双任务同时运行
+  - 媒体自动化：OpenClaw 定时整理新下载媒体 → 重命名 + 归类 + 更新 Plex/Jellyfin 库
+- **实施要点**:
+  - Jellyfin（开源）替代 Plex，省订阅费
+  - OpenClaw cron job：每周自动整理媒体库，清理无效文件
+  - Tailscale 实现外网安全访问媒体库
+- **效果量化**: 一台 Mac Mini 替代独立 NAS + AI 服务器，功耗合计 < 80W
+
+### 发现 #057
+- **主题**: OpenClaw 安全部署指南 — 控制爆炸半径
+- **来源**: aminrj.com "How I Deployed OpenClaw as an AI Security Researcher" (2026)
+- **核心数据**:
+  - 安全部署核心原则：最小权限 + 隔离网络 + 监控告警
+  - HomeKit 设备访问的安全顾虑：OpenClaw 本地运行有直接机器访问权限，与云 AI 沙盒不同
+  - 社区成员建议：HomeKit 集成前先在独立测试环境验证
+  - Docker 隔离：不同 agents 用不同容器，数据和权限隔离
+  - TLS 证书 + API key 加密存储，不碰明文 dot-env
+- **实施要点**:
+  - HomeKit 安全 checklist：
+    1. 独立 Mac Mini 或 VM 跑 Homebridge
+    2. OpenClaw 通过 API 而非直接 socket 控制
+    3. 日志审计：记录所有设备控制操作
+    4. 网络隔离：HA/IoT 设备放独立 VLAN
+- **效果量化**: 安全配置后，OpenClaw 作为家庭自动化控制中台，风险可控
+
+### 发现 #058
+- **主题**: 混合 AI Home Lab — Mac Mini + NVIDIA GPU 塔式 + 树莓派的分工架构
+- **来源**: Plain English "Budget Optimized AI Home Lab" (2026)
+- **核心数据**:
+  - Mac Mini M4 16GB 作为"大脑"：协调调度 + 轻量推理 + Home Assistant
+  - NVIDIA GPU 塔式服务器：大规模模型训练 + 图像/视频生成（Stable Diffusion、FLUX）
+  - Raspberry Pi 400：常开边缘节点（传感器收集、简单自动化脚本）
+  - 分工逻辑：Mac Mini 负责 orchestration，轻量任务；GPU 塔负责重计算；Pi 负责 24/7 感知层
+- **实施要点**:
+  - Mac Mini 通过 Tailscale/VPN 协调 GPU 塔式服务器
+  - Raspberry Pi 运行 Home Assistant OS + Zigbee2MQTT
+  - GPU 塔式按需唤醒（不需要 24/7 运行）
+- **效果量化**: 按需使用 GPU 算力，Mac Mini 日常功耗 < 20W，GPU 塔仅任务时启动
+
+### 发现 #059
+- **主题**: Scaleway Cloud Mac Mini M4 — €0.22/小时云端 Apple Silicon
+- **来源**: Scaleway (2026)
+- **核心数据**:
+  - Scaleway 提供云端 Mac Mini M4 按需租用，起步价 €0.22/小时
+  - 用途：iOS 开发编译（Xcode）、跨平台测试、突发算力需求
+  - 与自托管 Mac Mini 对比：适合偶发需求 vs 24/7 稳定运行
+  - 云 Mac Mini 保留状态，可作为自托管方案的备份/扩展
+- **实施要点**:
+  - Scaleway 注册 + 选择 Apple Silicon 实例类型
+  - 按小时计费，适合短期大规模测试
+  - 配合 Scaleway Object Storage 做备份目标
+- **效果量化**: €0.22/小时 vs 自购 Mac Mini €0.04/小时电费（但有硬件折旧）
+
+### 发现 #060
+- **主题**: Top 50 OpenClaw 用例排名 — 完整分类清单
+- **来源**: o-mega.ai "Top 50 OpenClaw Use Cases 2026 Rankings" (2026)
+- **核心数据**:
+  - 用例分类：生产力、研究监控、营销自动化、内容策划、开发辅助、个人组织
+  - 核心价值：AI 从"聊天工具"变成"自动化工作流"
+  - AI agents 连接多工具，自动完成从研究→规划→创建→报告的完整链路
+- **实施要点**:
+  - ClawHub（clawhub.com）搜索获取完整用例列表
+  - 飞书集成相关用例：消息分类、草稿生成、任务创建
+  - Research monitoring（持续追踪竞品/行业动态）是最有价值用例之一
+- **效果量化**: 用例数量说明 OpenClaw 生态已相当成熟
+
+---
+
+**【可建站】OpenClaw 物理物品目录系统**: 拍照即归档，AI 自动分类 + 可搜索目录，替代"东西放哪了"焦虑，特别适合工具间/厨房/儿童玩具管理。
+
+**【可建站】Mac Mini 混合 AI Lab**: Mac Mini (协调层) + GPU 塔式 (重算力) + Pi 400 (感知层) 三层架构，按需调用，算力成本最优解。
+
+---
+
 ## 研究时间: 2026-03-28 13:30 UTC (2026-03-28 06:30 PDT)
 
 ### 发现 #037
