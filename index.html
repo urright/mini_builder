@@ -203,7 +203,7 @@
         }
         
         /* 收藏按钮 */
-        .fav-btn {
+        .fav-btn, .item-fav { display: none; } .fav-btn.visible, .item-fav.visible { display: inline-block; } .fav-btn, .item-fav {
             background: none;
             border: none;
             cursor: pointer;
@@ -685,7 +685,16 @@
         setSyncStatus('未登录', '');
     }
     
+    function updateButtonVisibility() {
+        const btns = document.querySelectorAll('.fav-btn, .item-fav');
+        btns.forEach(b => {
+            if (isLoggedIn) b.classList.add('visible');
+            else b.classList.remove('visible');
+        });
+    }
+    
     function updateAuthUI() {
+        updateButtonVisibility();
         const btn = document.getElementById('authBtn');
         const favArea = document.getElementById('favorites-section');
         if (isLoggedIn) {
@@ -830,6 +839,7 @@
         updateAllButtons();
         updateCardStyles();
         renderFavorites();
+        updateButtonVisibility();
         if (isLoggedIn) {
             setSyncStatus('✅ 已登录', 'synced');
         }
