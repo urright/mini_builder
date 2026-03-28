@@ -60,6 +60,148 @@
             backdrop-filter: blur(10px);
         }
         
+        /* 登录状态栏 */
+        .auth-bar {
+            position: fixed;
+            top: 16px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .auth-btn {
+            background: rgba(0,217,255,0.15);
+            border: 1px solid rgba(0,217,255,0.3);
+            color: #00d9ff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .auth-btn:hover {
+            background: rgba(0,217,255,0.25);
+        }
+        
+        .auth-btn.logged-in {
+            background: rgba(0,255,136,0.15);
+            border-color: rgba(0,255,136,0.3);
+            color: #00ff88;
+        }
+        
+        .sync-status {
+            font-size: 0.75em;
+            color: #505050;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .sync-status.synced { color: #00ff88; border-color: rgba(0,255,136,0.3); }
+        .sync-status.error { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
+        
+        /* 登录弹窗 */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        
+        .login-overlay.show { display: flex; }
+        
+        .login-box {
+            background: #1a1a2e;
+            border: 1px solid rgba(0,217,255,0.3);
+            border-radius: 20px;
+            padding: 45px;
+            width: 400px;
+            max-width: 90vw;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+        }
+        
+        .login-box h2 {
+            color: #00d9ff;
+            font-size: 1.8em;
+            margin-bottom: 8px;
+        }
+        
+        .login-box p {
+            color: #606060;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .login-form input:focus {
+            border-color: rgba(0,217,255,0.5);
+        }
+        
+        .login-form input::placeholder { color: #505050; }
+        
+        .login-form button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        .login-form button:hover { transform: scale(1.02); }
+        .login-form button:active { transform: scale(0.98); }
+        
+        .login-error {
+            color: #ff6b6b;
+            font-size: 0.85em;
+            margin-top: 12px;
+            display: none;
+        }
+        
+        .login-error.show { display: block; }
+        
+        .login-hint {
+            margin-top: 20px;
+            font-size: 0.75em;
+            color: #404040;
+        }
+        
+        /* 收藏功能区 (登录后才显示) */
+        .favorites-area {
+            display: none;
+        }
+        
+        .favorites-area.visible {
+            display: block;
+        }
+        
         /* 收藏按钮 */
         .fav-btn {
             background: none;
@@ -72,24 +214,15 @@
             filter: grayscale(1) opacity(0.4);
         }
         
-        .fav-btn:hover {
-            transform: scale(1.2);
-            filter: grayscale(0) opacity(1);
-        }
+        .fav-btn:hover { transform: scale(1.2); filter: grayscale(0) opacity(1); }
         
         .fav-btn.favorited {
             filter: grayscale(0) opacity(1);
             transform: scale(1.1);
         }
         
-        .fav-btn.favorited::after {
-            content: '⭐';
-        }
-        
         /* 方案卡片 */
-        .featured-section {
-            margin-bottom: 70px;
-        }
+        .featured-section { margin-bottom: 70px; }
         
         .section-title {
             font-size: 1.5em;
@@ -123,9 +256,7 @@
         .featured-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 3px;
             background: linear-gradient(90deg, #00d9ff, #00ff88);
         }
@@ -188,10 +319,9 @@
             color: #00ff88;
         }
         
-        /* 收藏卡片特殊样式 */
         .featured-card.is-favorite {
-            border-color: rgba(255, 200, 0, 0.5);
-            background: rgba(255, 200, 0, 0.05);
+            border-color: rgba(255,200,0,0.5);
+            background: rgba(255,200,0,0.05);
         }
         
         .featured-card.is-favorite::before {
@@ -199,9 +329,7 @@
         }
         
         /* 分类列表 */
-        .category-section {
-            margin-bottom: 50px;
-        }
+        .category-section { margin-bottom: 50px; }
         
         .category-header {
             font-size: 1.4em;
@@ -216,11 +344,7 @@
         
         .category-icon { font-size: 1.1em; opacity: 0.9; }
         
-        .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .category-list { display: flex; flex-direction: column; gap: 8px; }
         
         .category-item {
             display: flex;
@@ -276,18 +400,12 @@
             filter: grayscale(1) opacity(0.3);
         }
         
-        .category-item .item-fav:hover {
-            transform: scale(1.3);
-            filter: grayscale(0) opacity(1);
-        }
-        
-        .category-item .item-fav.favorited {
-            filter: grayscale(0) opacity(1);
-        }
+        .category-item .item-fav:hover { transform: scale(1.3); filter: grayscale(0) opacity(1); }
+        .category-item .item-fav.favorited { filter: grayscale(0) opacity(1); }
         
         .category-item.is-favorite {
-            border-color: rgba(255, 200, 0, 0.4);
-            background: rgba(255, 200, 0, 0.04);
+            border-color: rgba(255,200,0,0.4);
+            background: rgba(255,200,0,0.04);
         }
         
         footer {
@@ -298,10 +416,10 @@
             color: #606060;
         }
         
-        .footer-note {
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
+        .footer-note { font-size: 0.9em; margin-top: 10px; }
+        
+        /* 锁图标 */
+        .lock-icon { opacity: 0.5; margin-right: 4px; }
         
         @media (max-width: 768px) {
             h1 { font-size: 2.5em; }
@@ -311,6 +429,27 @@
     </style>
 </head>
 <body>
+    <!-- 登录状态栏 -->
+    <div class="auth-bar">
+        <span class="sync-status" id="syncStatus">🔒 未登录</span>
+        <button class="auth-btn" id="authBtn" onclick="handleAuthClick()">登录</button>
+    </div>
+
+    <!-- 登录弹窗 -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>🔐 Mini Builder</h2>
+            <p>输入凭据访问收藏功能</p>
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <input type="text" id="loginUser" placeholder="用户名" autocomplete="username" required>
+                <input type="password" id="loginPass" placeholder="密码" autocomplete="current-password" required>
+                <button type="submit">登 录</button>
+            </form>
+            <p class="login-error" id="loginError">用户名或密码错误</p>
+            <p class="login-hint">（关掉弹窗即退出登录）</p>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>Mini Builder</h1>
@@ -324,8 +463,8 @@
             </div>
         </header>
 
-        <!-- 我的收藏 -->
-        <section class="featured-section" id="favorites-section" style="display:none;">
+        <!-- 收藏区 (登录后可见) -->
+        <section class="featured-section favorites-area" id="favorites-section">
             <h2 class="section-title">⭐ 我的收藏</h2>
             <div class="featured-grid" id="favorites-grid"></div>
         </section>
@@ -490,7 +629,13 @@
     </div>
 
     <script>
-    // 收藏方案元数据
+    // ============ 配置 ============
+    const CREDENTIALS = { username: 'admin', password: 'Mini728!' };
+    const API_BASE = 'http://localhost:3000';
+    const SESSION_KEY = 'mb_session';
+    const FAV_KEY = 'mini_builder_favorites';
+    
+    // ============ 方案元数据 ============
     const solutionMeta = {
         '202603271630': { title:'本地 LLM 方案：用 Ollama 跑私有 AI 助手', dir:'202603271630', tag:'🔥 热门', desc:'在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。', metrics:['⚡ 20+ tok/s','💰 省 $20/月','🔒 完全隐私'] },
         '202603271631': { title:'OpenClaw 个人效率助手', dir:'202603271631', tag:'⭐ 必备', desc:'配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。', metrics:['⏰ +3h/天','📊 60% 自动化','🔗 50+ 技能'] },
@@ -500,67 +645,168 @@
         '202603271635': { title:'RSS 信息节食方案', dir:'202603271635', tag:'📖 阅读', desc:'用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。', metrics:['⏱️ -50% 阅读','📰 精准来源','🧠 专注力↑'] },
         '202603271636': { title:'rsync + 外置硬盘增量备份', dir:'202603271636', tag:'💾 备份', desc:'用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。', metrics:['💾 增量仅 MB','📅 版本快照','🔧 免费开源'] }
     };
-
-    const FAV_KEY = 'mini_builder_favorites';
-
+    
+    // ============ 认证 ============
+    let isLoggedIn = sessionStorage.getItem(SESSION_KEY) === 'ok';
+    
+    function handleAuthClick() {
+        if (isLoggedIn) {
+            logout();
+        } else {
+            document.getElementById('loginOverlay').classList.add('show');
+            document.getElementById('loginUser').focus();
+        }
+    }
+    
+    function handleLogin(e) {
+        e.preventDefault();
+        const u = document.getElementById('loginUser').value;
+        const p = document.getElementById('loginPass').value;
+        if (u === CREDENTIALS.username && p === CREDENTIALS.password) {
+            sessionStorage.setItem(SESSION_KEY, 'ok');
+            isLoggedIn = true;
+            document.getElementById('loginOverlay').classList.remove('show');
+            document.getElementById('loginError').classList.remove('show');
+            updateAuthUI();
+            loadFavorites();
+            // 如果之前有收藏，同步到服务器
+            syncAllFavoritesToServer();
+        } else {
+            document.getElementById('loginError').classList.add('show');
+        }
+    }
+    
+    function logout() {
+        sessionStorage.removeItem(SESSION_KEY);
+        isLoggedIn = false;
+        updateAuthUI();
+        renderFavorites();
+        updateAllButtons();
+        setSyncStatus('未登录', '');
+    }
+    
+    function updateAuthUI() {
+        const btn = document.getElementById('authBtn');
+        const favArea = document.getElementById('favorites-section');
+        if (isLoggedIn) {
+            btn.textContent = '退出';
+            btn.classList.add('logged-in');
+            favArea.classList.add('visible');
+        } else {
+            btn.textContent = '登录';
+            btn.classList.remove('logged-in');
+            favArea.classList.remove('visible');
+        }
+    }
+    
+    // ============ 同步状态 ============
+    function setSyncStatus(text, cls) {
+        const el = document.getElementById('syncStatus');
+        el.textContent = text;
+        el.className = 'sync-status ' + cls;
+    }
+    
+    // ============ 收藏逻辑 ============
     function getFavorites() {
         return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
     }
-
-    function saveFavorites(favs) {
+    
+    function saveFavoritesLocal(favs) {
         localStorage.setItem(FAV_KEY, JSON.stringify(favs));
     }
-
+    
     function toggleFav(id, e) {
         if (e) e.preventDefault();
-        let favs = getFavorites();
-        if (favs.includes(id)) {
-            favs = favs.filter(f => f !== id);
-        } else {
-            favs.push(id);
+        if (!isLoggedIn) {
+            document.getElementById('loginOverlay').classList.add('show');
+            return;
         }
-        saveFavorites(favs);
+        let favs = getFavorites();
+        const action = favs.includes(id) ? 'remove' : 'add';
+        if (action === 'add') favs.push(id);
+        else favs = favs.filter(f => f !== id);
+        saveFavoritesLocal(favs);
         renderFavorites();
         updateAllButtons();
         updateCardStyles();
+        syncFavoriteToServer(action, id);
     }
-
+    
+    async function syncFavoriteToServer(action, id) {
+        setSyncStatus('同步中...', '');
+        try {
+            const creds = btoa(CREDENTIALS.username + ':' + CREDENTIALS.password);
+            const res = await fetch(API_BASE + '/favorites', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + creds,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action, id, timestamp: new Date().toISOString() })
+            });
+            if (res.ok) {
+                setSyncStatus('✅ 已同步 ' + new Date().toLocaleTimeString(), 'synced');
+            } else {
+                setSyncStatus('❌ 同步失败', 'error');
+            }
+        } catch(err) {
+            setSyncStatus('⚠️ 服务器离线', 'error');
+        }
+    }
+    
+    async function syncAllFavoritesToServer() {
+        const favs = getFavorites();
+        if (favs.length === 0) return;
+        setSyncStatus('同步收藏...', '');
+        try {
+            const creds = btoa(CREDENTIALS.username + ':' + CREDENTIALS.password);
+            for (const id of favs) {
+                await fetch(API_BASE + '/favorites', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Basic ' + creds,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action: 'add', id })
+                });
+            }
+            setSyncStatus('✅ ' + favs.length + ' 条收藏已同步', 'synced');
+        } catch(err) {
+            setSyncStatus('⚠️ 服务器离线', 'error');
+        }
+    }
+    
     function updateAllButtons() {
         const favs = getFavorites();
-        document.querySelectorAll('.fav-btn, .item-fav').forEach(btn => {
-            // 每个按钮通过 onclick 的参数区分，跳过通过 title 属性判断
-        });
-        // 遍历所有有 data-id 的卡片和列表项
-        document.querySelectorAll('[data-id]').forEach(el => {
-            const id = el.getAttribute('data-id').replace('cat-','');
-            const isFav = favs.includes(id);
+        document.querySelectorAll('.featured-card, .category-item').forEach(el => {
+            const id = el.getAttribute('data-id') || '';
+            const cleanId = id.replace('cat-', '');
+            const isFav = favs.includes(cleanId);
+            el.classList.toggle('is-favorite', isLoggedIn && isFav);
             const btn = el.querySelector('.fav-btn, .item-fav');
             if (btn) btn.classList.toggle('favorited', isFav);
-            el.classList.toggle('is-favorite', isFav);
         });
     }
-
+    
     function updateCardStyles() {
         const favs = getFavorites();
         document.querySelectorAll('.featured-card, .category-item').forEach(el => {
             const id = el.getAttribute('data-id') || '';
-            const cleanId = id.replace('cat-','');
+            const cleanId = id.replace('cat-', '');
             const isFav = favs.includes(cleanId);
-            el.classList.toggle('is-favorite', isFav);
-            const btn = el.querySelector('.fav-btn, .item-fav');
-            if (btn) btn.classList.toggle('favorited', isFav);
+            el.classList.toggle('is-favorite', isLoggedIn && isFav);
         });
     }
-
+    
     function renderFavorites() {
         const favs = getFavorites();
         const section = document.getElementById('favorites-section');
         const grid = document.getElementById('favorites-grid');
-        if (favs.length === 0) {
-            section.style.display = 'none';
+        if (!isLoggedIn || favs.length === 0) {
+            section.classList.remove('visible');
             return;
         }
-        section.style.display = 'block';
+        section.classList.add('visible');
         grid.innerHTML = favs.map(id => {
             const m = solutionMeta[id];
             if (!m) return '';
@@ -575,10 +821,26 @@
             </a>`;
         }).join('');
     }
-
-    // 初始化
-    renderFavorites();
-    updateCardStyles();
+    
+    // ============ 初始化 ============
+    updateAuthUI();
+    loadFavorites();
+    
+    function loadFavorites() {
+        updateAllButtons();
+        updateCardStyles();
+        renderFavorites();
+        if (isLoggedIn) {
+            setSyncStatus('✅ 已登录', 'synced');
+        }
+    }
+    
+    // 点击弹窗背景关闭
+    document.getElementById('loginOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('show');
+        }
+    });
     </script>
 </body>
 </html>
