@@ -73,7 +73,8 @@
         .sol-table th.sortable { cursor: pointer; user-select: none; }
         .sol-table th.sortable:hover { color: #00ff88; }
         .sol-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: middle; }
-        .sol-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .sol-table tr.sol-row { cursor: pointer; }
+        .sol-table tr.sol-row:hover td { background: rgba(255,255,255,0.04); }
         .sol-table .col-id { color: #505050; font-size: 0.78em; font-family: monospace; white-space: nowrap; }
         .sol-table .col-title { font-weight: 600; color: #e8e8e8; }
         .sol-table .col-title a { color: inherit; text-decoration: none; }
@@ -413,10 +414,10 @@
         tbody.innerHTML = sols.map(s => {
             const favs = getFavorites();
             const isFav = favs.includes(s.id);
-            return `<tr>
-                <td class="col-title"><a href="${s.id}/index.html">${s.title}</a><br><span class="col-desc">${s.desc}</span></td>
+            return `<tr class="sol-row" onclick="window.location='${s.id}/index.html'">
+                <td class="col-title"><a href="${s.id}/index.html" onclick="event.stopPropagation()">${s.title}</a><br><span class="col-desc">${s.desc}</span></td>
                 <td class="col-updated">${s.updated}</td>
-                <td class="col-fav"><button class="fav-btn${isFav ? ' favorited' : ''}${isLoggedIn ? ' visible' : ''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav ? '★' : '☆'}</button></td>
+                <td class="col-fav" onclick="event.stopPropagation()"><button class="fav-btn${isFav ? ' favorited' : ''}${isLoggedIn ? ' visible' : ''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav ? '★' : '☆'}</button></td>
             </tr>`;
         }).join('');
     }
