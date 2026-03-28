@@ -155,20 +155,15 @@
             <div class="table-controls">
                 <div class="tag-filter" id="tagFilter"></div>
                 <select class="sort-select" id="sortSelect" onchange="renderTable()">
-                    <option value="date-desc">按创建时间 ↓</option>
-                    <option value="date-asc">按创建时间 ↑</option>
-                    <option value="updated-desc">按更新时间 ↓</option>
-                    <option value="updated-asc">按更新时间 ↑</option>
+                    <option value="updated-desc">更新时间 ↓</option>
+                    <option value="updated-asc">更新时间 ↑</option>
                 </select>
             </div>
             <table class="sol-table">
                 <thead>
                     <tr>
-                        <th class="sortable" onclick="sortBy('id')">编号 ↕</th>
                         <th>方案</th>
-                        <th>标签</th>
-                        <th class="sortable" onclick="sortBy('date')">创建时间 ↕</th>
-                        <th>核心指标</th>
+                        <th>更新时间</th>
                         <th class="col-fav">⭐</th>
                     </tr>
                 </thead>
@@ -412,20 +407,15 @@
         let sols = filtered();
         
         // Sort
-        if (sortVal === 'date-asc') sols.sort((a, b) => a.id.localeCompare(b.id));
-        else if (sortVal === 'date-desc') sols.sort((a, b) => b.id.localeCompare(a.id));
-        else if (sortVal === 'updated-asc') sols.sort((a, b) => a.updated.localeCompare(b.updated));
-        else if (sortVal === 'updated-desc') sols.sort((a, b) => b.updated.localeCompare(a.updated));
+        if (sortVal === 'updated-asc') sols.sort((a, b) => a.updated.localeCompare(b.updated));
+        else sols.sort((a, b) => b.updated.localeCompare(a.updated)); // default: updated-desc
         
         tbody.innerHTML = sols.map(s => {
             const favs = getFavorites();
             const isFav = favs.includes(s.id);
             return `<tr>
-                <td class="col-id">${s.id}</td>
-                <td class="col-title"><a href="${s.id}/index.html">${s.title}</a><br><span style="color:#707070;font-size:0.78em;">${s.desc.substring(0,50)}...</span></td>
-                <td class="col-tags">${s.tags.map(t => `<span class="tag${t === '可建站' ? ' kanjian' : ''}">${t}</span>`).join('')}</td>
+                <td class="col-title"><a href="${s.id}/index.html">${s.title}</a><br><span class="col-desc">${s.desc}</span></td>
                 <td class="col-updated">${s.updated}</td>
-                <td class="col-metrics">${s.metrics.join(' | ')}</td>
                 <td class="col-fav"><button class="fav-btn${isFav ? ' favorited' : ''}${isLoggedIn ? ' visible' : ''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav ? '★' : '☆'}</button></td>
             </tr>`;
         }).join('');

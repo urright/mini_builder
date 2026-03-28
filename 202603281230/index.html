@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Actions 自托管 macOS Runner | Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
+        .fav-btn{position:absolute;top:20px;right:20px;background:none;border:2px solid rgba(255,200,0,0.4);color:#ffd700;cursor:pointer;font-size:1.5em;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;background:rgba(255,200,0,0.1)}.fav-btn:hover{background:rgba(255,200,0,0.2);transform:scale(1.1)}.fav-btn.favorited{background:rgba(255,200,0,0.3);border-color:#ffd700}.hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:60px 20px;text-align:center;position:relative}
+        .hero h1 { font-size: 2.5em; color: #00d9ff; margin-bottom: 15px; }
+        .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .back-link { color: #00d9ff; text-decoration: none; margin-bottom: 30px; display: inline-block; }
+        .section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; margin-bottom: 25px; }
+        .section h2 { color: #00ff88; font-size: 1.4em; margin-bottom: 20px; }
+        .section h3 { color: #e8e8e8; margin: 20px 0 10px; }
+        .section ul { list-style: none; padding: 0; }
+        .section li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0b0; }
+        .section li::before { content: "→"; color: #00d9ff; margin-right: 10px; }
+        code { background: rgba(0,217,255,0.1); color: #00d9ff; padding: 3px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 15px 0; }
+        pre code { background: none; padding: 0; color: #c9d1d9; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .metric-box { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px; padding: 20px; text-align: center; }
+        .metric-box .value { font-size: 2em; font-weight: 700; color: #00ff88; }
+        .metric-box .label { color: #8b949e; font-size: 0.9em; }
+        .tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 15px; font-size: 0.8em; margin-right: 8px; }
+        .case-study { background: rgba(0,217,255,0.05); border-left: 3px solid #00d9ff; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .case-study h4 { color: #00d9ff; margin-bottom: 10px; }
+        .case-study .quote { font-style: italic; color: #8b949e; margin: 10px 0; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th { background: rgba(0,217,255,0.1); color: #00d9ff; padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .comparison-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #b0b0b0; }
+        .comparison-table tr:hover { background: rgba(255,255,255,0.02); }
+    </style>
+</head>
+<body>
+    <div class="hero"><button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏">☆</button>
+        <h1>🔄 GitHub Actions 自托管 macOS Runner</h1>
+        <p class="subtitle">用 Mac Mini M4 作为专属 GitHub Actions Runner，iOS/macOS CI/CD 成本降低 90%，构建速度提升 3-5 倍</p>
+        <div style="margin-top:20px;">
+            <span class="tag">CI/CD</span>
+            <span class="tag">开发者</span>
+            <span class="tag">Apple</span>
+            <span class="tag">自托管</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="../index.html" class="back-link">← 返回首页</a>
+        
+        <div class="section">
+            <h2>📊 效果量化</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="value">-90%</div>
+                    <div class="label">CI/CD 成本节省</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">3-5x</div>
+                    <div class="label">构建速度提升</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">4-8</div>
+                    <div class="label">并发 Job 推荐数</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">2000+</div>
+                    <div class="label">免费构建分钟/月</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">M4 Pro</div>
+                    <div class="label">推荐硬件配置</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">永久</div>
+                    <div class="label">离线缓存保留</div>
+                </div>
+            </div>
+            <p style="margin-top:15px;color:#8b949e;font-size:0.9em;">
+                📊 <strong>数据来源</strong>：NodeMac 2026 指南，运行 12 个并发 macOS Job、每周 10 小时，<strong>月节省约 4,800 GitHub Actions 分钟</strong>，相当于 $36-72/月（按 macOS 分钟费率计算）。（来源：<a href="https://nodemac.com/en/blog/articles/github-actions-self-hosted-macos-runner-mac-mini-m4-2026.html" style="color:#00d9ff;">NodeMac</a>）
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>⚖️ 自托管 vs GitHub 托管 Runner 对比</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>维度</th>
+                        <th>GitHub 托管</th>
+                        <th>Mac Mini M4 自托管</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>并发控制</td>
+                        <td>共享池，高峰排队</td>
+                        <td>专属 runner，可设置最大并行数</td>
+                    </tr>
+                    <tr>
+                        <td>硬件模型</td>
+                        <td>标准化 VM 镜像</td>
+                        <td>物理 Mac mini M4，无虚拟机开销</td>
+                    </tr>
+                    <tr>
+                        <td>冷启动</td>
+                        <td>每次全新环境</td>
+                        <td>持久磁盘，DerivedData/SDK 常驻</td>
+                    </tr>
+                    <tr>
+                        <td>网络</td>
+                        <td>GitHub 管理区域</td>
+                        <td>可选择 HK/JP/KR/SG/US 节点</td>
+                    </tr>
+                    <tr>
+                        <td>运维</td>
+                        <td>低，无需管理 OS</td>
+                        <td>需维护 macOS，但有托管服务</td>
+                    </tr>
+                    <tr>
+                        <td>缓存策略</td>
+                        <td>每次构建重置</td>
+                        <td>持久化缓存，速度提升 3-5x</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top:10px;color:#8b949e;font-size:0.85em;">
+                来源：<a href="https://nodemac.com/en/blog/articles/github-actions-self-hosted-macos-runner-mac-mini-m4-2026.html" style="color:#00d9ff;">NodeMac 2026 Guide</a>
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>📋 真实案例</h2>
+            
+            <div class="case-study">
+                <h4>案例 1: iOS 团队高峰构建问题</h4>
+                <p class="quote">"发布周期间，十几个 workflow 抢占同一个 macOS 队列，xcodebuild 和 UI 测试的墙上时钟时间暴涨——尽管每个 Job 单独看'已经够快'。"</p>
+                <p style="color:#8b949e;font-size:0.85em;margin-top:8px;">→ 解决方案：自托管 Runner，高峰期也能稳定并行</p>
+            </div>
+            
+            <div class="case-study">
+                <h4>案例 2: macly.io 小团队 CI</h4>
+                <p class="quote">"我们在 Mac Mini M4 上跑 GitHub Actions，构建 iOS 应用。Dedicated macOS runner 完美替代了 GitHub 托管的共享队列，不再担心高峰期排队。"</p>
+                <p style="color:#8b949e;font-size:0.85em;margin-top:8px;">来源：<a href="https://macly.io/mac-mini-ci-cd" style="color:#00d9ff;">macly.io</a></p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 实施方案（7 步完成）</h2>
+            
+            <h3>第一步：准备 Mac Mini</h3>
+            <pre><code># 推荐配置
+- Mac Mini M4 Pro（24-48GB RAM）
+- 512GB SSD 或更大（Xcode + DerivedData 占用大）
+- 安装 macOS 最新稳定版
+- 确保网络稳定（有线网络推荐）</code></pre>
+            
+            <h3>第二步：在 GitHub 仓库添加 Runner</h3>
+            <pre><code># 1. 进入 GitHub 仓库 → Settings → Actions → Runners
+# 2. 点击 "New self-hosted runner"
+# 3. 选择：macOS / ARM64 / x64
+# 4. 下载 Runner 包（会生成下载 + 配置命令）</code></pre>
+            
+            <h3>第三步：配置 Runner</h3>
+            <pre><code># 在 Mac Mini 上执行（下载后）
+# 解压
+unzip actions-runner-osx-arm64-*.zip
+
+# 进入目录
+cd actions-runner-osx-arm64-*
+
+# 运行配置（替换 YOUR_TOKEN 和 YOUR_URL）
+./config.sh --url https://github.com/YOUR_ORG/YOUR_REPO --token YOUR_TOKEN
+
+# 配置示例输出
+√ Connected to GitHub
+# Runner registration is complete!</code></pre>
+            
+            <h3>第四步：配置 Runner Labels</h3>
+            <pre><code># 给 Runner 打标签，方便 workflow 选择
+./config.sh --labels mac-mini-m4,ios,production
+
+# 推荐标签：
+# - mac-mini-m4（硬件标识）
+# - ios / macos（平台）
+# - main / staging（分支环境）
+# - xcode-15-3（Xcode 版本）</code></pre>
+            
+            <h3>第五步：设置为服务（后台运行）</h3>
+            <pre><code># 安装为 launchd 服务，开机自启
+sudo ./svc.sh install
+
+# 启动服务
+./svc.sh start
+
+# 查看状态
+./svc.sh status
+
+# 查看日志
+tail -f _diag/*.log</code></pre>
+            
+            <h3>第六步：配置 Workflow 使用自托管 Runner</h3>
+            <pre><code># .github/workflows/ci.yml
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    # 使用自托管 runner
+    runs-on: [self-hosted, mac-mini-m4, ios]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+      
+      - name: Build
+        run: |
+          xcodebuild -project MyApp.xcodeproj \
+            -scheme MyApp \
+            -configuration Debug \
+            build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+      
+      - name: Run Tests
+        run: |
+          xcodebuild test \
+            -project MyApp.xcodeproj \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+
+  # GitHub 托管的 Job（不受影响）
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Linux Job 走 GitHub 托管"</code></pre>
+            
+            <h3>第七步：安全配置</h3>
+            <pre><code># 1. Runner 只读权限：Settings → Actions → Runner settings
+#    勾选 "Disable any SCM functionality"
+
+# 2. 设置 IP 白名单（企业用）
+#    Settings → Actions → Add IP allowlist
+
+# 3. 定期更新 Runner 版本
+./run.sh --version && ./svc.sh stop && ./svc.sh start</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>💡 进阶技巧</h2>
+            <ul>
+                <li><strong>多 Repo 共享 Runner</strong>：一台 Mac Mini 可以同时服务多个仓库，只需一个 Runner 注册 token 即可</li>
+                <li><strong>持久化缓存</strong>：DerivedData 和 CocoaPods 缓存在本地，第二次构建速度提升 3-5 倍</li>
+                <li><strong>并发数控制</strong>：macOS Runner 推荐同时跑 4-8 个 Job，避免内存不足</li>
+                <li><strong>分离构建池</strong>：main 分支用稳定 Runner，PR 用临时 Runner，防止污染</li>
+                <li><strong>Runner Group</strong>：在 GitHub Org 设置 Runner Group，控制不同团队的访问权限</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📐 硬件推荐</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>配置</th>
+                        <th>适用场景</th>
+                        <th>价格</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mac Mini M4 16GB</td>
+                        <td>小团队，1-2 个并发 Job</td>
+                        <td>$599</td>
+                    </tr>
+                    <tr>
+                        <td>Mac Mini M4 Pro 24GB</td>
+                        <td>中等团队，4-6 并发 Job</td>
+                        <td>$999</td>
+                    </tr>
+                    <tr>
+                        <td>Mac Mini M4 Pro 48GB</td>
+                        <td>大型团队，8+ 并发 Job</td>
+                        <td>$1,399</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top:10px;color:#8b949e;font-size:0.85em;">
+                💡 <strong>二手 Mac Mini M1</strong>：$450 AUD（约 $290 USD）即可买到 8GB/256GB，足够跑轻量 CI。（来源：<a href="https://stealthpuppy.com/mac-mini-home-server/" style="color:#00d9ff;">stealthpuppy.com</a>）
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>⚠️ 常见问题</h2>
+            <ul>
+                <li><strong>Runner 离线</strong>：检查 <code>./svc.sh status</code>，确保 runner.sh 在运行；检查 GitHub 仓库 Settings → Actions → Runners 的连接状态</li>
+                <li><strong>Xcode 版本冲突</strong>：多个项目需要不同 Xcode 版本时，用 <code>sudo xcode-select -s /path/to/Xcode.app</code> 切换</li>
+                <li><strong>内存不足</strong>：减少并发 Job 数（4GB RAM / Job），或升级到 48GB 配置</li>
+                <li><strong>磁盘空间</strong>：Xcode + DerivedData 可占用 50-100GB，定期清理：<code>rm -rf ~/Library/Developer/Xcode/DerivedData/*</code></li>
+                <li><strong>自签名证书</strong>：iOS 构建需要 Apple Developer 证书，在 Keychain 中正确配置签名证书</li>
+            </ul>
+        </div>
+    </div>
+<script>const SOLUTION_ID="202603281230";const FAV_KEY="mini_builder_favorites";function getFavorites(){return JSON.parse(localStorage.getItem(FAV_KEY)||"[]");}function saveFavorites(favs){localStorage.setItem(FAV_KEY,JSON.stringify(favs));}function toggleFav(){let favs=getFavorites();if(favs.includes(SOLUTION_ID))favs=favs.filter(f=>f!==SOLUTION_ID);else favs.push(SOLUTION_ID);saveFavorites(favs);render();}function render(){const favs=getFavorites();const btn=document.getElementById("favBtn");if(favs.includes(SOLUTION_ID)){btn.classList.add("favorited");btn.textContent="★";}else{btn.classList.remove("favorited");btn.textContent="☆";}}render();</script></body>
+</html>
