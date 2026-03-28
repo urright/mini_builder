@@ -112,7 +112,36 @@ Node_modules/
 
 这个方案适合不想付 iCloud 订阅费、需要本地备份且有一定技术基础的用户。配合 Time Machine 使用效果更好——Time Machine 做全量恢复，rsync 做选择性提取。
             </div>
+        
+        <div class="section">
+            <h2>📊 rsync vs Time Machine vs 商业备份工具对比</h2>
+            <table style="width:100%;border-collapse:collapse;margin:15px 0;color:#b0b0b0;">
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                    <th style="text-align:left;padding:10px;color:#00d9ff;">特性</th>
+                    <th style="text-align:center;padding:10px;color:#00ff88;">rsync</th>
+                    <th style="text-align:center;padding:10px;color:#ffd700;">Time Machine</th>
+                    <th style="text-align:center;padding:10px;color:#ff6b6b;">CCC</th>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px;">费用</td><td style="text-align:center;color:#00ff88;">免费</td><td style="text-align:center;">免费</td><td style="text-align:center;">$99.99</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px;">增量备份</td><td style="text-align:center;color:#00ff88;">✅</td><td style="text-align:center;color:#00ff88;">✅</td><td style="text-align:center;color:#00ff88;">✅</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px;">版本快照</td><td style="text-align:center;color:#00ff88;">✅</td><td style="text-align:center;">✅</td><td style="text-align:center;color:#00ff88;">✅</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px;">可启动克隆</td><td style="text-align:center;">❌</td><td style="text-align:center;">❌</td><td style="text-align:center;color:#00ff88;">✅</td></tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);"><td style="padding:10px;">普通文件夹</td><td style="text-align:center;color:#00ff88;">✅</td><td style="text-align:center;">Bundle</td><td style="text-align:center;">普通</td></tr>
+            </table>
+            <p style="color:#606060;font-size:0.85em;">💡 <strong>推荐组合</strong>：Time Machine 做全量启动备份 + rsync 脚本做增量快照到另一块硬盘。</p>
         </div>
+        
+        <div class="section">
+            <h2>⚠️ 常见错误与数据安全建议</h2>
+            <ul>
+                <li><strong><code>--delete</code> 危险</strong>：初次使用前建议先不加 --delete 测试。不小心删掉整个备份的事故很常见。</li>
+                <li><strong>3-2-1 原则</strong>：3 份副本，2 种介质，1 份异地。云端备份（Backblaze）是 rsync 本地备份的重要补充。</li>
+                <li><strong>256GB 空间紧张</strong>：用外置 SSD 做备份，1TB 以上最佳。内置硬盘专门给系统用。</li>
+                <li><strong>加密备份</strong>：敏感数据备份前用 <code>gpg -c</code> 加密，或使用带硬件加密的硬盘盒。</li>
+                <li><strong>验证备份</strong>：每月一次 <code>rsync --dry-run</code> 检查完整性，或定期随机恢复几个文件验证。</li>
+            </ul>
+        </div>
+</div>
     </div>
     <script>const SOLUTION_ID="202603271636";const FAV_KEY="mini_builder_favorites";function getFavorites(){return JSON.parse(localStorage.getItem(FAV_KEY)||"[]");}function saveFavorites(favs){localStorage.setItem(FAV_KEY,JSON.stringify(favs));}function toggleFav(){let favs=getFavorites();if(favs.includes(SOLUTION_ID))favs=favs.filter(f=>f!==SOLUTION_ID);else favs.push(SOLUTION_ID);saveFavorites(favs);render();}function render(){const favs=getFavorites();const btn=document.getElementById("favBtn");if(favs.includes(SOLUTION_ID)){btn.classList.add("favorited");btn.textContent="★";}else{btn.classList.remove("favorited");btn.textContent="☆";}}render();</script>
 </body>

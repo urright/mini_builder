@@ -165,7 +165,84 @@ openclaw skills list</code></pre>
                 <li><strong>主动式服务</strong>: 不只是被动回答，能主动推送和执行</li>
                 <li><strong>持续学习</strong>: 通过记忆系统越来越了解你的偏好和习惯</li>
             </ul>
+        
+        <div class="section">
+            <h2>🆕 OpenClaw 进阶用法</h2>
+            
+            <h3>1. 多渠道同时接入</h3>
+            <pre><code># OpenClaw 可以同时接入多个 channel
+# 例如：Telegram + Lark + Discord
+
+# 在 config 中配置多个 channel
+channels:
+  - type: telegram
+    bot_token: YOUR_TELEGRAM_BOT_TOKEN
+  - type: feishu
+    app_id: YOUR_LARK_APP_ID
+    app_secret: YOUR_LARK_APP_SECRET
+  - type: discord
+    bot_token: YOUR_DISCORD_BOT_TOKEN
+
+# 不同 channel 发来的消息，统一在 OpenClaw 中处理
+# 可以实现跨平台的任务协作</code></pre>
+            
+            <h3>2. Cron 定时任务精细化调度</h3>
+            <pre><code># 每小时整点执行健康检查
+cron:
+  - name: health-check
+    schedule: "0 * * * *"
+    task: check_system_health
+
+# 每天早上 9:00 推送日程摘要
+cron:
+  - name: morning-briefing
+    schedule: "0 9 * * *"
+    task: send_daily_briefing
+
+# 每周一 9:30 推送周报
+cron:
+  - name: weekly-report
+    schedule: "0 9:30 * * 1"
+    task: send_weekly_report</code></pre>
+            
+            <h3>3. 子 Agent 并行处理</h3>
+            <pre><code># 大任务拆分成多个子 agent 并行执行
+# 例如：同时研究 5 个不同主题
+
+# 使用场景：
+# - 并行搜索多个信息源
+# - 同时处理多个文档
+# - 批量执行独立任务
+
+# OpenClaw 会自动协调各子 Agent 结果</code></pre>
         </div>
+        
+        <div class="section">
+            <h2>📊 OpenClaw 效果量化参考</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="value">+3h</div>
+                    <div class="label">每日可支配时间</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">60%</div>
+                    <div class="label">日常任务自动化率</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">50+</div>
+                    <div class="label">可用技能数量</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">24/7</div>
+                    <div class="label">全天候待命</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">15+</div>
+                    <div class="label">每周节省小时</div>
+                </div>
+            </div>
+        </div>
+</div>
     </div>
 <script>const SOLUTION_ID="202603271631";const FAV_KEY="mini_builder_favorites";function getFavorites(){return JSON.parse(localStorage.getItem(FAV_KEY)||"[]");}function saveFavorites(favs){localStorage.setItem(FAV_KEY,JSON.stringify(favs));}function toggleFav(){let favs=getFavorites();if(favs.includes(SOLUTION_ID))favs=favs.filter(f=>f!==SOLUTION_ID);else favs.push(SOLUTION_ID);saveFavorites(favs);render();}function render(){const favs=getFavorites();const btn=document.getElementById("favBtn");if(favs.includes(SOLUTION_ID)){btn.classList.add("favorited");btn.textContent="★";}else{btn.classList.remove("favorited");btn.textContent="☆";}}render();</script></body>
 </html>

@@ -50,6 +50,14 @@
                     <div class="label">信息留存率提升</div>
                 </div>
                 <div class="metric-box">
+                    <div class="value">6M+</div>
+                    <div class="label">全球用户 (2026)</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">2700+</div>
+                    <div class="label">社区插件数量</div>
+                </div>
+                <div class="metric-box">
                     <div class="value">$0</div>
                     <div class="label">基础版免费</div>
                 </div>
@@ -62,6 +70,9 @@
                     <div class="label">数据本地存储</div>
                 </div>
             </div>
+            <p style="margin-top:15px;color:#8b949e;font-size:0.9em;">
+                📊 <strong>2025 Obsidian 报告</strong>：超过 50,000 个笔记文件、40+ 个活跃插件，Obsidian 桌面版依然流畅运行。AI Agent 时代，Obsidian 作为「AI 知识 OS」的角色正在强化。（来源：practicalpkm.com）
+            </p>
         </div>
         
         <div class="section">
@@ -146,7 +157,99 @@ tags: [日记]
                 <li><strong>生态丰富</strong>: 数百个社区插件，定制化程度极高</li>
                 <li><strong>Markdown 格式</strong>: 纯文本存储，长期可读，导出无障碍</li>
             </ul>
+        
+        <div class="section">
+            <h2>🆕 2025-2026 新功能：AI Agent 集成</h2>
+            <p style="color:#b0b0b0;margin-bottom:15px;">2025-2026 年新范式：<strong>用 Obsidian  vault 作为 AI Agent 的持久化上下文</strong>。不再需要在每次对话中解释你的情况、项目和偏好——让 AI 直接读取你的结构化知识库。</p>
+            <pre><code># Obsidian Skills (GitHub 13.9K stars)
+# 让 Claude Code / AI Agent 直接理解你的 vault 结构
+# 在 AI 对话中调用你的笔记、项目、偏好设置
+
+# 使用方法：
+# 1. 安装 Obsidian CLI 工具
+# 2. 在 vault 中运行 obsidian-agent init
+# 3. AI 即可读取、推理、写入你的个人知识库
+
+# 跨 Agent 便携性
+# Obsidian vault 就是一堆 Markdown 文件
+# 同一套上下文可在 Claude Code / Codex / OpenAI 等间通用</code></pre>
         </div>
+        
+        <div class="section">
+            <h2>📋 PARA 方法 + Obsidian 实战</h2>
+            <p style="color:#b0b0b0;margin-bottom:15px;">P.A.R.A. (Projects, Areas, Resources, Archives) 是最流行的笔记组织方法，配合 Obsidian 效果加倍。</p>
+            <pre><code># 推荐文件夹结构
+vault/
+├── 00-Daily/          # 每日笔记 (核心)
+│   └── templates/
+│       ├── daily.md
+│       ├── meeting.md
+│       └── scratch.md
+├── 01-Projects/       # 项目 (有截止日期的目标)
+│   ├── project-alpha/
+│   └── project-beta/
+├── 02-Areas/          # 责任区域 (持续维护)
+│   ├── Health/
+│   ├── Finance/
+│   └── Career/
+├── 03-Resources/      # 资源 (未来可能用到)
+│   ├── Book-notes/
+│   └── Course-notes/
+├── 04-Archives/       # 归档 (不再活跃)
+└── z-Templates/       # 笔记模板</code></pre>
+            
+            <h3>每日笔记模板（实测高效）</h3>
+            <pre><code>---
+date: {{date}}
+tags: [日记]
+mood: 
+energy: /10
+---
+
+# {{date:YYYY-MM-DD}} Daily Review
+
+## 晨间准备
+- [ ] 今日最重要的 3 件事
+- [ ] 今日时间块安排
+
+## 上午 (9-12)
+- [ ]
+
+## 下午 (1-6)
+- [ ]
+
+## 晚上 (6-10)
+- [ ]
+
+## 今日收获
+-学到:: 
+-完成::
+-连接::
+
+## 灵感记录
+- 💡 
+
+## 反思
+- 今天哪里做得好：
+- 今天哪里可以改进：
+
+## 明日计划
+1. 
+2. 
+3. </code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ 常见问题与最佳实践</h2>
+            <ul>
+                <li><strong>Vault 越来越大</strong>: 超过 10,000 笔记后，频繁搜索可能变慢。定期归档 + 使用 Dataview 插件做索引优化。</li>
+                <li><strong>插件冲突</strong>: 安装多个社区插件后有时会冲突。保持 20-30 个活跃插件，定期检查 <code>Safe Mode</code> 排查。</li>
+                <li><strong>双向链接滥用</strong>: 不是所有东西都需要链接。链接应该是概念关联，而非文件夹替代品。</li>
+                <li><strong>模板太多反而低效</strong>: 从 3-5 个核心模板开始，逐渐扩展。</li>
+                <li><strong>AI 隐私</strong>: 使用 Obsidian Git 插件配合私仓，确保笔记不泄露。云同步（iCloud/OneDrive）也需注意。</li>
+            </ul>
+        </div>
+</div>
     </div>
 <script>const SOLUTION_ID="202603271634";const FAV_KEY="mini_builder_favorites";function getFavorites(){return JSON.parse(localStorage.getItem(FAV_KEY)||"[]");}function saveFavorites(favs){localStorage.setItem(FAV_KEY,JSON.stringify(favs));}function toggleFav(){let favs=getFavorites();if(favs.includes(SOLUTION_ID))favs=favs.filter(f=>f!==SOLUTION_ID);else favs.push(SOLUTION_ID);saveFavorites(favs);render();}function render(){const favs=getFavorites();const btn=document.getElementById("favBtn");if(favs.includes(SOLUTION_ID)){btn.classList.add("favorited");btn.textContent="★";}else{btn.classList.remove("favorited");btn.textContent="☆";}}render();</script></body>
 </html>
