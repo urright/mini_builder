@@ -3,464 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Builder - Mac Mini M4 增效方案</title>
+    <title>Mini Builder - Mac Mini M4 + OpenClaw 增效方案</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #e8e8e8;
-            line-height: 1.6;
-        }
+        /* === Header === */
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 3em; background: linear-gradient(120deg, #00d9ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 15px; }
+        .subtitle { color: #8b949e; font-size: 1.1em; max-width: 600px; margin: 0 auto 20px; }
+        .specs-badge { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
+        .badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px; font-size: 0.85em; }
+        .top-nav { display: flex; gap: 10px; justify-content: center; }
+        .top-nav a { background: rgba(0,217,255,0.12); border: 1px solid rgba(0,217,255,0.3); color: #00d9ff; padding: 8px 18px; border-radius: 20px; font-size: 0.85em; text-decoration: none; transition: all 0.2s; }
+        .top-nav a:hover { background: rgba(0,217,255,0.2); }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        h1 {
-            font-size: 3.5em;
-            font-weight: 700;
-            background: linear-gradient(120deg, #00d9ff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-        }
-        
-        .subtitle {
-            font-size: 1.3em;
-            color: #a0a0a0;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .specs-badge {
-            display: inline-flex;
-            gap: 12px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .top-nav {
-            display: flex;
-            gap: 8px;
-            margin-top: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .top-nav a {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #a0a0a0;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        
-        .top-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(0,217,255,0.3);
-            color: #00d9ff;
-        }
-        
-        .badge {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            backdrop-filter: blur(10px);
-        }
-        
-        /* 登录状态栏 */
-        .auth-bar {
-            position: fixed;
-            top: 16px;
-            right: 20px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .auth-btn {
-            background: rgba(0,217,255,0.15);
-            border: 1px solid rgba(0,217,255,0.3);
-            color: #00d9ff;
-            padding: 8px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-        
-        .auth-btn:hover {
-            background: rgba(0,217,255,0.25);
-        }
-        
-        .auth-btn.logged-in {
-            background: rgba(0,255,136,0.15);
-            border-color: rgba(0,255,136,0.3);
-            color: #00ff88;
-        }
-        
-        .sync-status {
-            font-size: 0.75em;
-            color: #505050;
-            padding: 6px 12px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        
+        /* === Auth bar === */
+        .auth-bar { position: fixed; top: 16px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 10px; }
+        .auth-btn { background: rgba(0,217,255,0.15); border: 1px solid rgba(0,217,255,0.3); color: #00d9ff; padding: 7px 16px; border-radius: 20px; cursor: pointer; font-size: 0.82em; transition: all 0.2s; text-decoration: none; }
+        .auth-btn:hover { background: rgba(0,217,255,0.25); }
+        .auth-btn.logged-in { background: rgba(0,255,136,0.15); border-color: rgba(0,255,136,0.3); color: #00ff88; }
+        .sync-status { font-size: 0.72em; color: #505050; padding: 5px 10px; background: rgba(255,255,255,0.04); border-radius: 12px; border: 1px solid rgba(255,255,255,0.07); }
         .sync-status.synced { color: #00ff88; border-color: rgba(0,255,136,0.3); }
-        .sync-status.error { color: #ff6b6b; border-color: rgba(255,107,107,0.3); }
+        .sync-status.error { color: #ff6b6b; }
         
-        /* 登录弹窗 */
-        .login-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px);
-        }
-        
+        /* === Login overlay === */
+        .login-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .login-overlay.show { display: flex; }
-        
-        .login-box {
-            background: #1a1a2e;
-            border: 1px solid rgba(0,217,255,0.3);
-            border-radius: 20px;
-            padding: 45px;
-            width: 400px;
-            max-width: 90vw;
-            text-align: center;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
-        }
-        
-        .login-box h2 {
-            color: #00d9ff;
-            font-size: 1.8em;
-            margin-bottom: 8px;
-        }
-        
-        .login-box p {
-            color: #606060;
-            font-size: 0.9em;
-            margin-bottom: 30px;
-        }
-        
-        .login-form input {
-            width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1em;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        
-        .login-form input:focus {
-            border-color: rgba(0,217,255,0.5);
-        }
-        
+        .login-box { background: #1a1a2e; border: 1px solid rgba(0,217,255,0.3); border-radius: 20px; padding: 40px; width: 380px; text-align: center; }
+        .login-box h2 { color: #00d9ff; font-size: 1.6em; margin-bottom: 8px; }
+        .login-box p { color: #606060; font-size: 0.9em; margin-bottom: 25px; }
+        .login-form input { width: 100%; padding: 12px 16px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 1em; outline: none; transition: border-color 0.2s; }
+        .login-form input:focus { border-color: rgba(0,217,255,0.5); }
         .login-form input::placeholder { color: #505050; }
-        
-        .login-form button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, #00d9ff, #00ff88);
-            border: none;
-            border-radius: 10px;
-            color: #1a1a2e;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-        
+        .login-form button { width: 100%; padding: 13px; margin-top: 8px; background: linear-gradient(135deg, #00d9ff, #00ff88); border: none; border-radius: 10px; color: #1a1a2e; font-size: 1em; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
         .login-form button:hover { transform: scale(1.02); }
-        .login-form button:active { transform: scale(0.98); }
-        
-        .login-error {
-            color: #ff6b6b;
-            font-size: 0.85em;
-            margin-top: 12px;
-            display: none;
-        }
-        
+        .login-error { color: #ff6b6b; font-size: 0.83em; margin-top: 10px; display: none; }
         .login-error.show { display: block; }
+        .login-hint { margin-top: 18px; font-size: 0.73em; color: #404040; }
         
-        .login-hint {
-            margin-top: 20px;
-            font-size: 0.75em;
-            color: #404040;
-        }
+        /* === Section titles === */
+        .section-title { font-size: 1.4em; color: #00d9ff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         
-        /* 收藏功能区 (登录后才显示) */
-        .favorites-area {
-            display: none;
-        }
+        /* === Solution cards === */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px; margin-bottom: 60px; }
+        .sol-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(0,217,255,0.2); border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; transition: all 0.3s; display: block; position: relative; overflow: hidden; }
+        .sol-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #00d9ff, #00ff88); }
+        .sol-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.07); border-color: rgba(0,217,255,0.45); box-shadow: 0 12px 40px rgba(0,217,255,0.15); }
+        .sol-card .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+        .sol-card .card-title { font-size: 1.1em; font-weight: 600; color: #fff; flex: 1; }
+        .sol-card .card-id { font-size: 0.72em; color: #505050; font-family: monospace; margin-bottom: 8px; }
+        .sol-card .card-desc { color: #909090; font-size: 0.88em; margin-bottom: 14px; line-height: 1.5; }
+        .sol-card .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .sol-card .tag { font-size: 0.7em; padding: 3px 9px; border-radius: 10px; background: rgba(0,217,255,0.12); color: #00d9ff; }
+        .sol-card .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .sol-card .card-metrics { display: flex; gap: 12px; flex-wrap: wrap; }
+        .sol-card .metric { font-size: 0.78em; color: #00ff88; }
         
-        .favorites-area.visible {
-            display: block;
-        }
+        /* === Table === */
+        .table-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
+        .tag-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag-btn { padding: 5px 13px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #8b949e; font-size: 0.8em; cursor: pointer; transition: all 0.2s; }
+        .tag-btn:hover { border-color: rgba(0,217,255,0.4); color: #00d9ff; }
+        .tag-btn.active { background: rgba(0,217,255,0.15); border-color: #00d9ff; color: #00d9ff; }
+        .sort-select { padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: #c9d1d9; font-size: 0.82em; outline: none; cursor: pointer; }
+        .sol-table { width: 100%; border-collapse: collapse; color: #b0b0b0; font-size: 0.88em; }
+        .sol-table th { text-align: left; padding: 12px 15px; color: #00d9ff; border-bottom: 2px solid rgba(0,217,255,0.3); font-weight: 600; white-space: nowrap; }
+        .sol-table th.sortable { cursor: pointer; user-select: none; }
+        .sol-table th.sortable:hover { color: #00ff88; }
+        .sol-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: middle; }
+        .sol-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .sol-table .col-id { color: #505050; font-size: 0.78em; font-family: monospace; white-space: nowrap; }
+        .sol-table .col-title { font-weight: 600; color: #e8e8e8; }
+        .sol-table .col-title a { color: inherit; text-decoration: none; }
+        .sol-table .col-title a:hover { color: #00d9ff; text-decoration: underline; }
+        .sol-table .col-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+        .sol-table .col-tags .tag { font-size: 0.68em; padding: 2px 8px; }
+        .sol-table .col-tags .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .sol-table .col-updated { color: #606060; white-space: nowrap; font-size: 0.8em; }
+        .sol-table .col-metrics { color: #00ff88; white-space: nowrap; }
+        .sol-table .col-fav { text-align: center; }
         
-        /* 收藏按钮 */
-        .fav-btn, .item-fav { display: none; } .fav-btn.visible, .item-fav.visible { display: inline-block; } .fav-btn, .item-fav {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.4em;
-            transition: transform 0.2s, filter 0.2s;
-            padding: 4px;
-            line-height: 1;
-            filter: grayscale(1) opacity(0.4);
-        }
+        /* === Fav buttons === */
+        .fav-btn { display: none; background: none; border: none; cursor: pointer; font-size: 1.2em; transition: transform 0.2s, filter 0.2s; filter: grayscale(1) opacity(0.35); padding: 3px; }
+        .fav-btn.visible { display: inline-block; }
+        .fav-btn:hover { transform: scale(1.25); filter: grayscale(0) opacity(1); }
+        .fav-btn.favorited { filter: grayscale(0) opacity(1); }
         
-        .fav-btn:hover { transform: scale(1.2); filter: grayscale(0) opacity(1); }
+        /* === Footer === */
+        footer { text-align: center; margin-top: 60px; padding-top: 35px; border-top: 1px solid rgba(255,255,255,0.08); color: #505050; font-size: 0.85em; }
+        .footer-note { margin-top: 8px; }
         
-        .fav-btn.favorited {
-            filter: grayscale(0) opacity(1);
-            transform: scale(1.1);
-        }
-        
-        /* 方案卡片 */
-        .featured-section { margin-bottom: 70px; }
-        
-        .section-title {
-            font-size: 1.5em;
-            color: #00d9ff;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .featured-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-        
-        .featured-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(0,217,255,0.25);
-            border-radius: 16px;
-            padding: 28px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .featured-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #00d9ff, #00ff88);
-        }
-        
-        .featured-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.09);
-            border-color: rgba(0,217,255,0.5);
-            box-shadow: 0 15px 50px rgba(0,217,255,0.2);
-        }
-        
-        .featured-card .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        
-        .featured-card .card-title {
-            font-size: 1.25em;
-            font-weight: 600;
-            color: #fff;
-        }
-        
-        .featured-card .card-tag {
-            background: linear-gradient(135deg, #00d9ff, #00ff88);
-            color: #1a1a2e;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.7em;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        
-        .featured-card .card-dir {
-            font-size: 0.75em;
-            color: #606060;
-            margin-bottom: 12px;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-        
-        .featured-card .card-desc {
-            color: #b0b0b0;
-            font-size: 0.9em;
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-        
-        .featured-card .card-metrics {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .featured-card .metric {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.82em;
-            color: #00ff88;
-        }
-        
-        .featured-card.is-favorite {
-            border-color: rgba(255,200,0,0.5);
-            background: rgba(255,200,0,0.05);
-        }
-        
-        .featured-card.is-favorite::before {
-            background: linear-gradient(90deg, #ffd700, #ffaa00);
-        }
-        
-        /* 分类列表 */
-        .category-section { margin-bottom: 50px; }
-        
-        .category-header {
-            font-size: 1.4em;
-            color: #e8e8e8;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .category-icon { font-size: 1.1em; opacity: 0.9; }
-        
-        .category-list { display: flex; flex-direction: column; gap: 8px; }
-        
-        .category-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            text-decoration: none;
-            color: #c0c0c0;
-            transition: all 0.2s ease;
-        }
-        
-        .category-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(0,217,255,0.3);
-            color: #fff;
-            padding-left: 28px;
-        }
-        
-        .category-item .item-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .category-item .item-icon { font-size: 1.1em; opacity: 0.7; }
-        .category-item .item-title { font-size: 1em; }
-        
-        .category-item .item-tag {
-            font-size: 0.7em;
-            padding: 3px 10px;
-            border-radius: 10px;
-            background: rgba(0,217,255,0.15);
-            color: #00d9ff;
-        }
-        
-        .category-item .item-dir {
-            font-size: 0.75em;
-            color: #505050;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-        
-        .category-item .item-fav {
-            margin-left: 10px;
-            font-size: 1.1em;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 2px 6px;
-            transition: transform 0.2s;
-            filter: grayscale(1) opacity(0.3);
-        }
-        
-        .category-item .item-fav:hover { transform: scale(1.3); filter: grayscale(0) opacity(1); }
-        .category-item .item-fav.favorited { filter: grayscale(0) opacity(1); }
-        
-        .category-item.is-favorite {
-            border-color: rgba(255,200,0,0.4);
-            background: rgba(255,200,0,0.04);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #606060;
-        }
-        
-        .footer-note { font-size: 0.9em; margin-top: 10px; }
-        
-        /* 锁图标 */
-        .lock-icon { opacity: 0.5; margin-right: 4px; }
-        
+        /* === Responsive === */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5em; }
-            .featured-grid { grid-template-columns: 1fr; }
-            .category-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+            h1 { font-size: 2.2em; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .sol-table { font-size: 0.82em; }
+            .sol-table th, .sol-table td { padding: 8px 10px; }
+            .table-controls { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
-    <!-- 登录状态栏 -->
+    <!-- Auth bar -->
     <div class="auth-bar">
         <span class="sync-status" id="syncStatus">🔒 未登录</span>
-        <button class="auth-btn" id="authBtn" onclick="handleAuthClick()">登录</button>
+        <a href="#" class="auth-btn" id="authBtn" onclick="handleAuthClick()">登录</a>
     </div>
-
-    <!-- 登录弹窗 -->
+    
+    <!-- Login overlay -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <h2>🔐 Mini Builder</h2>
@@ -474,216 +126,152 @@
             <p class="login-hint">（关掉弹窗即退出登录）</p>
         </div>
     </div>
-
+    
     <div class="container">
         <header>
             <h1>Mini Builder</h1>
-            <p class="subtitle">为 Mac Mini M4（基础款 16G+256G）挖掘最大价值的增效方案库。每方案基于真实案例，附带实施细节与量化效果。</p>
+            <p class="subtitle">Mac Mini M4 + OpenClaw 增效方案集。每方案基于真实案例，持续更新。</p>
             <div class="specs-badge">
                 <span class="badge">🍎 Mac Mini M4</span>
-                <span class="badge">🧠 16GB Unified Memory</span>
+                <span class="badge">🧠 16GB RAM</span>
                 <span class="badge">💾 256GB SSD</span>
-                <span class="badge">🤖 OpenClaw AI</span>
-                <span class="badge">📱 Lark 飞书</span>
+                <span class="badge">🤖 OpenClaw</span>
+                <span class="badge">📱 Lark</span>
             </div>
             <div class="top-nav">
                 <a href="favorites/index.html">⭐ 我的收藏</a>
             </div>
         </header>
-
-        <!-- 收藏区 (登录后可见) -->
-        <section class="featured-section favorites-area" id="favorites-section">
-            <h2 class="section-title">⭐ 我的收藏</h2>
-            <div class="featured-grid" id="favorites-grid"></div>
-        </section>
-
-        <!-- 最新方案 -->
-        <section class="featured-section">
-            <h2 class="section-title">✨ 最新方案</h2>
-            <div class="featured-grid">
-                <a href="202603271630/index.html" class="featured-card" data-id="202603271630">
-                    <div class="card-header">
-                        <span class="card-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
-                        <button class="fav-btn" onclick="toggleFav('202603271630',event)" title="收藏">☆</button>
-                    </div>
-                    <div class="card-dir">📁 202603271630/</div>
-                    <p class="card-desc">在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。</p>
-                    <div class="card-metrics">
-                        <span class="metric">⚡ 20+ tok/s</span>
-                        <span class="metric">💰 省 $20/月</span>
-                        <span class="metric">🔒 完全隐私</span>
-                    </div>
-                </a>
-                <a href="202603271631/index.html" class="featured-card" data-id="202603271631">
-                    <div class="card-header">
-                        <span class="card-title">OpenClaw 个人效率助手</span>
-                        <button class="fav-btn" onclick="toggleFav('202603271631',event)" title="收藏">☆</button>
-                    </div>
-                    <div class="card-dir">📁 202603271631/</div>
-                    <p class="card-desc">配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。</p>
-                    <div class="card-metrics">
-                        <span class="metric">⏰ +3h/天</span>
-                        <span class="metric">📊 60% 自动化</span>
-                        <span class="metric">🔗 50+ 技能</span>
-                    </div>
-                </a>
-                <a href="202603271633/index.html" class="featured-card" data-id="202603271633">
-                    <div class="card-header">
-                        <span class="card-title">n8n 工作流自动化</span>
-                        <button class="fav-btn" onclick="toggleFav('202603271633',event)" title="收藏">☆</button>
-                    </div>
-                    <div class="card-dir">📁 202603271633/</div>
-                    <p class="card-desc">开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。</p>
-                    <div class="card-metrics">
-                        <span class="metric">⚡ 400+ 集成</span>
-                        <span class="metric">💰 省 90%</span>
-                        <span class="metric">🔧 自托管</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <!-- 分类列表 -->
         
-        <!-- AI & 本地大模型 -->
-        <section class="category-section">
-            <h3 class="category-header"><span class="category-icon">🧠</span> AI & 本地大模型</h3>
-            <div class="category-list">
-                <a href="202603271630/index.html" class="category-item" data-id="cat-202603271630">
-                    <div class="item-left">
-                        <span class="item-icon">🧠</span>
-                        <span class="item-title">本地 LLM 方案：用 Ollama 跑私有 AI 助手</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">🔥 热门</span>
-                        <span class="item-dir">202603271630</span>
-                        <button class="item-fav" onclick="toggleFav('202603271630',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-                <a href="202603271631/index.html" class="category-item" data-id="cat-202603271631">
-                    <div class="item-left">
-                        <span class="item-icon">🤖</span>
-                        <span class="item-title">OpenClaw 个人效率助手</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">⭐ 必备</span>
-                        <span class="item-dir">202603271631</span>
-                        <button class="item-fav" onclick="toggleFav('202603271631',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-            </div>
+        <!-- Latest cards -->
+        <section>
+            <h2 class="section-title">✨ 最新方案</h2>
+            <div class="cards-grid" id="latestCards"></div>
         </section>
-
-        <!-- 自动化工作流 -->
-        <section class="category-section">
-            <h3 class="category-header"><span class="category-icon">⚙️</span> 自动化工作流</h3>
-            <div class="category-list">
-                <a href="202603271632/index.html" class="category-item" data-id="cat-202603271632">
-                    <div class="item-left">
-                        <span class="item-icon">🏠</span>
-                        <span class="item-title">Home Assistant 智能家居中枢</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">🏠 家居</span>
-                        <span class="item-dir">202603271632</span>
-                        <button class="item-fav" onclick="toggleFav('202603271632',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-                <a href="202603271633/index.html" class="category-item" data-id="cat-202603271633">
-                    <div class="item-left">
-                        <span class="item-icon">⚡</span>
-                        <span class="item-title">n8n 工作流自动化</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">🚀 新增</span>
-                        <span class="item-dir">202603271633</span>
-                        <button class="item-fav" onclick="toggleFav('202603271633',event)" title="收藏">☆</button>
-                    </div>
-                </a>
+        
+        <!-- All solutions table -->
+        <section>
+            <h2 class="section-title">📋 全部方案</h2>
+            <div class="table-controls">
+                <div class="tag-filter" id="tagFilter"></div>
+                <select class="sort-select" id="sortSelect" onchange="renderTable()">
+                    <option value="date-desc">按创建时间 ↓</option>
+                    <option value="date-asc">按创建时间 ↑</option>
+                    <option value="updated-desc">按更新时间 ↓</option>
+                    <option value="updated-asc">按更新时间 ↑</option>
+                </select>
             </div>
+            <table class="sol-table">
+                <thead>
+                    <tr>
+                        <th class="sortable" onclick="sortBy('id')">编号 ↕</th>
+                        <th>方案</th>
+                        <th>标签</th>
+                        <th class="sortable" onclick="sortBy('date')">创建时间 ↕</th>
+                        <th>核心指标</th>
+                        <th class="col-fav">⭐</th>
+                    </tr>
+                </thead>
+                <tbody id="solTableBody"></tbody>
+            </table>
         </section>
-
-        <!-- 知识与信息管理 -->
-        <section class="category-section">
-            <h3 class="category-header"><span class="category-icon">📚</span> 知识与信息管理</h3>
-            <div class="category-list">
-                <a href="202603271634/index.html" class="category-item" data-id="cat-202603271634">
-                    <div class="item-left">
-                        <span class="item-icon">🧠</span>
-                        <span class="item-title">Obsidian 第二大脑</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">🧠 知识</span>
-                        <span class="item-dir">202603271634</span>
-                        <button class="item-fav" onclick="toggleFav('202603271634',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-                <a href="202603271635/index.html" class="category-item" data-id="cat-202603271635">
-                    <div class="item-left">
-                        <span class="item-icon">📖</span>
-                        <span class="item-title">RSS 信息节食方案</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">📖 阅读</span>
-                        <span class="item-dir">202603271635</span>
-                        <button class="item-fav" onclick="toggleFav('202603271635',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <!-- 数据备份与安全 -->
-        <section class="category-section">
-            <h3 class="category-header"><span class="category-icon">🛡️</span> 数据备份与安全</h3>
-            <div class="category-list">
-                <a href="202603271636/index.html" class="category-item" data-id="cat-202603271636">
-                    <div class="item-left">
-                        <span class="item-icon">💾</span>
-                        <span class="item-title">rsync + 外置硬盘增量备份</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span class="item-tag">💾 备份</span>
-                        <span class="item-dir">202603271636</span>
-                        <button class="item-fav" onclick="toggleFav('202603271636',event)" title="收藏">☆</button>
-                    </div>
-                </a>
-            </div>
-        </section>
-
+        
         <footer>
-            <p>Mini Builder - 为 Mac Mini M4 基础款挖掘最大价值</p>
-            <p class="footer-note">每 2 小时自动更新最新方案 | OpenClaw + Lark 提供支持</p>
+            <p>Mini Builder — Mac Mini M4 + OpenClaw</p>
+            <p class="footer-note">每 2 小时自动调研，持续更新 | OpenClaw + Lark</p>
         </footer>
     </div>
-
+    
     <script>
-    // ============ 配置 ============
+    /* ==========================================
+       SOLUTIONS METADATA
+       每个方案的配置
+    ========================================== */
+    const ALL_SOLUTIONS = [
+        {
+            id: '202603271630',
+            title: '本地 LLM 方案：Ollama',
+            desc: '在 Mac Mini M4 上本地运行 Llama、Qwen 等开源大模型，零订阅费、隐私优先、多模型切换。',
+            tags: ['AI', '本地LLM', '免费', '隐私', 'Ollama'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['20+ tok/s', '$0/月', '100%隐私']
+        },
+        {
+            id: '202603271631',
+            title: 'OpenClaw 个人效率助手',
+            desc: '配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。',
+            tags: ['AI助手', '自动化', '飞书集成', '必备'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['+3h/天', '60%自动化', '50+技能']
+        },
+        {
+            id: '202603271632',
+            title: 'Home Assistant 智能家居中枢',
+            desc: '用 UTM 虚拟机在 Mac Mini 上跑 Home Assistant，统一控制所有智能设备，本地化运行无订阅费。',
+            tags: ['智能家居', '自动化', 'HomeAssistant'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['100+设备', '$0软件', '24/7运行']
+        },
+        {
+            id: '202603271633',
+            title: 'n8n 工作流自动化',
+            desc: '开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。',
+            tags: ['自动化', '工作流', 'API集成', 'n8n'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['400+集成', '省90%', '$0/月']
+        },
+        {
+            id: '202603271634',
+            title: 'Obsidian 第二大脑',
+            desc: '用 Obsidian 建立 PKM 系统，双向链接笔记、每日回顾、项目追踪，成为真正的第二大脑。',
+            tags: ['PKM', '知识管理', '笔记', 'Obsidian'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['300%记忆', '双向链接', '$0基础版']
+        },
+        {
+            id: '202603271635',
+            title: 'RSS 信息节食方案',
+            desc: '用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。',
+            tags: ['信息管理', '阅读', '去算法', 'RSS'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['-50%阅读', '精准来源', '专注力↑']
+        },
+        {
+            id: '202603271636',
+            title: 'rsync 增量备份',
+            desc: '用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。',
+            tags: ['备份', '安全', '免费', 'rsync'],
+            kanjian: false,
+            created: '2026-03-27',
+            updated: '2026-03-28',
+            metrics: ['MB级增量', '版本快照', '$0成本']
+        }
+    ];
+    
+    /* ==========================================
+       AUTH
+    ========================================== */
     const CREDENTIALS = { username: 'admin', password: 'Mini728!' };
-    const API_BASE = 'http://localhost:3000';
     const SESSION_KEY = 'mb_session';
     const FAV_KEY = 'mini_builder_favorites';
-    
-    // ============ 方案元数据 ============
-    const solutionMeta = {
-        '202603271630': { title:'本地 LLM 方案：用 Ollama 跑私有 AI 助手', dir:'202603271630', tag:'🔥 热门', desc:'在 Mac Mini M4 上本地运行 Llama 3.2、Qwen2 等开源大模型，零订阅费、隐私优先。', metrics:['⚡ 20+ tok/s','💰 省 $20/月','🔒 完全隐私'] },
-        '202603271631': { title:'OpenClaw 个人效率助手', dir:'202603271631', tag:'⭐ 必备', desc:'配置 OpenClaw 实现日程管理、任务自动化、飞书通知，成为你的全天候数字秘书。', metrics:['⏰ +3h/天','📊 60% 自动化','🔗 50+ 技能'] },
-        '202603271632': { title:'Home Assistant 智能家居中枢', dir:'202603271632', tag:'🏠 家居', desc:'用 UTM 虚拟机在 Mac Mini 上跑 Home Assistant，统一控制所有智能设备，本地化运行无订阅费。', metrics:['🏠 100+ 设备','💡 自动化场景','🔒 本地控制'] },
-        '202603271633': { title:'n8n 工作流自动化', dir:'202603271633', tag:'🚀 新增', desc:'开源自动化平台，自托管在 Mac Mini，支持 400+ 应用集成，比 Zapier 节省 90% 成本。', metrics:['⚡ 400+ 集成','💰 省 90%','🔧 自托管'] },
-        '202603271634': { title:'Obsidian 第二大脑', dir:'202603271634', tag:'🧠 知识', desc:'用 Obsidian 建立 PKM 系统，链接笔记、每日回顾、项目追踪，成为真正的第二大脑。', metrics:['📈 300% 记忆','🔗 双向链接','📝 免订阅'] },
-        '202603271635': { title:'RSS 信息节食方案', dir:'202603271635', tag:'📖 阅读', desc:'用 Reeder + Newsblur 搭建高质量信息获取系统，告别算法推荐，控制信息摄入量。', metrics:['⏱️ -50% 阅读','📰 精准来源','🧠 专注力↑'] },
-        '202603271636': { title:'rsync + 外置硬盘增量备份', dir:'202603271636', tag:'💾 备份', desc:'用 rsync 脚本实现 Time Machine 风格的增量快照备份，256G 小硬盘也能高效利用。', metrics:['💾 增量仅 MB','📅 版本快照','🔧 免费开源'] }
-    };
-    
-    // ============ 认证 ============
+    const API_BASE = 'http://localhost:3000';
     let isLoggedIn = sessionStorage.getItem(SESSION_KEY) === 'ok';
     
     function handleAuthClick() {
-        if (isLoggedIn) {
-            logout();
-        } else {
-            document.getElementById('loginOverlay').classList.add('show');
-            document.getElementById('loginUser').focus();
-        }
+        if (isLoggedIn) { logout(); }
+        else { document.getElementById('loginOverlay').classList.add('show'); document.getElementById('loginUser').focus(); }
     }
     
     function handleLogin(e) {
@@ -694,10 +282,7 @@
             sessionStorage.setItem(SESSION_KEY, 'ok');
             isLoggedIn = true;
             document.getElementById('loginOverlay').classList.remove('show');
-            document.getElementById('loginError').classList.remove('show');
             updateAuthUI();
-            loadFavorites();
-            // 如果之前有收藏，同步到服务器
             syncAllFavoritesToServer();
         } else {
             document.getElementById('loginError').classList.add('show');
@@ -708,177 +293,167 @@
         sessionStorage.removeItem(SESSION_KEY);
         isLoggedIn = false;
         updateAuthUI();
-        renderFavorites();
-        updateAllButtons();
-        setSyncStatus('未登录', '');
-    }
-    
-    function updateButtonVisibility() {
-        const btns = document.querySelectorAll('.fav-btn, .item-fav');
-        btns.forEach(b => {
-            if (isLoggedIn) b.classList.add('visible');
-            else b.classList.remove('visible');
-        });
     }
     
     function updateAuthUI() {
-        updateButtonVisibility();
         const btn = document.getElementById('authBtn');
-        const favArea = document.getElementById('favorites-section');
         if (isLoggedIn) {
             btn.textContent = '退出';
             btn.classList.add('logged-in');
-            favArea.classList.add('visible');
         } else {
             btn.textContent = '登录';
             btn.classList.remove('logged-in');
-            favArea.classList.remove('visible');
         }
+        document.querySelectorAll('.fav-btn').forEach(b => {
+            if (isLoggedIn) b.classList.add('visible');
+            else b.classList.remove('visible');
+        });
+        if (!isLoggedIn) document.getElementById('syncStatus').textContent = '🔒 未登录';
     }
     
-    // ============ 同步状态 ============
     function setSyncStatus(text, cls) {
         const el = document.getElementById('syncStatus');
         el.textContent = text;
         el.className = 'sync-status ' + cls;
     }
     
-    // ============ 收藏逻辑 ============
-    function getFavorites() {
-        return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-    }
+    document.getElementById('loginOverlay').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
     
-    function saveFavoritesLocal(favs) {
-        localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    }
+    /* ==========================================
+       FAVORITES
+    ========================================== */
+    function getFavorites() { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); }
+    function saveFavoritesLocal(favs) { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }
     
     function toggleFav(id, e) {
         if (e) e.preventDefault();
-        if (!isLoggedIn) {
-            document.getElementById('loginOverlay').classList.add('show');
-            return;
-        }
+        if (!isLoggedIn) { document.getElementById('loginOverlay').classList.add('show'); return; }
         let favs = getFavorites();
         const action = favs.includes(id) ? 'remove' : 'add';
-        if (action === 'add') favs.push(id);
-        else favs = favs.filter(f => f !== id);
+        if (action === 'add') favs.push(id); else favs = favs.filter(f => f !== id);
         saveFavoritesLocal(favs);
-        renderFavorites();
-        updateAllButtons();
-        updateCardStyles();
+        renderAll();
         syncFavoriteToServer(action, id);
     }
     
     async function syncFavoriteToServer(action, id) {
-        setSyncStatus('同步中...', '');
         try {
             const creds = btoa(CREDENTIALS.username + ':' + CREDENTIALS.password);
-            const res = await fetch(API_BASE + '/favorites', {
+            await fetch(API_BASE + '/favorites', {
                 method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + creds,
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': 'Basic ' + creds, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action, id, timestamp: new Date().toISOString() })
             });
-            if (res.ok) {
-                setSyncStatus('✅ 已同步 ' + new Date().toLocaleTimeString(), 'synced');
-            } else {
-                setSyncStatus('❌ 同步失败', 'error');
-            }
-        } catch(err) {
-            setSyncStatus('⚠️ 服务器离线', 'error');
-        }
+            setSyncStatus('✅ ' + new Date().toLocaleTimeString(), 'synced');
+        } catch(err) { setSyncStatus('⚠️ 服务器离线', 'error'); }
     }
     
     async function syncAllFavoritesToServer() {
         const favs = getFavorites();
-        if (favs.length === 0) return;
-        setSyncStatus('同步收藏...', '');
+        if (!favs.length) return;
         try {
             const creds = btoa(CREDENTIALS.username + ':' + CREDENTIALS.password);
             for (const id of favs) {
                 await fetch(API_BASE + '/favorites', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': 'Basic ' + creds,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Authorization': 'Basic ' + creds, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'add', id })
                 });
             }
             setSyncStatus('✅ ' + favs.length + ' 条收藏已同步', 'synced');
-        } catch(err) {
-            setSyncStatus('⚠️ 服务器离线', 'error');
-        }
+        } catch(err) { setSyncStatus('⚠️ 服务器离线', 'error'); }
     }
     
-    function updateAllButtons() {
-        const favs = getFavorites();
-        document.querySelectorAll('.featured-card, .category-item').forEach(el => {
-            const id = el.getAttribute('data-id') || '';
-            const cleanId = id.replace('cat-', '');
-            const isFav = favs.includes(cleanId);
-            el.classList.toggle('is-favorite', isLoggedIn && isFav);
-            const btn = el.querySelector('.fav-btn, .item-fav');
-            if (btn) btn.classList.toggle('favorited', isFav);
-        });
+    /* ==========================================
+       TAGS FILTER
+    ========================================== */
+    let activeTag = '全部';
+    
+    function getAllTags() {
+        const tags = new Set();
+        ALL_SOLUTIONS.forEach(s => s.tags.forEach(t => tags.add(t)));
+        return ['全部', ...Array.from(tags).sort()];
     }
     
-    function updateCardStyles() {
-        const favs = getFavorites();
-        document.querySelectorAll('.featured-card, .category-item').forEach(el => {
-            const id = el.getAttribute('data-id') || '';
-            const cleanId = id.replace('cat-', '');
-            const isFav = favs.includes(cleanId);
-            el.classList.toggle('is-favorite', isLoggedIn && isFav);
-        });
+    function buildTagFilter() {
+        const container = document.getElementById('tagFilter');
+        container.innerHTML = getAllTags().map(tag =>
+            `<button class="tag-btn${tag === activeTag ? ' active' : ''}" onclick="setTag('${tag}')">${tag}</button>`
+        ).join('');
     }
     
-    function renderFavorites() {
-        const favs = getFavorites();
-        const section = document.getElementById('favorites-section');
-        const grid = document.getElementById('favorites-grid');
-        if (!isLoggedIn || favs.length === 0) {
-            section.classList.remove('visible');
-            return;
-        }
-        section.classList.add('visible');
-        grid.innerHTML = favs.map(id => {
-            const m = solutionMeta[id];
-            if (!m) return '';
-            return `<a href="${m.dir}/index.html" class="featured-card is-favorite" data-id="${id}">
-                <div class="card-header">
-                    <span class="card-title">${m.title}</span>
-                    <button class="fav-btn favorited" onclick="toggleFav('${id}',event)" title="取消收藏">★</button>
-                </div>
-                <div class="card-dir">📁 ${m.dir}/</div>
-                <p class="card-desc">${m.desc}</p>
-                <div class="card-metrics">${m.metrics.map(x => `<span class="metric">${x}</span>`).join('')}</div>
-            </a>`;
+    function setTag(tag) {
+        activeTag = tag;
+        buildTagFilter();
+        renderTable();
+    }
+    
+    /* ==========================================
+       RENDER
+    ========================================== */
+    function filtered() {
+        let sols = ALL_SOLUTIONS;
+        if (activeTag !== '全部') sols = sols.filter(s => s.tags.includes(activeTag));
+        return sols;
+    }
+    
+    function renderCards() {
+        const container = document.getElementById('latestCards');
+        // Latest 3: sort by date desc, take 3
+        const latest = [...ALL_SOLUTIONS].sort((a, b) => b.created.localeCompare(a.created)).slice(0, 3);
+        container.innerHTML = latest.map(s => buildCardHTML(s, true)).join('');
+    }
+    
+    function renderTable() {
+        const tbody = document.getElementById('solTableBody');
+        const sortVal = document.getElementById('sortSelect').value;
+        let sols = filtered();
+        
+        // Sort
+        if (sortVal === 'date-asc') sols.sort((a, b) => a.id.localeCompare(b.id));
+        else if (sortVal === 'date-desc') sols.sort((a, b) => b.id.localeCompare(a.id));
+        else if (sortVal === 'updated-asc') sols.sort((a, b) => a.updated.localeCompare(b.updated));
+        else if (sortVal === 'updated-desc') sols.sort((a, b) => b.updated.localeCompare(a.updated));
+        
+        tbody.innerHTML = sols.map(s => {
+            const favs = getFavorites();
+            const isFav = favs.includes(s.id);
+            return `<tr>
+                <td class="col-id">${s.id}</td>
+                <td class="col-title"><a href="${s.id}/index.html">${s.title}</a><br><span style="color:#707070;font-size:0.78em;">${s.desc.substring(0,50)}...</span></td>
+                <td class="col-tags">${s.tags.map(t => `<span class="tag${t === '可建站' ? ' kanjian' : ''}">${t}</span>`).join('')}</td>
+                <td class="col-updated">${s.updated}</td>
+                <td class="col-metrics">${s.metrics.join(' | ')}</td>
+                <td class="col-fav"><button class="fav-btn${isFav ? ' favorited' : ''}${isLoggedIn ? ' visible' : ''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav ? '★' : '☆'}</button></td>
+            </tr>`;
         }).join('');
     }
     
-    // ============ 初始化 ============
-    updateAuthUI();
-    loadFavorites();
-    
-    function loadFavorites() {
-        updateAllButtons();
-        updateCardStyles();
-        renderFavorites();
-        updateButtonVisibility();
-        if (isLoggedIn) {
-            setSyncStatus('✅ 已登录', 'synced');
-        }
+    function buildCardHTML(s, showFav) {
+        const favs = getFavorites();
+        const isFav = favs.includes(s.id);
+        return `<a href="${s.id}/index.html" class="sol-card">
+            <div class="card-head">
+                <span class="card-title">${s.title}</span>
+                <button class="fav-btn${isFav ? ' favorited' : ''}${isLoggedIn && showFav ? ' visible' : ''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav ? '★' : '☆'}</button>
+            </div>
+            <div class="card-id">📁 ${s.id}/ &nbsp;|&nbsp; 更新: ${s.updated}</div>
+            <p class="card-desc">${s.desc}</p>
+            <div class="card-tags">${s.tags.map(t => `<span class="tag${t === '可建站' ? ' kanjian' : ''}">${t}</span>`).join('')}</div>
+            <div class="card-metrics">${s.metrics.map(m => `<span class="metric">⚡ ${m}</span>`).join('')}</div>
+        </a>`;
     }
     
-    // 点击弹窗背景关闭
-    document.getElementById('loginOverlay').addEventListener('click', function(e) {
-        if (e.target === this) {
-            this.classList.remove('show');
-        }
-    });
+    function renderAll() {
+        updateAuthUI();
+        renderCards();
+        buildTagFilter();
+        renderTable();
+    }
+    
+    renderAll();
     </script>
 </body>
 </html>
