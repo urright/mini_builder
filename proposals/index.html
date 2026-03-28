@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可建站方案 | Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.7; }
+        .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 50px 20px; text-align: center; position: relative; }
+        .hero h1 { font-size: 2.5em; color: #ffd700; margin-bottom: 15px; }
+        .hero .subtitle { font-size: 1.2em; color: #8b949e; max-width: 700px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .back-link { color: #00d9ff; text-decoration: none; margin-bottom: 30px; display: inline-block; }
+        .proposal-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,200,0,0.25); border-radius: 16px; padding: 30px; margin-bottom: 30px; position: relative; overflow: hidden; }
+        .proposal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #ffd700, #ffaa00); }
+        .proposal-card h2 { color: #ffd700; font-size: 1.4em; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .proposal-card .badge { background: rgba(255,200,0,0.2); color: #ffd700; padding: 4px 12px; border-radius: 12px; font-size: 0.7em; font-weight: 600; }
+        .proposal-card .desc { color: #b0b0b0; font-size: 1em; margin-bottom: 20px; }
+        .proposal-card h3 { color: #00d9ff; font-size: 1em; margin: 15px 0 10px; }
+        .proposal-card pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 15px; overflow-x: auto; margin: 10px 0; font-size: 0.85em; }
+        .proposal-card code { color: #00d9ff; }
+        .proposal-card ul { list-style: none; padding: 0; }
+        .proposal-card li { padding: 6px 0; color: #b0b0b0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9em; }
+        .proposal-card li::before { content: "→ "; color: #ffd700; }
+        .metrics { display: flex; gap: 20px; flex-wrap: wrap; margin: 15px 0; }
+        .metric { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); padding: 10px 15px; border-radius: 8px; }
+        .metric .val { color: #00ff88; font-size: 1.3em; font-weight: 700; }
+        .metric .label { color: #8b949e; font-size: 0.8em; }
+        .status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ffd700; margin-right: 8px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .section-title { color: #00d9ff; font-size: 1.3em; margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>⭐ 可建站方案</h1>
+        <p class="subtitle">研究中发现的高价值方案，等待落地实施。每个方案均基于真实案例，具备完整实施路径。</p>
+    </div>
+    <div class="container">
+        <a href="../index.html" class="back-link">← 返回首页</a>
+        
+        <h2 class="section-title">🔥 高优先级方案</h2>
+
+        <!-- 方案1 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>n8n + Ollama 本地 RAG 系统</h2>
+            <span class="badge">AI</span>
+            <span class="badge">自托管</span>
+            <p class="desc">Docker Compose 一键部署 n8n + Ollama + 向量数据库，实现完全私有的文档摘要和本地知识问答系统。所有数据留在本地硬件，无 API 费用。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">$0/月</div><div class="label">运行成本</div></div>
+                <div class="metric"><div class="val">400+</div><div class="label">n8n 集成</div></div>
+                <div class="metric"><div class="val">100%</div><div class="label">数据隐私</div></div>
+            </div>
+            <h3>技术栈</h3>
+            <pre><code>n8n + Ollama + Qdrant (向量数据库) + PostgreSQL</code></pre>
+            <h3>实施路径</h3>
+            <pre><code># 1. 克隆官方 starter kit
+git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
+cd self-hosted-ai-starter-kit
+
+# 2. Mac Mini M4 配置（注意 Ollama 在 Docker 外部）
+# 需要配置 host.docker.internal 访问宿主机 Ollama
+docker compose up -d
+
+# 3. 访问 http://localhost:5678 配置 n8n
+# 4. 连接 Ollama API: http://host.docker.internal:11434</code></pre>
+            <h3>预期效果</h3>
+            <ul>
+                <li>上传合同/报告，自然语言提问，AI 基于文档回答</li>
+                <li>完全离线，数据不离开本地网络</li>
+                <li>替代 ChatGPT Enterprise 等付费服务</li>
+            </ul>
+        </div>
+
+        <!-- 方案2 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>OpenClaw 晨间简报自动化</h2>
+            <span class="badge">效率</span>
+            <span class="badge">飞书</span>
+            <p class="desc">每天定时（建议 7:00 AM）自动生成并推送晨间简报：天气 + 日历前3项 + BBC 头条摘要。已有真实用户（Nathan）验证日省 30+ 分钟。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">+30min</div><div class="label">每日节省</div></div>
+                <div class="metric"><div class="val">24/7</div><div class="label">自动运行</div></div>
+                <div class="metric"><div class="val">cron</div><div class="label">定时触发</div></div>
+            </div>
+            <h3>Prompt 示例</h3>
+            <pre><code># cron job 设置
+openclaw cron add \
+  --name "Morning Brief" \
+  --session isolated \
+  --cron "0 7 * * *" \
+  --tz "America/Vancouver" \
+  --message 'Every morning at 7:00 AM, send me a message with:
+1. Today'"'"'s weather (fromweather API)
+2. My first 3 calendar events
+3. Top 3 headlines from BBC News
+Keep it under 150 words. Push to my Feishu.'</code></pre>
+            <h3>预期效果</h3>
+            <ul>
+                <li>每天早上睁眼就能看到今日要闻</li>
+                <li>消除刷手机看新闻的习惯</li>
+                <li>时间块工作法更容易执行</li>
+            </ul>
+        </div>
+
+        <!-- 方案3 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>Home Assistant + Obsidian 日记自动化</h2>
+            <span class="badge">家居</span>
+            <span class="badge">知识</span>
+            <p class="desc">每天午夜触发，Home Assistant 自动在 Obsidian vault 创建当日笔记，模板自动填充日期、室温、光照、HA 设备状态等环境数据。笔记连续性从 ~60% 提升到 ~100%。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">~100%</div><div class="label">笔记连续性</div></div>
+                <div class="metric"><div class="val">0</div><div class="label">每日摩擦</div></div>
+                <div class="metric"><div class="val">HA</div><div class="label">数据来源</div></div>
+            </div>
+            <h3>技术架构</h3>
+            <pre><code># Home Assistant automation
+automation:
+  - alias: "Midnight Obsidian Note"
+    trigger:
+      platform: time
+      at: "00:00:00"
+    action:
+      - service: shell_command.create_obsidian_note
+        data:
+          template: daily-review
+
+# HA → Obsidian vault (网络共享或 iCloud)
+# 模板字段：{{ date }}, {{ temperature }}, {{ lights }}, {{ uptime }}</code></pre>
+            <h3>预期效果</h3>
+            <ul>
+                <li>每日自动记录环境状态，形成长期数据资产</li>
+                <li>Obsidian 作为生活数据库，HA 作为传感器网络</li>
+                <li>回顾时可看到"那天家里是什么状态"</li>
+            </ul>
+        </div>
+
+        <!-- 方案4 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>Mac Mini 全自动备份系统</h2>
+            <span class="badge">安全</span>
+            <span class="badge">自托管</span>
+            <p class="desc">rsync Time Machine 风格增量快照脚本 + launchd 定时调度 + 外挂硬盘。遵循 3-2-1 原则（3份副本、2种介质、1份异地）。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">MB级</div><div class="label">增量大小</div></div>
+                <div class="metric"><div class="val">∞</div><div class="label">版本快照</div></div>
+                <div class="metric"><div class="val">3-2-1</div><div class="label">备份原则</div></div>
+            </div>
+            <h3>核心脚本</h3>
+            <pre><code>#!/bin/bash
+TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
+SOURCE="/Users/jeremyren"
+DEST="/Volumes/BackupMini/snapshots"
+EXCLUDES="/Volumes/BackupMini/rsync-excludes.txt"
+
+# 创建快照，使用硬链接节省空间
+rsync -avPh --delete \
+  --exclude-from=$EXCLUDES \
+  --link-dest=$DEST/latest \
+  $SOURCE/ $DEST/$TIMESTAMP/
+
+# 更新 latest 软链接
+rm -f $DEST/latest
+ln -s $DEST/$TIMESTAMP $DEST/latest</code></pre>
+            <h3>预期效果</h3>
+            <ul>
+                <li>每次备份只上传变更文件（MB 级 vs GB 级）</li>
+                <li>任意时间点可恢复，硬盘满了删旧快照</li>
+                <li>配合 Time Machine = 双重保护</li>
+            </ul>
+        </div>
+
+        <!-- 方案5 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>AI 情报站 (RSS → n8n → Ollama → 飞书)</h2>
+            <span class="badge">信息</span>
+            <span class="badge">自动化</span>
+            <p class="desc">Miniflux (RSS) → n8n (定时抓取) → Ollama (LLM 摘要) → 飞书推送。完全替代 Twitter/算法社交媒体，每日 1-2 次推送，控制信息摄入量。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">-50%</div><div class="label">无效阅读</div></div>
+                <div class="metric"><div class="val">$0</div><div class="label">月均成本</div></div>
+                <div class="metric"><div class="val">1-2次</div><div class="label">日推送</div></div>
+            </div>
+            <h3>Pipeline</h3>
+            <pre><code>Miniflux RSS (自托管)
+  → n8n Workflow (定时抓取未读)
+  → Ollama API (生成3点摘要)
+  → 飞书机器人 (推送 Jeremy)</code></pre>
+            <h3>推荐 RSS 源</h3>
+            <pre><code># 技术
+https://stratechery.com/feed/
+https://bennatropic.substack.com/feed
+
+# 效率
+https://practicalpkm.com/feed
+
+# 行业
+https://hs.decrypt.co/feed</code></pre>
+        </div>
+
+        <!-- 方案6 -->
+        <div class="proposal-card">
+            <h2><span class="status"></span>Home Assistant + UTM 虚拟化</h2>
+            <span class="badge">家居</span>
+            <span class="badge">$0</span>
+            <p class="desc">在 Mac Mini 上用 UTM（免费虚拟机）跑 Home Assistant OS，$0 软件成本，性能远超树莓派。</p>
+            <div class="metrics">
+                <div class="metric"><div class="val">$0</div><div class="label">软件成本</div></div>
+                <div class="metric"><div class="val">4GB</div><div class="label">建议分配</div></div>
+                <div class="metric"><div class="val">24/7</div><div class="label">稳定运行</div></div>
+            </div>
+            <h3>实施步骤</h3>
+            <pre><code># 1. 安装 UTM
+brew install --cask utm
+
+# 2. 下载 HA OS ARM64 镜像
+# https://www.home-assistant.io/installation/macintosh/
+
+# 3. UTM 创建虚拟机
+# - Type: Emulate
+# - OS: Linux
+# - RAM: 4096 MB
+# - CPU: 4 cores
+# - Storage: 64 GB
+
+# 4. 启动后访问 http://homeassistant.local:8123</code></pre>
+        </div>
+
+        <h2 class="section-title">📋 备选方案</h2>
+
+        <!-- 备选 -->
+        <div class="proposal-card" style="border-color: rgba(0,217,255,0.2);">
+            <h2 style="color:#00d9ff;"><span class="status" style="background:#00d9ff;"></span>OpenClaw 快递追踪助手</h2>
+            <p class="desc">监听邮件/短信关键词，提取快递单号，自动查询状态并推送飞书，异常时告警。</p>
+        </div>
+
+        <div class="proposal-card" style="border-color: rgba(0,217,255,0.2);">
+            <h2 style="color:#00d9ff;"><span class="status" style="background:#00d9ff;"></span>语音日记自动化</h2>
+            <p class="desc">飞书语音消息 → Faster-Whisper 本地转写 → OpenClaw 整理 → 存入 Obsidian。完全本地化隐私保护。</p>
+        </div>
+
+        <div class="proposal-card" style="border-color: rgba(0,217,255,0.2);">
+            <h2 style="color:#00d9ff;"><span class="status" style="background:#00d9ff;"></span>OpenClaw 多 Agent 协作系统</h2>
+            <p class="desc">13 个专业 agents（研究/监控/执行/报告）并行工作，共享 memory，cron 驱动，n8n 做执行层。</p>
+        </div>
+
+        <div class="proposal-card" style="border-color: rgba(0,217,255,0.2);">
+            <h2 style="color:#00d9ff;"><span class="status" style="background:#00d9ff;"></span>Mac Mini 即插即用服务器方案</h2>
+            <p class="desc">AdGuard + UniFi Network Server + Homebridge 三合一，一台设备替代多个独立服务器，低功耗 24/7 运行。</p>
+        </div>
+
+    </div>
+</body>
+</html>

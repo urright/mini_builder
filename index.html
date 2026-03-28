@@ -51,6 +51,31 @@
             justify-content: center;
         }
         
+        .top-nav {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .top-nav a {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #a0a0a0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .top-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(0,217,255,0.3);
+            color: #00d9ff;
+        }
+        
         .badge {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
@@ -460,6 +485,11 @@
                 <span class="badge">💾 256GB SSD</span>
                 <span class="badge">🤖 OpenClaw AI</span>
                 <span class="badge">📱 Lark 飞书</span>
+            </div>
+            <div class="top-nav">
+                <a href="research/index.html">🔬 研究动态</a>
+                <a href="favorites/index.html">⭐ 我的收藏</a>
+                <a href="proposals/index.html">🚀 可建站方案</a>
             </div>
         </header>
 
