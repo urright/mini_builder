@@ -1430,3 +1430,53 @@
   - 推荐从 Personal CRM 或 Daily Briefing 用例入手，降低上手门槛
 - **效果量化**: API 成本 $0/月（vs GPT-4o ~$100/月）；Mac Mini M4 16GB + 7B Q4：~20 tok/s
 - **方案编号**: 202603292130（已建站）
+
+## 研究时间: 2026-03-29 23:30 UTC
+
+### 发现 #068
+- **主题**: Mac Mini M4 家庭服务器 — 完整工具栈与功耗数据
+- **来源**: [stealthpuppy.com - A Mac mini as a home server](https://stealthpuppy.com/mac-mini-home-server/) | [TechEnclave - Feasibility of Mac mini M4 as home server](https://techenclave.com/t/feasibility-of-running-mac-mini-m4-as-a-home-server/411343/2) | [Dev.to - Best Home Server Setup 2025](https://dev.to/openclawresource/best-home-server-setup-in-2025-mac-mini-raspberry-pi-nuc-more-1h1f)
+- **核心数据**:
+  - Mac Mini M4 作为家庭服务器运行：UniFi Network Server、AdGuard Home、Homebridge
+  - M4 Pro 版本实测：运行一周性能表现优秀，功耗低、噪音小
+  - Mac Mini 适合原因：能效比极高（每美元性能）、macOS 稳定、Metal GPU 加速
+  - 对比树莓派 5：Mac Mini 贵但性能强 10 倍，功耗略高但绝对安静场景下可接受
+  - Mac Mini M4 vs NUC：M4 在每瓦性能上领先，无风扇设计（NUC 通常有风扇噪音）
+- **实施要点**:
+  - 配置：AdGuard Home 做 DNS 广告拦截、Homebridge 接 HomeKit 设备
+  - macOS 服务器优化：关闭不必要的视觉效果、配置节能选项
+  - 外部 DNS 配置：安装期间临时用外部 DNS，完成后切换回路由器 DNS
+- **效果量化**: 运行一周无性能问题，24/7 运行能耗可控
+
+### 发现 #069
+- **主题**: Ollama vs vLLM vs MLX-LM — 2026 Apple Silicon 本地 LLM 格局
+- **来源**: [SitePoint - Ollama vs vLLM Performance Benchmark 2026](https://www.sitepoint.com/ollama-vs-vllm-performance-benchmark-2026/) | [Reddit r/LocalLLM - MLX-LM vs Ollama](https://www.reddit.com/r/LocalLLM/comments/1s18yrt/local_llm_benchmark_mlxlm_vs_ollama/) | [WebCraft - Ollama on 8GB RAM](https://webscraft.org/blog/ollama-na-8-gb-ram-yaki-modeli-pratsyuyut-u-2026?lang=en) | [Pooya.blog - Local AI 2026](https://pooya.blog/blog/local-ai-ollama-benchmarks-cost-2026/)
+- **核心数据**:
+  - **Ollama vs vLLM**: 单用户 Ollama TTFT ~45ms，vLLM ~82ms；50 并发 vLLM ~840 tok/s vs Ollama ~142 tok/s
+  - **MLX-LM vs Ollama**: M4 Pro 64GB 上 Qwen3-Coder-30B，MLX-LM ~3x Ollama 速度，GPU 频率更低（346 vs 1577 MHz），RAM 占用更少（34.7 vs 40GB）
+  - **M4 16GB 7B 实测**: 28-35 tok/s；Mistral Small 3 7B 可达 50 tok/s
+  - **Ollama 内存效率**: 空闲 ~5.2GB（Llama 3.1 8B Q4_K_M），vLLM FP16 需要 ~16.1GB
+  - **8GB RAM M4**: Q4 7B 模型 ~15-20 tok/s；3B 模型 20-30 tok/s；13B+ Q4 需要 8-9GB 超过 8GB 上限
+  - **API 成本对比**: 每天 100K 请求，GPT-4o ~$4500/月；M4 Max 本地硬件摊薄 ~$85/月
+- **实施要点**:
+  - Ollama = 单用户最佳；vLLM = 多用户生产级；MLX-LM = Apple Silicon 极限性能
+  - M4 16GB 推荐：phi:3.8b（~3GB）、mistral-small-3:7b（Q4_K_M）、qwen3:4b
+  - Ollama 命令：`ollama create <name> -f Modelfile` 可自定义 system prompt 减少 token 体积
+- **效果量化**: 单用户 Ollama $0 API 成本；100K 请求/月 vs 云端节省 ~$4400/月
+
+### 发现 #070
+- **主题**: OpenClaw 真实用例 2026 — 25+ 案例与工作流架构
+- **来源**: [ForwardFuture.ai - What People Are Actually Doing With OpenClaw](https://forwardfuture.ai/p/what-people-are-actually-doing-with-openclaw-25-use-cases) | [TLDL - OpenClaw Use Cases 2026](https://www.tldl.io/blog/openclaw-use-cases-2026) | [QuantumByte.ai - OpenClaw Workflows 2026](https://quantumbyte.ai/articles/how-people-use-openclaw-workflows-in-2026) | [CodeBridge - OpenClaw Business Case Studies](https://www.codebridge.tech/articles/openclaw-case-studies-for-business-workflows-that-show-where-autonomous-ai-creates-value-and-where-enterprises-need-guardrails)
+- **核心数据**:
+  - OpenClaw 50+ 工作流覆盖：内容自动化、研究、商业运营、开发工作流、家庭自动化
+  - 典型路径：内容自动化 → 研究 → 效率，随使用深入逐步扩展
+  - OpenClaw Workflow（Lobster）：YAML/JSON 格式，支持步骤、环境变量、条件、审批门
+  - 核心场景：Email 自动化、CRM 任务管理、简报生成、视频制作管道、智能家居
+  - 多代理系统：research agent / writing agent / monitoring agent 分工
+  - 企业级需求：工作流复杂度评估、风险管理、编排、评估和治理框架
+- **实施要点**:
+  - 从 Email 自动化入手（最容易看到价值）
+  - 完整商业栈：email + CRM + 任务管理 + 简报
+  - Lobster 工作流：accounts payable 自动化等多步路由和审批已验证
+  - OpenClaw + Ollama 私有部署：所有数据本地，无云 API 依赖
+- **效果量化**: 已有团队用 OpenClaw 完全运营业务，从手机编码到自动化视频生产管道
