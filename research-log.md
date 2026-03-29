@@ -1268,3 +1268,142 @@
   - n8n 自托管：`docker run -d --name n8n -p 5678:5678 n8nio/n8n`
   - OpenClaw 自托管：Mac Mini 上常驻运行，n8n 通过 webhook 触发 OpenClaw 任务
 - **效果量化**: 架构组合后，结构化数据处理（n8n）+ 智能决策（OpenClaw），覆盖 95% 自动化场景
+
+---
+
+## 研究时间: 2026-03-29 15:30 UTC
+
+### 发现 #059
+- **主题**: OpenClaw + Mac Mini M4 — 社群真实用例：Telegram/iMessage 24/7 个人 AI 服务器
+- **来源**: [DEV.to "The Homelab AI Stack in 2026: What Self-Hosters Are Actually Running"](https://dev.to/signal-weekly/the-homelab-ai-stack-in-2026-what-self-hosters-are-actually-running-2d58)
+- **核心数据**:
+  - 在 Mac Mini 上跑 OpenClaw + Ollama 是 2026 年 homelab 圈最流行的本地 AI 方案
+  - OpenClaw 运行功耗仅 ~15W，配合 $249 OrangePi 5 组成异构 AI 集群
+  - 通过 Telegram Bot 发送指令，OpenClaw 控制浏览器、自动化工作流、监控服务器
+  - Mac Mini M4 16GB 机型跑 OpenClaw + Ollama，向量数据库 + n8n 全部本地，$0/月 API 成本
+  - 最真实量化数据：功耗 15W（对比台式机 200W+），24/7 运行月电费仅 $3-5
+- **实施要点**:
+  - `openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"`
+  - n8n + OpenClaw 组合：n8n 负责数据采集，OpenClaw 负责 AI 决策层
+  - OpenClaw cron job 设置每 2-4 小时心跳，维持 24/7 持续运行
+  - Tailscale 实现外网安全访问，Mac Mini 不用暴露公网 IP
+- **效果量化**: 15W 功耗，$0 API 成本，24/7 运行月电费 $3-5
+
+### 发现 #060
+- **主题**: Ollama + n8n + AnythingLLM 完整本地 AI 栈 — Mac Mini M4 Pro (48GB) 生产验证
+- **来源**: [n8n Community "Looking for Mac Mini Local AI Stack Setup — Ollama + n8n + AnythingLLM"](https://community.n8n.io/t/looking-for-mac-mini-local-ai-stack-setup-ollama-n8n-anythingllm-paid-500-denver-co/281712) | [MolTech "Build Local AI Assistants with Ollama & n8n"](https://www.mol-tech.us/blog/local-ai-assistants-ollama-n8n-automation)
+- **核心数据**:
+  - 完整私有 AI 栈：Ollama（推理）+ n8n（工作流）+ AnythingLLM（知识库 UI）+ ChromaDB（向量）
+  - 生产级工作流案例：AI 分类客户工单 → 市场竞争监控 → 多 API 公司调研
+  - 有人在 Denver 以 $500 预算找人现场或远程配置 Mac Mini M4 AI 栈
+  - n8n 容器内访问 Mac 本机 Ollama：`host.docker.internal:11434` 或 `--network host`
+  - 自托管 n8n + Ollama：原型阶段 npm 直接安装（`npm install n8n -g && n8n start`）
+- **实施要点**:
+  - Mac Mini M4 Pro 48GB 推荐，32GB 可跑但跑大模型时压力大
+  - Docker Compose 一键部署：
+    ```bash
+    git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
+    cd self-hosted-ai-starter-kit && docker compose up -d
+    ```
+  - Ollama 在宿主机运行，n8n 容器通过 `OLLAMA_BASE_URL=http://host.docker.internal:11434` 访问
+- **效果量化**: 400+ n8n 集成节点，覆盖主流 SaaS 和自托管服务；API 成本 $0/月
+
+### 发现 #061
+- **主题**: Mac Mini M4 Home Server 完整指南 — Plex + Time Machine + Home Assistant + Docker
+- **来源**: [ReviewAndBuyTech "Best Guide Mac Mini As Server 2026"](https://reviewandbuytech.com/best-guide-mac-mini-as-server-2026/) | [StealthPuppy "A Mac mini as a home server"](https://stealthpuppy.com/mac-mini-home-server/)
+- **核心数据**:
+  - Mac Mini M4 极致能效（日常负载 10-15W），24/7 运行经济实惠
+  - 文件共享：macOS Native Sharing（SMB/AFP），Time Machine 无线备份
+  - Plex Server：Thunderbolt SSD（1TB+）提供高速备份，CPU 占用极低
+  - Home Assistant：Docker/UTM 虚拟机运行 AdGuard Home + Homebridge
+  - 替代树莓派：Mac Mini M4 多任务处理速度远超树莓派，但树莓派更省电
+  - 有人在 Mac Mini 上跑 UniFi Network Server + AdGuard Home + Homebridge 三合一
+- **实施要点**:
+  - 外置 SSD 推荐：Thunderbolt SSD（读写 1000+ MB/s），1TB+ 容量
+  - Home Assistant 安装：`brew install homeassistant` 或 Docker
+  - AdGuard Home：`brew install adguardhome` 并配置为全网 DNS 过滤
+  - Time Machine：直接用外置 HDD，macOS 原生支持，无需第三方配置
+- **效果量化**: 树莓派 5-7W vs Mac Mini M4 10-15W（但性能强 10 倍），文件共享速度 SMB 100+ MB/s
+
+### 发现 #062
+- **主题**: OpenClaw 2026 年真实用例排行 — 社群调研 25+ 场景数据
+- **来源**: [TLDL "OpenClaw Use Cases 2026: 25+ Real Examples"](https://www.tldl.io/blog/openclaw-use-cases-2026) | [The Fountain Institute "I Bought a Mac Mini to Try OpenClaw"](https://pages.thefountaininstitute.com/posts/i-bought-a-mac-mini-to-try-openclaw-the-most-hyped-ai-tool-of-2026)
+- **核心数据**:
+  - 用户主流路径：内容自动化 → 研究自动化 → 生产力自动化
+  - 最常见启动场景：博客 RSS → AI 生成平台差异化内容，自动发布到 Twitter/LinkedIn
+  - Mac Mini M4 + OpenClaw 最常见配置：16GB RAM + Ollama + Cloudflare Tunnel
+  - 有人在 Mac Mini 上用 OpenClaw 替代 Claude Code + ChatGPT 三工具同时运行
+  - 关键体验转变：从"在 Terminal 里折腾"到"躺在沙发上给 AI 发短信"，这是用户粘性时刻
+  - Awesome OpenClaw Use Cases 社区收集：[GitHub](https://github.com/hesamsheikh/awesome-openclaw-usecases)
+- **实施要点**:
+  - OpenClaw 安装：`curl -L https://openclaw.com/install.sh | sh`
+  - Mac Mini 部署后配合 Cloudflare Tunnel 实现外网安全访问（无需公网 IP）
+  - GitHub 上有社群维护的真实用例合集，可直接参考模板
+  - 推荐从 Personal CRM 或 Daily Briefing 用例入手，降低上手门槛
+- **效果量化**: 社群统计：内容生产者节省 3-5h/周，研究者节省 10h+/周
+
+---
+
+## 研究时间: 2026-03-29 19:30 UTC
+
+### 发现 #063
+- **主题**: Mac Mini M4 vs AMD Mini PC 本地 LLM 真相 — 统一内存架构才是关键
+- **来源**: [Medium @mayhemcode "You Are Probably Buying the Wrong Machine for Local AI — Mac Mini M4 vs Mini PC"](https://medium.com/@mayhemcode/you-are-probably-buying-the-wrong-machine-for-local-ai-the-mac-mini-m4-vs-mini-pc-truth-nobody-ed26e63f6a17)
+- **核心数据**:
+  - Mac Mini M4 和 AMD Ryzen AI Max 均采用统一内存架构（Unified Memory），无传统 GPU VRAM 上限
+  - Mac Mini M4 16GB 可以跑量化 7B 模型（Q4_K_M，约 4-5GB）
+  - AMD mini PC 优势：64-128GB DRAM 配置更多，适合跑 30B+ 量化模型
+  - Mac Mini M4 优势：能效比极高（15W vs 65W+），安静，macOS 生态无缝
+  - 两者都跑量化模型时，实际推理速度差异不大，功耗才是决定性因素
+- **实施要点**:
+  - 16GB Mac Mini M4 用户：推荐跑 Llama 3.3 8B Q4_K_M（~6GB）或 Mistral Small 3 7B Q4_K_M（~4GB）
+  - 24-32GB 用户：可跑 Qwen3 14B Q4（~9GB），响应质量显著提升
+  - AMD mini PC 用户：虽然内存更大，但电费和噪音是隐性成本
+- **效果量化**: Mac Mini M4 16GB 跑 7B Q4 模型：~12-20 tok/s，功耗 10-15W；AMD 竞品同场景功耗 50-80W
+
+### 发现 #064
+- **主题**: Mac Mini M4 Pro 64GB — 2026 年本地 LLM 最推荐机型
+- **来源**: [PopularAI Substack "The Best Mac mini for local LLMs in 2026: M4 vs M4 Pro for Ollama and MLX"](https://popularai.substack.com/p/the-best-mac-mini-for-local-llms)
+- **核心数据**:
+  - M4 Pro 64GB 是跑本地 AI 的最优 Mac Mini 配置，原因：30B 类模型 12-18 tok/s（实时聊天速度）
+  - M4 16GB 仅推荐轻度用户；M4 32GB 是最低实用门槛；M4 Pro 48GB 是性价比之选
+  - Apple Store 常规定制 M4 Pro 64GB/1TB 可在官网或 Amazon 购买
+  - MLX 框架（Apple 官方）在 M4 系列上比 Ollama 快 15-30%，但生态较小
+  - Ollama 仍是主流选择，社区活跃，模型丰富
+- **实施要点**:
+  - 推荐配置：Mac Mini M4 Pro 64GB / 1TB SSD（约 $2,399 官网价）
+  - 如果预算有限：Mac Mini M4 32GB（约 $1,199），跑 14B Q4 模型足够日常使用
+  - Ollama 命令：`ollama pull mistral-small-3:latest`（日常推荐）或 `ollama pull qwen3:14b`（高质量）
+- **效果量化**: M4 Pro 64GB 跑 30B Q4 模型：12-18 tok/s；M4 16GB 跑 7B Q4：~20 tok/s
+
+### 发现 #065
+- **主题**: GitHub Self-Hosted macOS Runner — M1 Mac Mini 节省 40-60% CI/CD 成本
+- **来源**: [Macly.io "Dedicated macOS Runner for GitHub Actions & CI/CD"](https://macly.io/mac-mini-ci-cd) | [Laurent Meyer DevBlog "Using Github's self-hosted runners"](https://meyer-laurent.com/using-github-self-hosted-runners)
+- **核心数据**:
+  - GitHub Hosted macOS Runner：$0.08/分钟（macOS Medium）；自建 Apple Silicon Runner 节省 40-60%
+  - 超过 2,000 分钟/月构建量时，自建 Mac Mini Runner 就有明确成本优势
+  - Apple Silicon（M1/M4）统一内存架构让编译速度远超虚拟化环境
+  - 10 核 Apple Silicon：高性能核 + 高效核组合，Xcode 构建时间大幅缩短
+  - 支持 GitHub Actions、GitLab CI、Jenkins 自建 runner
+- **实施要点**:
+  - GitHub Actions 添加 self-hosted runner：Settings → Actions → Runners → New self-hosted runner
+  - macOS runner 需要长期稳定运行，Mac Mini 比 MacBook 更适合（无合盖休眠问题）
+  - 推荐：M4 Mac Mini（10 核）+ 32GB RAM，24/7 开机，专职跑 CI/CD
+  - 首次设置需要物理或 SSH 访问 Mac Mini 安装 runner agent
+- **效果量化**: 月构建 2,000+ 分钟时，自建 Runner 月成本 ~$15-30 vs GitHub $160+，节省 40-60%
+
+### 发现 #066
+- **主题**: Awesome-Selfhosted + Toolbox — Mac Mini 自托管工具全家桶
+- **来源**: [GitHub awesome-selfhosted/awesome-selfhosted](https://github.com/awesome-selfhosted/awesome-selfhosted) | [GitHub contraptionco/toolbox](https://github.com/contraptionco/toolbox)
+- **核心数据**:
+  - awesome-selfhosted 列表收录数千款可自托管开源应用（Plex、n8n、Home Assistant 等）
+  - Toolbox（contraptionco/toolbox）：Ruby 脚本集合，管理 Docker 容器 + Git 仓库 + 系统服务
+  - Toolbox 可自动管理 Cloudflare Tunnel 配置，确保外网安全访问
+  - 支持 Docker Compose 自更新、Sentry、Git 服务等复杂架构
+  - Mac Mini 配合 Docker Desktop 或 Orbstack，可同时跑数十个自托管服务
+- **实施要点**:
+  - Docker Desktop for Mac 或 Orbstack（更轻量）：`brew install orbstack`
+  - Docker Compose 一键启动全家桶：`docker compose up -d`
+  - Toolbox 安装：`git clone https://github.com/contraptionco/toolbox.git && cd toolbox`
+  - Cloudflare Tunnel：零成本内网穿透，无需公网 IP，macOS 服务可安全暴露
+- **效果量化**: Docker 容器数量可超过 20+ 个，Mac Mini M4 Pro 48GB 可流畅运行，Plex + n8n + HA + Ollama 全家桶总内存占用 ~15-20GB
