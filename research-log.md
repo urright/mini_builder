@@ -1189,3 +1189,82 @@
 **【可建站】Mac Mini + OpenClaw 零月租 AI 助手站**: 完整本地 AI 工作站搭建指南，涵盖 Ollama + OpenClaw + n8n + Home Assistant 全家桶，TCO vs 订阅制对比。
 
 **【可建站】OpenClaw 全业务栈监控**: 多目录结构 + cron jobs 定时抓取 + AI 分析，被动信息收集 + 主动告警，适合个人知识管理和竞品监控。
+
+## 研究时间: 2026-03-29 01:30 UTC
+
+### 发现 #054
+- **主题**: OpenClaw Lobster 工作流引擎 — YAML 驱动的本地自动化
+- **来源**: QuantumByte "How People Use OpenClaw Workflows in 2026" (2026) + [GitHub openclaw/lobster](https://github.com/openclaw/lobster)
+- **核心数据**:
+  - Lobster 是 OpenClaw 原生工作流工具，描述为"typed, local-first workflow shell and macro engine"
+  - 支持 YAML/JSON 格式：定义 steps、environment variables、conditions、approval gates
+  - 用法示例：`node bin/lobster.js "workflows.run --name github.pr.monitor --args-json '{...}'"`
+  - GitHub PR 监控工作流可自动追踪 PR 状态变化（author、state、reviewDecision 等）
+  - 适用场景：重复性多步骤自动化，特别是涉及本地文件、脚本、私有上下文的工作流
+- **实施要点**:
+  - 工作流文件放在 `~/.openclaw/workflows/` 目录
+  - 内置 approval gates 实现人工审批节点，适合财务/敏感操作
+  - 可与 cron job 结合，实现定时执行复杂工作流
+- **效果量化**: 本地执行，无 API 延迟，隐私完全自控
+
+### 发现 #055
+- **主题**: Awesome OpenClaw Use Cases — 27.8k Stars 社区工作流宝库
+- **来源**: [GitHub hesamsheikh/awesome-openclaw-usecases](https://github.com/hesamsheikh/awesome-openclaw-usecases)
+- **核心数据**:
+  - **27,800+ GitHub stars**，2,300+ forks，业界最大的 OpenClaw 用例开源集合
+  - 涵盖分类：社交媒体、内容创作、播客生产 Pipeline、个人 CRM、动态仪表盘、研究与学习、金融与交易、基础设施与 DevOps
+  - **Podcasting Pipeline**：自动完成来宾研究、节目大纲、节目笔记、社媒推广
+  - **Personal CRM**：自动从邮件/日历发现并追踪联系人，支持自然语言查询
+  - **Dynamic Dashboard**：并行从 API、数据库、社媒获取数据，实时仪表盘
+  - **Market Research & Product Factory**：挖掘 Reddit/X 真实痛点，结合 Last 30 Days skill，自动构建 MVP
+  - **HF Papers Research Discovery**：从 Hugging Face 发现趋势 ML 论文，按 upvotes 排序，自动 arXiv 深度阅读
+- **实施要点**:
+  - 每个用例均为独立 Markdown 文件，含完整步骤和代码
+  - 社区驱动，持续更新，所有用例均为真实生产环境验证
+  - 推荐路径：先从 Personal CRM 或 Daily Briefing 入手，再扩展到复杂 Pipeline
+- **效果量化**: 500+ 可用工作流，涵盖个人到企业级场景
+
+### 发现 #056
+- **主题**: Ollama vs vLLM 性能基准 — Mac Mini M4 单用户推理最优选
+- **来源**: SitePoint "Ollama vs vLLM: Performance Benchmark 2026" (2026)
+- **核心数据**:
+  - **单用户场景**：Ollama TTFT（首 token 时间）~45ms，vLLM ~82ms（Llama 3.1 8B）
+  - **并发 50 用户**：vLLM 吞吐量 ~840 tok/s，Ollama ~142 tok/s（差异巨大）
+  - **单用户 p99 延迟**：Ollama 4.3s vs vLLM 3.8s（256-token 生成，几乎相同）
+  - **内存占用**：Ollama（Q4_K_M 量化）仅 ~5.2GB VRAM，vLLM（FP16）需要 ~16.1GB
+  - **结论**：Mac Mini M4（16-24GB RAM）单用户本地推理，Ollama 完胜；多用户服务器选 vLLM
+- **实施要点**:
+  - Mac Mini M4 16GB 用户：Ollama + Q4_K_M 量化模型，内存效率最优
+  - 推荐模型：Llama 3.3 8B Q4_K_M（~6GB）或 Mistral Small 3（50 tok/s 推理速度）
+  - Ollama 简单命令：`ollama pull llama3.3:8b` + `ollama serve`
+- **效果量化**: Ollama 单用户推理 TTFT ~45ms，内存占用比 vLLM FP16 少 68%
+
+### 发现 #057
+- **主题**: $5 VPS 部署 OpenClaw — 4 分钟安装，月成本从 $200 降至 $15
+- **来源**: Medium @rentierdigital "Anthropic just killed my $200/mo OpenClaw setup, so I rebuilt it for $15" (2026)
+- **核心数据**:
+  - 个人用 OpenClaw 在 $5/月 VPS（1GB RAM）上运行，成本从 Anthropic $200/月骤降至 $15/月
+  - 部署步骤：购买 VPS → SSH 登录 → 运行安装脚本 → 配置 API key → 完成
+  - 推荐 $15/月方案：2GB RAM + 2vCPU，跑 OpenClaw + Ollama + 向量数据库足够
+  - Anthropic 定价调整后（Opus $5/M input），重度用户月账单可达 $200+，本地/VPS 方案凸显成本优势
+  - Mac Mini + OpenClaw = $0 月租（仅电费），最低总拥有成本（TCO）
+- **实施要点**:
+  - $5 VPS 限制：1GB RAM 只能跑轻量模型（如 phi:3.8b），无法跑 7B 以上模型
+  - 推荐 $15 VPS（Contabo、Hostinger）：2GB RAM，跑 Ollama + 7B Q4 模型
+  - Mac Mini 适合固定地点用户；VPS 适合需要随时访问的移动用户
+- **效果量化**: 月成本从 $200 降至 $15（节省 92.5%），Mac Mini 仅电费（~$3-5/月）
+
+### 发现 #058
+- **主题**: OpenClaw vs n8n vs Zapier — 决策框架与互补架构
+- **来源**: VPSBG.eu "Meet OpenClaw - A Revolution in AI Workflow Automation" (2026)
+- **核心数据**:
+  - **n8n/Zapier**：基于预定义规则的可视化工作流引擎，状态机模式，需手动配置节点和触发器
+  - **OpenClaw**：自然语言驱动的 AI Agent，理解上下文和任务优先级，动态决策
+  - OpenClaw 是真正的 AI Agent（理解目标），n8n 是状态机（执行固定流程）
+  - OpenClaw 支持完全本地部署，数据不经过第三方；n8n 也支持自托管但配置复杂
+  - **最佳互补架构**：n8n 负责结构化数据 Pipeline（定时同步、定时抓取），OpenClaw 负责 AI 分析和决策层
+- **实施要点**:
+  - 典型 Stack：Miniflux（RSS）→ n8n（数据清洗入库）→ OpenClaw（AI 摘要）→ 飞书推送
+  - n8n 自托管：`docker run -d --name n8n -p 5678:5678 n8nio/n8n`
+  - OpenClaw 自托管：Mac Mini 上常驻运行，n8n 通过 webhook 触发 OpenClaw 任务
+- **效果量化**: 架构组合后，结构化数据处理（n8n）+ 智能决策（OpenClaw），覆盖 95% 自动化场景
