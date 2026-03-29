@@ -1407,3 +1407,26 @@
   - Toolbox 安装：`git clone https://github.com/contraptionco/toolbox.git && cd toolbox`
   - Cloudflare Tunnel：零成本内网穿透，无需公网 IP，macOS 服务可安全暴露
 - **效果量化**: Docker 容器数量可超过 20+ 个，Mac Mini M4 Pro 48GB 可流畅运行，Plex + n8n + HA + Ollama 全家桶总内存占用 ~15-20GB
+
+---
+
+## 研究时间: 2026-03-29 21:30 UTC
+
+### 发现 #067
+- **主题**: OpenClaw + Ollama 私有本地 AI 助手 — 24/7 自托管数字员工
+- **来源**: [Contabo Blog - OpenClaw Use Cases for Business 2026](https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/) | [The Fountain Institute - I Bought a Mac Mini to Try OpenClaw](https://pages.thefountaininstitute.com/posts/i-bought-a-mac-mini-to-try-openclaw-the-most-hyped-ai-tool-of-2026) | [Business20Channel - Apple & Clawdbot Ignite Mac Mini AI Boom 2026](https://business20channel.tv/apple-clawdbot-ignite-mac-mini-ai-boom-in-2026-27-february-2026) | [TLDL - OpenClaw Use Cases 2026: 25+ Real Examples](https://www.tldl.io/blog/openclaw-use-cases-2026)
+- **核心数据**:
+  - OpenClaw + Ollama 搭建完全私有 AI 助手，所有数据留在本地，$0 API 费用
+  - MCP 协议让 OpenClaw 连接本地文件系统和向量数据库，支持语义搜索
+  - OpenClaw browser 技能可定时抓取网页、截图并发布到 Slack/Discord
+  - 部署后成为 24/7 数字员工，而非桌面工具，可通过 Telegram/Slack/WhatsApp 交互
+  - Ollama TTFT（首 token）：Llama 3.1 8B Q4_K_M ~45ms（M4），vLLM ~82ms（对比）
+  - Mac Mini M4 16GB 跑 7B Q4 模型：~18-22 tok/s；Mistral Small 3 7B：~20-25 tok/s
+  - 统一内存架构（UMA）vs 传统 GPU：Mac Mini M4 在低并发时响应更快，vLLM 在 5+ 并发时吞吐量更高
+- **实施要点**:
+  - `brew install ollama && ollama pull mistral-small-3:latest`
+  - `openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"`
+  - Cloudflare Tunnel 实现外网安全访问，无需公网 IP
+  - 推荐从 Personal CRM 或 Daily Briefing 用例入手，降低上手门槛
+- **效果量化**: API 成本 $0/月（vs GPT-4o ~$100/月）；Mac Mini M4 16GB + 7B Q4：~20 tok/s
+- **方案编号**: 202603292130（已建站）

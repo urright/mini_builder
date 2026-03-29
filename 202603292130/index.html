@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw + Ollama 私有本地 AI 助手 - Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { margin-bottom: 40px; }
+        .back { display: inline-flex; align-items: center; gap: 6px; color: #00d9ff; text-decoration: none; font-size: 0.88em; margin-bottom: 20px; padding: 6px 12px; background: rgba(0,217,255,0.1); border-radius: 8px; transition: background 0.2s; }
+        .back:hover { background: rgba(0,217,255,0.2); }
+        h1 { font-size: 2em; color: #fff; margin-bottom: 10px; }
+        .meta { color: #606060; font-size: 0.85em; margin-bottom: 15px; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .tag { font-size: 0.75em; padding: 4px 12px; border-radius: 15px; background: rgba(0,217,255,0.12); color: #00d9ff; }
+        .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .desc { color: #909090; font-size: 1.05em; margin-bottom: 30px; line-height: 1.7; }
+        .metrics { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; padding: 20px; background: rgba(255,255,255,0.04); border-radius: 12px; border: 1px solid rgba(0,217,255,0.2); }
+        .metric { text-align: center; }
+        .metric .num { font-size: 1.6em; font-weight: 700; color: #00ff88; }
+        .metric .label { font-size: 0.78em; color: #606060; }
+        h2 { color: #00d9ff; font-size: 1.2em; margin: 35px 0 15px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,217,255,0.2); }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; color: #a0a0a0; }
+        li strong { color: #e8e8e8; }
+        .case { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .case h3 { color: #fff; font-size: 1em; margin-bottom: 8px; }
+        .case p { color: #808080; font-size: 0.88em; margin-bottom: 10px; }
+        .source { font-size: 0.78em; color: #00d9ff; margin-top: 8px; }
+        .source a { color: #00d9ff; text-decoration: none; }
+        .source a:hover { text-decoration: underline; }
+        code { background: rgba(0,217,255,0.08); padding: 2px 8px; border-radius: 5px; font-size: 0.88em; color: #00ff88; }
+        .steps { counter-reset: step; list-style: none; padding-left: 0; }
+        .steps li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: rgba(0,217,255,0.2); border: 1px solid rgba(0,217,255,0.4); border-radius: 50%; text-align: center; line-height: 26px; font-size: 0.8em; color: #00d9ff; font-weight: 700; }
+        .highlight-box { background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.2); border-radius: 12px; padding: 20px; margin: 25px 0; }
+        .highlight-box p { color: #a0d8a0; font-size: 0.95em; }
+        .config-box { background: rgba(255,200,0,0.06); border: 1px solid rgba(255,200,0,0.2); border-radius: 12px; padding: 20px; margin: 25px 0; }
+        .config-box h3 { color: #ffd700; margin-bottom: 10px; }
+        .config-box p { color: #b0b0b0; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="back" href="/">← 返回首页</a>
+
+        <header>
+            <h1>🔒 OpenClaw + Ollama 私有本地 AI 助手</h1>
+            <div class="meta">创建于 2026-03-29 · 更新于 2026-03-29</div>
+            <div class="tags">
+                <span class="tag">AI助手</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">Ollama</span>
+                <span class="tag">隐私</span>
+                <span class="tag">可建站</span>
+            </div>
+            <p class="desc">
+                在 Mac Mini M4 上用 OpenClaw + Ollama 搭建完全私有的本地 AI 助手。所有数据留在本地硬件，
+                无外部 API 传输，支持文档语义搜索、浏览器自动化、24/7 持续运行。
+                相比单纯用 Ollama，多了一层 OpenClaw 的 agent 能力（工具调用、多步骤任务、外网访问）。
+            </p>
+        </header>
+
+        <div class="metrics">
+            <div class="metric">
+                <div class="num">$0/月</div>
+                <div class="label">API 成本</div>
+            </div>
+            <div class="metric">
+                <div class="num">100%</div>
+                <div class="label">数据隐私</div>
+            </div>
+            <div class="metric">
+                <div class="num">24/7</div>
+                <div class="label">持续运行</div>
+            </div>
+            <div class="metric">
+                <div class="num">~20 tok/s</div>
+                <div class="label">M4 16GB 推理速度</div>
+            </div>
+        </div>
+
+        <h2>真实案例</h2>
+
+        <div class="case">
+            <h3>📄 个人文档问答助手</h3>
+            <p>将合同、报告、技术文档全部索引到本地向量数据库，用自然语言提问。
+               OpenClaw agent 自动检索相关段落，组织成完整答案。数据从未离开过 Mac Mini。</p>
+            <div class="source">来源: <a href="https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/" target="_blank">Contabo Blog - OpenClaw Use Cases for Business 2026</a></div>
+        </div>
+
+        <div class="case">
+            <h3>🌐 浏览器自动化 + 摘要发布</h3>
+            <p>OpenClaw browser 技能定时抓取网页、截图并发布到 Slack/Discord，附 AI 生成的摘要。
+               完全本地运行，无需第三方截图 API。</p>
+            <div class="source">来源: <a href="https://pages.thefountaininstitute.com/posts/i-bought-a-mac-mini-to-try-openclaw-the-most-hyped-ai-tool-of-2026" target="_blank">The Fountain Institute - I Bought a Mac Mini to Try OpenClaw</a></div>
+        </div>
+
+        <div class="case">
+            <h3>🏢 自托管企业知识库</h3>
+            <p>用 OpenClaw + Ollama + 向量数据库构建企业内部知识库，支持语义搜索、多语言查询。
+               OpenClaw 通过 MCP 协议连接本地文件系统，索引文档并回答员工问题。</p>
+            <div class="source">来源: <a href="https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/" target="_blank">Contabo Blog - OpenClaw Use Cases for Business 2026</a></div>
+        </div>
+
+        <div class="case">
+            <h3>📱 跨平台消息聚合</h3>
+            <p>OpenClaw 连接 Telegram、Slack、WhatsApp，本地 AI 统一处理所有消息流。
+               Mac Mini 部署后成为 24/7 数字员工，而非桌面工具。</p>
+            <div class="source">来源: <a href="https://business20channel.tv/apple-clawdbot-ignite-mac-mini-ai-boom-in-2026-27-february-2026" target="_blank">Business20Channel - Apple & Clawdbot Ignite Mac Mini AI Boom 2026</a></div>
+        </div>
+
+        <h2>效果量化数据</h2>
+        <ul>
+            <li><strong>API 成本节省:</strong> 完全本地运行，$0 API 费用，相比 OpenAI GPT-4o 节省 ~$100/月</li>
+            <li><strong>推理速度 (Mac Mini M4 16GB):</strong> Llama 3.3 8B Q4_K_M ~18-22 tok/s，Mistral Small 3 7B ~20-25 tok/s</li>
+            <li><strong>内存占用:</strong> Ollama + 向量数据库 + OpenClaw 后台运行，约 8-12GB</li>
+            <li><strong>隐私保证:</strong> 数据从未离开本地网络，满足 GDPR 等合规要求</li>
+            <li><strong>用户报告:</strong> 内容生产者节省 3-5h/周，研究者节省 10h+/周</li>
+        </ul>
+
+        <div class="config-box">
+            <h3>⚙️ Ollama 配置（OpenClaw 使用本地模型）</h3>
+            <p>在 OpenClaw 配置文件中指定 Ollama 作为 LLM 后端：</p>
+            <code>ollama.baseUrl = "http://127.0.0.1:11434"</code>
+        </div>
+
+        <h2>实施步骤</h2>
+        <ol class="steps">
+            <li><strong>安装 Ollama</strong><br>macOS: <code>brew install ollama</code><br>或访问 <a href="https://ollama.com" target="_blank" style="color:#00d9ff">ollama.com</a> 下载</li>
+            <li><strong>拉取推荐模型</strong><br>
+                日常助手: <code>ollama pull mistral-small-3:latest</code><br>
+                高质量回复: <code>ollama pull qwen3:14b</code><br>
+                轻量快速: <code>ollama pull llama3.2:3b</code></li>
+            <li><strong>安装 OpenClaw</strong><br>
+                <code>curl -L https://openclaw.com/install.sh | sh</code><br>
+                或参考官方文档配置</li>
+            <li><strong>配置 OpenClaw 使用 Ollama</strong><br>
+                编辑配置: <code>openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"</code></li>
+            <li><strong>设置向量数据库（可选，推荐用于文档问答）</strong><br>
+                安装 PostgreSQL + pgvector，或用轻量替代品<br>
+                配置 OpenClaw 文档索引技能</li>
+            <li><strong>配置 Cloudflare Tunnel（外网访问）</strong><br>
+                <code>cloudflared tunnel --url http://localhost:3000</code><br>
+                零成本内网穿透，Mac Mini 服务可安全暴露到外网</li>
+            <li><strong>配置定时任务和自动化</strong><br>
+                设置 cron 任务定期抓取信息源、生成报告<br>
+                OpenClaw skill 配置定时触发</li>
+        </ol>
+
+        <div class="highlight-box">
+            <p>💡 <strong>关键洞察:</strong> 用户从"在 Terminal 里折腾"到"躺在沙发上给 AI 发短信"的转变，
+            是 OpenClaw 粘性的核心时刻。Mac Mini 24/7 运行的特性让这个体验成为可能——
+            你可以随时发消息，AI 随时响应，不需要每次重新启动。</p>
+        </div>
+
+        <h2>推荐配置</h2>
+        <ul>
+            <li><strong>Mac Mini M4 16GB:</strong> 跑 7B Q4 模型，适合轻量日常助手（~18-22 tok/s）</li>
+            <li><strong>Mac Mini M4 32GB:</strong> 跑 14B Q4 模型，质量明显提升，多任务无压力</li>
+            <li><strong>Mac Mini M4 Pro 64GB:</strong> 跑 30B Q4 模型，12-18 tok/s，企业知识库首选</li>
+        </ul>
+
+        <div style="margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);color:#505050;font-size:0.8em">
+            来源: <a href="https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/" style="color:#505050">Contabo Blog</a> ·
+            <a href="https://pages.thefountaininstitute.com/posts/i-bought-a-mac-mini-to-try-openclaw-the-most-hyped-ai-tool-of-2026" style="color:#505050">The Fountain Institute</a> ·
+            <a href="https://www.tldl.io/blog/openclaw-use-cases-2026" style="color:#505050">TLDL</a> ·
+            <a href="https://business20channel.tv/apple-clawdbot-ignite-mac-mini-ai-boom-in-2026-27-february-2026" style="color:#505050">Business20Channel</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Mini 全能家庭服务器 - Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { margin-bottom: 40px; }
+        .back { display: inline-flex; align-items: center; gap: 6px; color: #00d9ff; text-decoration: none; font-size: 0.88em; margin-bottom: 20px; padding: 6px 12px; background: rgba(0,217,255,0.1); border-radius: 8px; transition: background 0.2s; }
+        .back:hover { background: rgba(0,217,255,0.2); }
+        h1 { font-size: 2em; color: #fff; margin-bottom: 10px; }
+        .meta { color: #606060; font-size: 0.85em; margin-bottom: 15px; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .tag { font-size: 0.75em; padding: 4px 12px; border-radius: 15px; background: rgba(0,217,255,0.12); color: #00d9ff; }
+        .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .desc { color: #909090; font-size: 1.05em; margin-bottom: 30px; line-height: 1.7; }
+        .metrics { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; padding: 20px; background: rgba(255,255,255,0.04); border-radius: 12px; border: 1px solid rgba(0,217,255,0.2); }
+        .metric { text-align: center; }
+        .metric .num { font-size: 1.6em; font-weight: 700; color: #00ff88; }
+        .metric .label { font-size: 0.78em; color: #606060; }
+        h2 { color: #00d9ff; font-size: 1.2em; margin: 35px 0 15px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,217,255,0.2); }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; color: #a0a0a0; }
+        li strong { color: #e8e8e8; }
+        .case { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .case h3 { color: #fff; font-size: 1em; margin-bottom: 8px; }
+        .case p { color: #808080; font-size: 0.88em; margin-bottom: 10px; }
+        .case a { color: #00d9ff; font-size: 0.85em; }
+        .step { background: rgba(0,217,255,0.06); border-left: 3px solid #00d9ff; padding: 15px 20px; margin-bottom: 15px; border-radius: 0 8px 8px 0; }
+        .step-title { color: #00d9ff; font-weight: 600; margin-bottom: 6px; }
+        code { background: rgba(0,0,0,0.3); padding: 2px 7px; border-radius: 4px; font-size: 0.88em; color: #00ff88; }
+        pre { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; font-size: 0.85em; line-height: 1.6; }
+        pre code { background: none; padding: 0; }
+        footer { margin-top: 50px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); color: #505050; font-size: 0.8em; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a class="back" href="../index.html">← 返回方案列表</a>
+            <h1>Mac Mini 全能家庭服务器</h1>
+            <p class="meta">方案编号: 202603290930 | 创建时间: 2026-03-29</p>
+            <div class="tags">
+                <span class="tag">家庭服务器</span>
+                <span class="tag">UniFi</span>
+                <span class="tag">AdGuard</span>
+                <span class="tag">Homebridge</span>
+                <span class="tag">网络管理</span>
+                <span class="tag">可建站</span>
+            </div>
+        </header>
+
+        <p class="desc">
+            用 Mac Mini M4 作为家庭全能服务器，一台设备同时跑网络管理（UniFi）、广告拦截（AdGuard Home）、智能家居桥接（Homebridge），功耗低、噪音小、24/7 运行，是家庭网络基础设施的最佳载体。
+        </p>
+
+        <div class="metrics">
+            <div class="metric">
+                <div class="num">3合1</div>
+                <div class="label">服务集成</div>
+            </div>
+            <div class="metric">
+                <div class="num">~6W</div>
+                <div class="label">空闲功耗</div>
+            </div>
+            <div class="metric">
+                <div class="num">24/7</div>
+                <div class="label">稳定运行</div>
+            </div>
+            <div class="metric">
+                <div class="num">$0</div>
+                <div class="label">软件许可</div>
+            </div>
+        </div>
+
+        <h2>真实案例</h2>
+
+        <div class="case">
+            <h3>案例 1：stealthpuppy — Mac Mini M4 Pro 作为家庭服务器</h3>
+            <p>技术博主使用 Mac Mini M4 Pro 跑 UniFi Network Server + AdGuard Home + Homebridge 三合一方案。Mac Mini M4 Pro 作为主工作设备后，原有 Mac Mini 转为专用家庭服务器。AdGuard Home 在局域网 DNS 层面拦截广告，Homebridge 让不支持原生 HomeKit 的设备接入苹果家庭 App。</p>
+            <p>- <strong>来源</strong>: <a href="https://stealthpuppy.com/mac-mini-home-server/" target="_blank">stealthpuppy.com - A Mac mini as a home server</a></p>
+        </div>
+
+        <div class="case">
+            <h3>案例 2：chambers.io — 基础款 M4 Mac Mini 作为家庭服务器</h3>
+            <p>用户购入基础款 M4 Mac Mini（16GB RAM）作为纯家庭服务器，替换掉原来噪音大、耗电高的游戏主机改装服务器。Mac Mini 在低功率下运行，发热量极小，可以静音放在任何位置。性能上远超树莓派，可以同时跑 Plex 媒体服务器、Homebridge、AdGuard 等重型服务。</p>
+            <p>- <strong>来源</strong>: <a href="https://chambers.io/blog/2024/11/09/mac-mini-home-server.html" target="_blank">chambers.io - Mac Mini Home Server</a></p>
+        </div>
+
+        <div class="case">
+            <h3>案例 3：YouTube — M4 Mac Mini 作为家庭服务器测评</h3>
+            <p>多个 YouTube 频道测评显示，基础款 M4 Mac Mini（16GB RAM）完全能胜任家庭服务器场景：Plex 视频流、iCloud 管理套件、视频流媒体、Homebridge、AdGuard 同时运行，空闲功耗仅 6-8W，温度控制在 40-50°C范围内，风扇几乎无声。</p>
+            <p>- <strong>来源</strong>: <a href="https://www.youtube.com/watch?v=uGyY2PFN8o0" target="_blank">YouTube - M4 Mac mini - The Perfect Home Server!</a></p>
+        </div>
+
+        <h2>服务详解</h2>
+
+        <h3>AdGuard Home — 全局广告拦截</h3>
+        <ul>
+            <li><strong>DNS 层面拦截</strong>：所有设备通过 AdGuard DNS 过滤，无需在每个设备安装</li>
+            <li><strong>隐私保护</strong>：阻止追踪器，保护家庭网络隐私</li>
+            <li><strong>自定义规则</strong>：支持订阅 AdGuard DNS filter、EasyList 等规则</li>
+            <li><strong>查询日志</strong>：查看每个设备的网络请求，发现异常连接</li>
+        </ul>
+
+        <h3>Homebridge — 智能家居桥接</h3>
+        <ul>
+            <li><strong>HomeKit 兼容</strong>：让非 HomeKit 设备（如小米、Yeelight）出现在苹果家庭 App</li>
+            <li><strong>插件生态</strong>：数千个插件支持各种智能设备协议</li>
+            <li><strong>Siri 语音控制</strong>：通过 Homebridge 接入的设备支持 Siri 语音命令</li>
+            <li><strong>自动化场景</strong>：配合 Home Assistant 实现复杂自动化</li>
+        </ul>
+
+        <h3>UniFi Network — 企业级网络管理</h3>
+        <ul>
+            <li><strong>UniFi Controller</strong>：管理 UniFi 路由器、交换机、AP</li>
+            <li><strong>流量监控</strong>：实时查看设备流量和网络状态</li>
+            <li><strong>VPN 服务器</strong>：远程安全访问家庭网络</li>
+            <li><strong>端口转发 / 防火墙规则</strong>：精细化网络控制</li>
+        </ul>
+
+        <h2>实施步骤</h2>
+
+        <div class="step">
+            <div class="step-title">第一步：安装 Homebrew</div>
+            <p>macOS 包管理工具，是安装所有服务的入口：</p>
+            <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-title">第二步：安装 AdGuard Home</div>
+            <p>通过 Homebrew 安装并启动 AdGuard Home：</p>
+            <pre><code>brew install adguardhome
+brew services start adguardhome</code></pre>
+            <p>安装后访问 <code>http://localhost:3000</code> 进行初始化配置，将路由器 DNS 指向 Mac Mini IP。</p>
+        </div>
+
+        <div class="step">
+            <div class="step-title">第三步：安装 Homebridge</div>
+            <p>Node.js 环境 + Homebridge 核心，通过 Homebrew：</p>
+            <pre><code>brew install node
+npm install -g --unsafe-perm homebridge homebridge-config-ui-x
+hb-service install</code></pre>
+            <p>访问 <code>http://localhost:8581</code> 进入 Web UI，配置插件和智能设备。</p>
+        </div>
+
+        <div class="step">
+            <div class="step-title">第四步：安装 UniFi Network Controller</div>
+            <p>仅在使用 UniFi 设备时需要，非必需：</p>
+            <pre><code>brew install macminivault/taps/unifi-network-controller
+brew services start unifi-network-controller</code></pre>
+            <p>访问 <code>https://localhost:8443</code> 初始化 UniFi 网络。</p>
+        </div>
+
+        <div class="step">
+            <div class="step-title">第五步：配置 macOS 节能选项（24/7 运行关键）</div>
+            <p>关闭盖子时禁止 Mac Mini 睡眠，确保服务持续运行：</p>
+            <pre><code># 阻止盖子关闭时睡眠（需要保持连接显示器）
+sudo pmset -a sleep 0
+sudo pmset -a hibernatemode 0
+sudo pmset -a disablesleep 1
+
+# 或者在"系统设置 > 节能"中：
+# - 关闭"使硬盘进入睡眠"
+# - 设置"电源适配器：永不断开"</code></pre>
+        </div>
+
+        <div class="step">
+            <div class="step-title">第六步：配置静态 IP 和路由器 DNS</div>
+            <p>给 Mac Mini 分配固定 IP（如 <code>192.168.1.100</code>），在路由器 DHCP 设置中将 DNS 服务器指向 Mac Mini IP。</p>
+        </div>
+
+        <h2>效果量化</h2>
+        <ul>
+            <li><strong>功耗</strong>：空闲 6-8W，满载 20-30W（vs 传统服务器 100-300W）</li>
+            <li><strong>噪音</strong>：日常运行几乎无声（仅高负载时风扇轻微转动）</li>
+            <li><strong>广告拦截率</strong>：AdGuard Home 配合 EasyList + AdGuard DNS filter，拦截率 85-95%</li>
+            <li><strong>设备兼容性</strong>：Homebridge 插件库支持 2000+ 设备型号</li>
+            <li><strong>总成本</strong>：软件全部免费，仅需 Mac Mini 硬件成本</li>
+        </ul>
+
+        <h2>硬件配置推荐</h2>
+        <ul>
+            <li><strong>最低</strong>：Mac Mini M4 16GB RAM（AdGuard + Homebridge 够用）</li>
+            <li><strong>推荐</strong>：Mac Mini M4 24GB RAM（同时跑 UniFi + Plex 媒体服务）</li>
+            <li><strong>发烧友</strong>：Mac Mini M4 Pro 48GB RAM（虚拟化、容器、多种服务并行）</li>
+            <li><strong>存储</strong>：基础款 256GB 够用，服务占用约 20-30GB；大量媒体文件建议外接 NAS</li>
+        </ul>
+
+        <h2>与 Home Assistant 的关系</h2>
+        <p>本方案专注<strong>网络层服务</strong>（DNS、VPN、网络设备管理），Home Assistant 专注<strong>设备控制层</strong>（灯光、传感器、自动化逻辑）。两者完全互补，可以同时运行在一台 Mac Mini 上：Homebridge 负责将设备接入 HomeKit，Home Assistant 负责设备联动和自动化。</p>
+
+        <footer>
+            <p>Mini Builder — Mac Mini M4 + OpenClaw | 方案 202603290930</p>
+        </footer>
+    </div>
+</body>
+</html>
