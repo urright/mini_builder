@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Mini Docker Home Lab 入门指南 — 2026</title>
+    <style>
+        :root {
+            --bg: #0f0f23;
+            --card: #1a1a2e;
+            --accent: #00d4ff;
+            --accent2: #7b2fff;
+            --text: #e0e0e0;
+            --muted: #888;
+            --border: #2a2a4a;
+            --tag-bg: #1e1e3f;
+            --green: #00c48c;
+            --orange: #ff9f43;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; min-height: 100vh; }
+        .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .back { color: var(--accent); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 2rem; }
+        .back:hover { opacity: 0.8; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .desc { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+        .metrics { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .metric { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1.25rem; text-align: center; flex: 1; min-width: 120px; }
+        .metric .val { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+        .metric .lbl { font-size: 0.75rem; color: var(--muted); }
+        h2 { font-size: 1.1rem; color: var(--accent); margin: 2rem 0 1rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+        .case { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+        .case h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #fff; }
+        .case p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.75rem; }
+        .case .source { font-size: 0.8rem; color: var(--accent); }
+        .case .source a { color: var(--accent); text-decoration: none; }
+        .case .source a:hover { text-decoration: underline; }
+        .steps { counter-reset: step; }
+        .step { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1rem 1rem 3.5rem; margin-bottom: 0.75rem; position: relative; }
+        .step::before { counter-increment: step; content: counter(step); position: absolute; left: 1rem; top: 1rem; width: 1.75rem; height: 1.75rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: #fff; }
+        .step h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+        .step p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+        pre { background: #0a0a1a; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; font-size: 0.82rem; color: #a0e0a0; margin-bottom: 0.75rem; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; }
+        .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; background: var(--tag-bg); color: var(--accent); border: 1px solid var(--border); margin: 0.2rem; }
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .comp-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+        .comp-col h4 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .comp-col.pro { border-color: var(--green); }
+        .comp-col.pro h4 { color: var(--green); }
+        .comp-col.con { border-color: var(--orange); }
+        .comp-col.con h4 { color: var(--orange); }
+        .comp-col ul { font-size: 0.82rem; color: var(--muted); padding-left: 1.2rem; }
+        .note { background: #1a1a0f; border: 1px solid var(--orange); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--orange); margin: 1rem 0; }
+        .container-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .container-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; }
+        .container-item h4 { font-size: 0.88rem; color: var(--accent); margin-bottom: 0.3rem; }
+        .container-item p { font-size: 0.78rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="back" href="/mini_builder">← 返回方案中心</a>
+        <div class="badge">🆕 新方案</div>
+        <h1>Mac Mini Docker Home Lab 入门指南</h1>
+        <p class="desc">用 Mac Mini M4 搭建 Docker Home Lab，在一台小机器上同时运行 n8n、Ollama、AdGuard、Home Assistant 等 10+ 服务，告别多设备杂乱的快乐老家。</p>
+
+        <div class="metrics">
+            <div class="metric"><div class="val">10+</div><div class="lbl">服务同时运行</div></div>
+            <div class="metric"><div class="val">$0</div><div class="lbl">软件成本</div></div>
+            <div class="metric"><div class="val">1台</div><div class="lbl">Mac Mini 搞定</div></div>
+            <div class="metric"><div class="val">5W</div><div class="lbl">待机功耗</div></div>
+        </div>
+
+        <h2>📊 真实案例</h2>
+
+        <div class="case">
+            <h3>VirtualizationHowto — Ultimate Home Lab Starter Stack for 2026</h3>
+            <p>2026 年 Home Lab 推荐栈：Proxmox + LXC 容器 + Docker，适合 mini PC/Mac Mini。单台机器跑 Docker 可管理 10+ 容器，通过反向代理（Traefik/Nginx Proxy Manager）统一暴露服务到外网。Microceph 可用于多节点存储同步。</p>
+            <p class="source">来源: <a href="https://www.virtualizationhowto.com/2025/12/ultimate-home-lab-starter-stack-for-2026-key-recommendations/" target="_blank">VirtualizationHowto — Ultimate Home Lab Starter Stack for 2026</a></p>
+        </div>
+
+        <div class="case">
+            <h3>Sinaptica — How to Set Up Your First Homelab in 2026</h3>
+            <p>入门只需一台 mini PC + Docker。最简单的起点：Docker Compose 管理所有服务，用 Portainer 做可视化面板，手机+电脑都能管理。按用途分类：媒体服务（Plex/Jellyfin）、自动化（n8n）、DNS（AdGuard）、开发工具（Gitea）。</p>
+            <p class="source">来源: <a href="https://sinapti.ca/post/en/how-to-set-up-your-first-homelab-in-2026-complete-step-by-st-ptwf3y51" target="_blank">Sinaptica — How to Set Up Your First Homelab in 2026</a></p>
+        </div>
+
+        <div class="case">
+            <h3>Matt Adam — Docker in a Home Lab: A Beginner's Guide</h3>
+            <p>Docker 是 Homelab 的最佳入门工具。学习曲线平缓，docker-compose.yml 一键部署复杂服务，测试环境与生产环境完全一致。每学会一个新容器，Homelab 就升级一次。</p>
+            <p class="source">来源: <a href="https://mattadam.com/2025/07/02/setting-up-docker-in-a-home-lab-your-simple-guide-to-getting-started/" target="_blank">Matt Adam — Setting Up Docker in a Home Lab: A Beginner's Guide</a></p>
+        </div>
+
+        <div class="case">
+            <h3>Stealthpuppy — Mac Mini 家庭服务器实践</h3>
+            <p>博主用 Mac Mini M4 Pro 作为家庭服务器，运行 AdGuard Home（DNS 广告拦截）+ Homebridge（智能家居）+ UniFi Network Server。实测每周 7×24 小时运行，性能表现优异，功耗极低。</p>
+            <p class="source">来源: <a href="https://stealthpuppy.com/mac-mini-home-server/" target="_blank">Stealthpuppy — A Mac mini as a home server</a></p>
+        </div>
+
+        <h2>🚀 推荐容器清单（Mac Mini M4 直接能用）</h2>
+
+        <div class="container-list">
+            <div class="container-item">
+                <h4>n8n</h4>
+                <p>工作流自动化，400+ 集成，$0/月</p>
+            </div>
+            <div class="container-item">
+                <h4>Ollama</h4>
+                <p>本地 LLM，Llama/Qwen/Mistral</p>
+            </div>
+            <div class="container-item">
+                <h4>AdGuard Home</h4>
+                <p>全网络广告拦截，隐私保护</p>
+            </div>
+            <div class="container-item">
+                <h4>Homebridge</h4>
+                <p>让非HomeKit设备接入苹果家庭</p>
+            </div>
+            <div class="container-item">
+                <h4>Jellyfin</h4>
+                <p>开源媒体服务器，替代Plex</p>
+            </div>
+            <div class="container-item">
+                <h4>Gitea</h4>
+                <p>自托管 Git 仓库，轻量替代 GitHub</p>
+            </div>
+            <div class="container-item">
+                <h4>Portainer</h4>
+                <p>Docker 可视化管理，点点点运维</p>
+            </div>
+            <div class="container-item">
+                <h4>nginx-proxy-manager</h4>
+                <p>反向代理+SSL，零成本暴露服务</p>
+            </div>
+            <div class="container-item">
+                <h4>Uptime Kuma</h4>
+                <p>服务监控，任何服务挂了立即通知</p>
+            </div>
+            <div class="container-item">
+                <h4>Piwigo</h4>
+                <p>自托管相册，替代 Google Photos</p>
+            </div>
+        </div>
+
+        <h2>📋 实施步骤</h2>
+
+        <div class="steps">
+            <div class="step">
+                <h3>安装 Docker Desktop</h3>
+                <p>Mac Mini M4 直接安装 Docker Desktop（Apple Silicon 版本），开启 Kubernetes 支持。Docker Desktop Settings → Resources → Memory 分配 4GB+，CPU 4核+。</p>
+                <pre><code>brew install --cask docker</code></pre>
+            </div>
+            <div class="step">
+                <h3>安装 Portainer（Web 可视化管理）</h3>
+                <p>用 Portainer 替代命令行运维，Web UI 管理所有容器、镜像、网络、卷。</p>
+                <pre><code>docker run -d \
+  --name portainer \
+  -p 9000:9000 \
+  -p 8000:8000 \
+  --restart always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  portainer/portainer-ce:latest</code></pre>
+            </div>
+            <div class="step">
+                <h3>编写 docker-compose.yml（一键部署全家桶）</h3>
+                <p>在一个目录管理所有服务，一个命令启动/停止整个 Homelab。</p>
+                <pre><code>services:
+  adguard:
+    image: adguard/adguardhome
+    container_name: adguard
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "3000:3000"
+    volumes:
+      - adguard_data:/opt/adguardhome/work
+    restart: unless-stopped
+
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    # Mac GPU 加速（Apple Silicon）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: metal
+              count: all
+
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  adguard_data:
+  n8n_data:
+  ollama_data:
+  uptime_kuma_data:</code></pre>
+            </div>
+            <div class="step">
+                <h3>部署 nginx-proxy-manager（反向代理 + 自动 SSL）</h3>
+                <p>所有服务通过域名访问，自动获取 Let's Encrypt SSL 证书。</p>
+                <pre><code>services:
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    restart: unless-stopped</code></pre>
+            </div>
+            <div class="step">
+                <h3>配置 AdGuard Home 为网络 DNS</h3>
+                <p>将路由器 DNS 指向 Mac Mini IP，所有设备自动享受广告拦截 + 隐私保护。AdGuard 实测拦截率 15-30%，每月拦截数万次广告请求。</p>
+            </div>
+            <div class="step">
+                <h3>开机自启 + 电源管理</h3>
+                <p>macOS 系统偏好设置 → 用户与群组 → 登录项，添加 Docker Desktop。配合「能源」设置，关闭盖子不休眠（需接电）：</p>
+                <pre><code># 关闭盖子不休眠（接电时）
+sudo pmset -a lidwake 1
+sudo pmset -a sleep 0
+# 或保持盖子打开，用 HDMI dummy plug 欺骗显示器</code></pre>
+            </div>
+        </div>
+
+        <h2>⚡ 效果量化数据</h2>
+
+        <div class="comparison">
+            <div class="comp-col pro">
+                <h4>✅ Mac Mini Docker Homelab 优势</h4>
+                <ul>
+                    <li>功耗：5-15W（vs 传统 PC 服务器 100W+）</li>
+                    <li>噪音：几乎零噪音（被动散热 M4）</li>
+                    <li>电费：~$2-5/月（vs 云服务器 $20-50/月）</li>
+                    <li>数据完全私有，无订阅涨价风险</li>
+                    <li>一台机器：开发 + AI + 自动化 + 存储</li>
+                    <li>macOS 原生支持 Docker Apple Silicon</li>
+                </ul>
+            </div>
+            <div class="comp-col con">
+                <h4>⚠️ 注意事项</h4>
+                <ul>
+                    <li>Mac Mini 无法像 TrueNAS 那样做 ZFS 存储池</li>
+                    <li>容器数据持久化需注意卷挂载路径</li>
+                    <li>无 ECC 内存，不适合 24/7 关键数据存储</li>
+                    <li>建议外接 NAS 或 HDD 做归档存储</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="note">
+            💡 与「文件服务器」方案结合：Mac Mini 跑 Docker 服务，外接 NAS 做存储，是性价比最高的家庭基础设施方案。
+        </div>
+
+        <h2>🏷️ 标签</h2>
+        <div>
+            <span class="tag">Homelab</span>
+            <span class="tag">Docker</span>
+            <span class="tag">自动化</span>
+            <span class="tag">容器化</span>
+            <span class="tag">n8n</span>
+            <span class="tag">AdGuard</span>
+            <span class="tag">隐私</span>
+            <span class="tag">可建站</span>
+        </div>
+    </div>
+</body>
+</html>
