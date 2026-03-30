@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open WebUI + Ollama — 本地 ChatGPT 替代品</title>
+    <style>
+        :root {
+            --bg: #0f0f23;
+            --card: #1a1a2e;
+            --accent: #00d4ff;
+            --accent2: #7b2fff;
+            --text: #e0e0e0;
+            --muted: #888;
+            --border: #2a2a4a;
+            --tag-bg: #1e1e3f;
+            --green: #00c48c;
+            --orange: #ff9f43;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; min-height: 100vh; }
+        .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .back { color: var(--accent); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 2rem; }
+        .back:hover { opacity: 0.8; }
+        .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .desc { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+        .metrics { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .metric { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1.25rem; text-align: center; flex: 1; min-width: 120px; }
+        .metric .val { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+        .metric .lbl { font-size: 0.75rem; color: var(--muted); }
+        h2 { font-size: 1.1rem; color: var(--accent); margin: 2rem 0 1rem; border-left: 3px solid var(--accent); padding-left: 0.75rem; }
+        .case { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+        .case h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #fff; }
+        .case p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.75rem; }
+        .case .source { font-size: 0.8rem; color: var(--accent); }
+        .case .source a { color: var(--accent); text-decoration: none; }
+        .case .source a:hover { text-decoration: underline; }
+        .steps { counter-reset: step; }
+        .step { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1rem 1rem 3.5rem; margin-bottom: 0.75rem; position: relative; }
+        .step::before { counter-increment: step; content: counter(step); position: absolute; left: 1rem; top: 1rem; width: 1.75rem; height: 1.75rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: #fff; }
+        .step h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+        .step p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+        pre { background: #0a0a1a; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; font-size: 0.82rem; color: #a0e0a0; margin-bottom: 0.75rem; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; }
+        .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; background: var(--tag-bg); color: var(--accent); border: 1px solid var(--border); margin: 0.2rem; }
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .comp-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+        .comp-col h4 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .comp-col.pro { border-color: var(--green); }
+        .comp-col.pro h4 { color: var(--green); }
+        .comp-col.con { border-color: var(--orange); }
+        .comp-col.con h4 { color: var(--orange); }
+        .comp-col ul { font-size: 0.82rem; color: var(--muted); padding-left: 1.2rem; }
+        .note { background: #1a1a0f; border: 1px solid var(--orange); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--orange); margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="back" href="/mini_builder">← 返回方案中心</a>
+        <div class="badge">🖥️ 新发现</div>
+        <h1>Open WebUI + Ollama — 本地 ChatGPT 替代品</h1>
+        <p class="desc">在 Mac Mini M4 上部署 Open WebUI + Ollama，得到一个完全本地运行的 ChatGPT 替代品。无需订阅、无数据外传、支持多用户、有精美 Web 界面。</p>
+
+        <div class="metrics">
+            <div class="metric"><div class="val">$0</div><div class="lbl">月订阅费</div></div>
+            <div class="metric"><div class="val">100%</div><div class="lbl">隐私保护</div></div>
+            <div class="metric"><div class="val">20+</div><div class="lbl">tok/s 速度</div></div>
+            <div class="metric"><div class="val">5min</div><div class="lbl">完成安装</div></div>
+        </div>
+
+        <h2>📊 真实案例</h2>
+
+        <div class="case">
+            <h3>Mac Mini M4 + Open WebUI + Ollama 完整安装指南</h3>
+            <p>YouTube 博主 JSG Prime 详细演示在 Mac Mini M4 上从零安装 Open WebUI 全过程。使用 Conda 管理 Python 环境，支持模型切换、多用户管理。</p>
+            <p class="source">来源: <a href="https://www.youtube.com/watch?v=VqrBLbWlt7Y" target="_blank">YouTube — SETUP Ollama AND Open WEBUI ON YOUR Mac Mini M4</a></p>
+        </div>
+
+        <div class="case">
+            <h3>Open WebUI + Ollama vs ChatGPT 对比</h3>
+            <p>Open WebUI 支持对话历史、模型切换、多用户认证、自定义 prompt。对话记录完全存储在本地，无任何云端同步。支持 Ollama 支持的所有模型（Llama 3.2、Mistral Small 3、Qwen 等）。</p>
+            <p class="source">来源: <a href="https://dev.to/synsun/running-local-llms-in-2026-ollama-lm-studio-and-jan-compared-5dii" target="_blank">Dev.to — Running Local LLMs in 2026: Ollama, LM Studio, and Jan Compared</a></p>
+        </div>
+
+        <h2>🔧 实施步骤</h2>
+
+        <div class="steps">
+            <div class="step">
+                <h3>安装 Homebrew</h3>
+                <p>macOS 必备包管理器，简化软件安装流程。</p>
+                <pre>/bin/bash -c "$(curl -fsSL https://brew.sh/install.sh)"</pre>
+            </div>
+
+            <div class="step">
+                <h3>安装 Miniforge (Conda) — Python 3.12</h3>
+                <p>用 Conda 隔离 Python 环境，避免与系统 Python 冲突。</p>
+                <pre>bash Miniforge3-MacOSX-arm64.sh
+source ~/.zshrc
+conda activate base</pre>
+            </div>
+
+            <div class="step">
+                <h3>创建独立环境并安装 Open WebUI</h3>
+                <p>推荐 Python 3.12，Conda 环境隔离确保依赖干净。</p>
+                <pre>conda create -n open-webui python=3.12
+conda activate open-webui
+pip install open-webui</pre>
+            </div>
+
+            <div class="step">
+                <h3>拉取本地模型</h3>
+                <p>推荐轻量模型开始，Mac Mini M4 16GB 流畅运行。</p>
+                <pre># 轻量入门（推荐 16GB 用户）
+ollama pull llama3.2:3b
+
+# 性能更优（推荐 24GB+ 用户）
+ollama pull mistral-small-3:latest
+
+# 高质量通用
+ollama pull qwen3:4b</pre>
+            </div>
+
+            <div class="step">
+                <h3>启动 Open WebUI</h3>
+                <p>启动后访问本地地址，开始使用。</p>
+                <pre>open-webui serve
+# 访问: http://localhost:8080</pre>
+            </div>
+        </div>
+
+        <h2>📊 效果量化数据</h2>
+
+        <div class="case">
+            <h3>Ollama 内存占用对比</h3>
+            <p>Ollama (Llama 3.1 8B Q4_K_M) 空闲内存仅 ~5.2GB，对比 vLLM FP16 需要 ~16.1GB。Apple Silicon 统一内存架构让量化模型内存效率极高。</p>
+            <p class="source">来源: <a href="https://www.sitepoint.com/ollama-vs-vllm-performance-benchmark-2026/" target="_blank">SitePoint — Ollama vs vLLM Performance Benchmark 2026</a></p>
+        </div>
+
+        <div class="case">
+            <h3>M4 Mac Mini 16GB 推理速度实测</h3>
+            <p>Q4 7B 模型 ~15-20 tok/s；Mistral Small 3 7B 可达 50 tok/s；Llama 3.3 8B 约 28-35 tok/s（MLX/Ollama）。足够流畅的日常交互体验。</p>
+            <p class="source">来源: <a href="https://webscraft.org/blog/ollama-na-8-gb-ram-yaki-modeli-pratsyuyut-u-2026?lang=en" target="_blank">WebCraft — Ollama on 8GB RAM: 7 Models That Actually Work (2026)</a></p>
+        </div>
+
+        <h2>⚖️ Open WebUI vs ChatGPT</h2>
+
+        <div class="comparison">
+            <div class="comp-col pro">
+                <h4>✅ Open WebUI 优势</h4>
+                <ul>
+                    <li>$0 月订阅，数据永不离开本地</li>
+                    <li>完全离线可用，无网络依赖</li>
+                    <li>支持自定义模型和 fine-tune</li>
+                    <li>对话历史完全私有</li>
+                    <li>可集成本地知识库（RAG）</li>
+                    <li>无使用限制，想聊多久聊多久</li>
+                </ul>
+            </div>
+            <div class="comp-col con">
+                <h4>⚠️ ChatGPT 优势</h4>
+                <ul>
+                    <li>GPT-4o 推理能力更强</li>
+                    <li>实时联网搜索</li>
+                    <li>官方 App 和多平台同步</li>
+                    <li>DALL-E 图像生成集成</li>
+                    <li>官方支持和 SLA</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="note">
+            💡 <strong>最佳组合策略：</strong>日常简单对话用 Open WebUI（免费、隐私），复杂推理任务用 Claude/GPT-4o（付费）。两者互补，Open WebUI 作为主力日常工具。
+        </div>
+
+        <h2>🏷️ 标签</h2>
+        <div>
+            <span class="tag">AI助手</span>
+            <span class="tag">本地LLM</span>
+            <span class="tag">Open WebUI</span>
+            <span class="tag">Ollama</span>
+            <span class="tag">隐私</span>
+            <span class="tag">免费</span>
+            <span class="tag">可建站</span>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; color: var(--muted); font-size: 0.8rem;">
+            <p>Mini Builder 研究员 | 2026-03-30 01:30 UTC</p>
+            <p>🤖 OpenClaw cron 研究任务 | 每 2 小时自动更新</p>
+        </div>
+    </div>
+</body>
+</html>

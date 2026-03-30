@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Mini M4 文件服务器 / 家庭存储方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .back { display: inline-flex; align-items: center; gap: 6px; color: #00d9ff; text-decoration: none; font-size: 0.88em; margin-bottom: 25px; padding: 7px 14px; background: rgba(0,217,255,0.1); border: 1px solid rgba(0,217,255,0.25); border-radius: 20px; transition: all 0.2s; }
+        .back:hover { background: rgba(0,217,255,0.18); }
+        h1 { font-size: 2.2em; background: linear-gradient(120deg, #00d9ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+        .meta { color: #606060; font-size: 0.82em; margin-bottom: 30px; }
+        .section { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 28px; margin-bottom: 22px; }
+        h2 { color: #00d9ff; font-size: 1.15em; margin-bottom: 14px; }
+        .case { background: rgba(0,0,0,0.3); border-left: 3px solid #00ff88; padding: 16px 20px; margin-bottom: 14px; border-radius: 0 8px 8px 0; }
+        .case h3 { color: #e8e8e8; font-size: 0.95em; margin-bottom: 6px; }
+        .case p { color: #909090; font-size: 0.85em; margin-bottom: 6px; }
+        .case a { color: #00d9ff; font-size: 0.82em; }
+        .step { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+        .step-num { min-width: 28px; height: 28px; background: linear-gradient(135deg, #00d9ff, #00ff88); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8em; color: #0d1117; flex-shrink: 0; margin-top: 2px; }
+        .step-body { color: #b0b0b0; font-size: 0.9em; flex: 1; }
+        .step-body strong { color: #e8e8e8; }
+        .metric-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+        .metric-box { background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); border-radius: 10px; padding: 14px 20px; flex: 1; min-width: 140px; }
+        .metric-box .val { font-size: 1.5em; font-weight: 700; color: #00ff88; }
+        .metric-box .label { font-size: 0.75em; color: #606060; margin-top: 3px; }
+        .tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 20px; }
+        .tag { font-size: 0.72em; padding: 4px 11px; border-radius: 12px; background: rgba(0,217,255,0.12); color: #00d9ff; }
+        .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .tag.build { background: rgba(0,255,136,0.12); color: #00ff88; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 6px; font-size: 0.88em; color: #b0b0b0; }
+        code { background: rgba(255,255,255,0.07); padding: 2px 7px; border-radius: 5px; font-size: 0.82em; color: #00ff88; }
+        .source-block { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 18px 22px; margin-bottom: 14px; }
+        .source-block a { color: #00d9ff; font-size: 0.85em; }
+        .source-block p { color: #909090; font-size: 0.82em; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="../index.html" class="back">← 返回首页</a>
+    <h1>Mac Mini M4 文件服务器 / 家庭存储方案</h1>
+    <div class="meta">ID: 202603300430 | 创建: 2026-03-30 | 标签: 存储 · 家庭服务器 · 文件共享</div>
+    <div class="tags">
+        <span class="tag">存储</span>
+        <span class="tag">家庭服务器</span>
+        <span class="tag">文件共享</span>
+        <span class="tag">NAS替代</span>
+        <span class="tag">可建站</span>
+    </div>
+
+    <div class="metric-row">
+        <div class="metric-box"><div class="val">25TB</div><div class="label">最大可用存储</div></div>
+        <div class="metric-box"><div class="val">~$0.05</div><div class="label">每 GB 成本</div></div>
+        <div class="metric-box"><div class="val">24/7</div><div class="label">远程可用</div></div>
+        <div class="metric-box"><div class="val">~$35/月</div><div class="label">电费估算</div></div>
+    </div>
+
+    <div class="section">
+        <h2>💡 方案简介</h2>
+        <p>Mac Mini M4 可以作为强大的家庭文件服务器，用 SMB/NFS 协议为全家人提供集中式文件存储、Time Machine 备份目标，以及远程访问能力。以太网直连速度可达 10Gbps，比任何网盘都快，且完全私有、零订阅。</p>
+    </div>
+
+    <div class="section">
+        <h2>🧪 真实案例</h2>
+
+        <div class="case">
+            <h3>案例 1：YouTube 内容创作者的文件服务器</h3>
+            <p>Will Talk Tech 频道创作者用 Mac Mini M4（24GB RAM）+ 外接 20TB HDD + 5TB HDD，总计 25TB 存储，专门解决素材归档和远程访问问题。内部 SSD 只跑系统，外接 HDD 做归档存储。</p>
+            <a href="https://www.youtube.com/watch?v=am0CIeN-EUM" target="_blank">YouTube 视频 - I Built a Mac Mini File Server to Fix My Storage Problem in 2026</a>
+        </div>
+
+        <div class="case">
+            <h3>案例 2：UniFi + AdGuard + Homebridge 全家桶</h3>
+            <p>stealthpuppy.com 博主用 Mac Mini M4 Pro 7x24 运行 UniFi Network Server、AdGuard Home DNS 广告拦截、Homebridge（HomeKit 桥接），同时兼任文件服务器。一机多用，功耗低、噪音小。</p>
+            <a href="https://stealthpuppy.com/mac-mini-home-server/" target="_blank">stealthpuppy.com - A Mac mini as a home server</a>
+        </div>
+
+        <div class="case">
+            <h3>案例 3：Mac Mini vs Synology NAS 2026 对比</h3>
+            <p>有用户从 Synology 迁移到 Mac Mini，发现性能提升 10 倍，支持 macOS 原生 Time Machine，同时具备 NAS 的所有文件共享功能，省去每月 $13-30 的订阅费。</p>
+            <a href="https://www.youtube.com/watch?v=7l1zOlQtSZI" target="_blank">YouTube - Mac Mini vs Synology: Why I Switched to a Mac Home Server in 2026</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 实施步骤</h2>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <strong>准备外接存储</strong>：Mac Mini M4 基础版 256GB/512GB SSD 不足以存媒体文件，建议外接 NAS 级 HDD。<strong>推荐配置</strong>：2TB NVMe SSD（系统高速存储）+ 10-20TB HDD（冷数据归档）。使用 USB4/Thunderbolt 外壳（如 ACASIS 40Gbps M.2 NVMe，约 $80）。<br>
+                <a href="https://amzn.to/464KLxQ" target="_blank">ACASIS 40Gbps M.2 NVMe SSD 外壳 - Amazon</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <strong>启用 SMB 文件共享</strong>：macOS 系统设置 → 通用 → 共享 → 开启「文件共享」。SMB 协议支持全平台（Mac/Windows/Linux/iOS/Android）。建议创建专用用户账户，限制访问权限。<br>
+                <code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.smbd.plist</code>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <strong>配置 Time Machine 目标</strong>（可选）：Mac Mini 可以作为整个家庭所有 Mac 的 Time Machine 备份服务器。系统设置 → Time Machine → 选择磁盘 → 找到 Mac Mini。推荐用 HDD 而非 SSD 节省成本。<br>
+                <code>sudo tmutil setdestination -a smb://username@macmini.local/BackupDrive</code>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+                <strong>远程访问：Tailscale 或 Cloudflare Tunnel</strong>：<br>
+                Tailscale（推荐，简单）：安装后自动建立加密 VPN，macOS 客户端可直接挂载 SMB。<br>
+                <code>brew install tailscale</code> → <code>sudo tailscaled install-system-daemon</code><br>
+                Cloudflare Tunnel：免费，无需开放端口，通过 cf-tunnel 暴露文件服务。<br>
+                <a href="https://tailscale.com/download/macos" target="_blank">Tailscale macOS 下载</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+                <strong>JetKVM 远程管理</strong>（可选，物理访问场景）：JetKVM 是硬件 KVM-over-IP 设备，可在远程完全控制 Mac Mini 的显示器和键盘，适合没有现有桌面环境时初始配置。<br>
+                <a href="https://amzn.to/4aPuYp4" target="_blank">JetKVM - Amazon</a>（$60，约 $45）
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">6</div>
+            <div class="step-body">
+                <strong>设置自动备份脚本</strong>：用 rsync 或 rclone 定期将重要数据同步到外接 HDD，并可选择性地同步到 Google Drive/Backblaze B2 作为异地备份。<br>
+                <code>rsync -avz --delete /Users/jeremy/Documents/ /Volumes/BackupDrive/Documents/</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 效果量化数据</h2>
+        <ul>
+            <li><strong>存储成本</strong>：20TB NAS 级 HDD（约 $250）vs 20TB Synology  NAS（$500+），Mac Mini 方案节省 50%+</li>
+            <li><strong>速度</strong>：以太网 10Gbps ≈ 1.25GB/s，比任何云存储快 10-50 倍</li>
+            <li><strong>功耗</strong>：Mac Mini M4 空闲功耗 ~6W，满载 ~30W；Synology DS923+ 约 30W/45W（更多）</li>
+            <li><strong>月电费</strong>：30W × 24h × 30天 ≈ 21.6kWh → 约 $3-5/月（加州电价）</li>
+            <li><strong>订阅节省</strong>：告别 iCloud 2TB（$12.99/月）、Dropbox、Google One，每年节省 $156-468</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🔗 主要来源</h2>
+        <div class="source-block">
+            <p><strong>YouTube - I Built a Mac Mini File Server to Fix My Storage Problem in 2026</strong></p>
+            <a href="https://www.youtube.com/watch?v=am0CIeN-EUM" target="_blank">https://www.youtube.com/watch?v=am0CIeN-EUM</a>
+        </div>
+        <div class="source-block">
+            <p><strong>stealthpuppy.com - A Mac mini as a home server</strong></p>
+            <a href="https://stealthpuppy.com/mac-mini-home-server/" target="_blank">https://stealthpuppy.com/mac-mini-home-server/</a>
+        </div>
+        <div class="source-block">
+            <p><strong>YouTube - Mac Mini vs Synology: Why I Switched to a Mac Home Server in 2026</strong></p>
+            <a href="https://www.youtube.com/watch?v=7l1zOlQtSZI" target="_blank">https://www.youtube.com/watch?v=7l1zOlQtSZI</a>
+        </div>
+        <div class="source-block">
+            <p><strong>TechEnclave - Feasibility of running Mac mini m4 as a home server</strong></p>
+            <a href="https://techenclave.com/t/feasibility-of-running-mac-mini-m4-as-a-home-server/411343/2" target="_blank">https://techenclave.com/t/feasibility-of-running-mac-mini-m4-as-a-home-server/411343/2</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1480,3 +1480,54 @@
   - Lobster 工作流：accounts payable 自动化等多步路由和审批已验证
   - OpenClaw + Ollama 私有部署：所有数据本地，无云 API 依赖
 - **效果量化**: 已有团队用 OpenClaw 完全运营业务，从手机编码到自动化视频生产管道
+
+## 研究时间: 2026-03-30 04:30 UTC
+
+### 发现 #071
+- **主题**: Mac Mini M4 文件服务器 / 家庭存储方案
+- **来源**: [YouTube - I Built a Mac Mini File Server 2026](https://www.youtube.com/watch?v=am0CIeN-EUM) | [stealthpuppy.com - A Mac mini as a home server](https://stealthpuppy.com/mac-mini-home-server/) | [YouTube - Mac Mini vs Synology 2026](https://www.youtube.com/watch?v=7l1zOlQtSZI) | [TechEnclave - Mac Mini home server feasibility](https://techenclave.com/t/feasibility-of-running-mac-mini-m4-as-a-home-server/411343/2)
+- **核心数据**:
+  - Mac Mini M4 + 外接 20TB HDD + 5TB HDD = 25TB 总存储，成本约 $350（硬盘）
+  - SMB/NFS 文件共享，10Gbps 以太网，~1.25GB/s，比云存储快 10-50 倍
+  - Mac Mini M4 空闲 ~6W、满载 ~30W，月电费约 $3-5
+  - Synology vs Mac Mini：性能强 10 倍，节省 50% 硬件成本 + $156-468/年订阅费
+  - Tailscale 实现远程挂载 SMB，零配置 VPN
+  - Home Server 全家桶：UniFi + AdGuard + Homebridge + 文件服务，一机多用
+- **实施要点**:
+  - 推荐配置：2TB NVMe SSD（系统）+ 10-20TB HDD（归档）
+  - macOS 文件共享：系统设置 → 通用 → 共享 → 文件共享
+  - Time Machine 目标：可作为全家所有 Mac 的备份服务器
+  - JetKVM 硬件可选，软件方案（Tailscale + SSH）在大多数场景更优
+- **效果量化**: 25TB 最大存储；~$0.05/GB；节省订阅 $156-468/年；月电费 ~$3-5
+
+### 发现 #072
+- **主题**: Ollama vs vLLM vs MLX-LM — Apple Silicon 本地 LLM 性能格局
+- **来源**: [SitePoint - Ollama vs vLLM Benchmark 2026](https://www.sitepoint.com/ollama-vs-vllm-performance-benchmark-2026/) | [LinkedIn - Ollama M4 Pro vs RTX 3060](https://www.linkedin.com/pulse/benchmarking-local-ollama-llms-apple-m4-pro-vs-rtx-3060-dmitry-markov-6vlce) | [Reddit r/LocalLLaMA - Mac Mini Feb 2026](https://www.reddit.com/r/LocalLLaMA/comments/1r1m3mj/mac_mini_for_local_inference_feb_2026_edition/) | [Pooya.blog - Local AI 2026](https://pooya.blog/blog/local-ai-ollama-benchmarks-cost-2026/)
+- **核心数据**:
+  - **单用户**: Ollama TTFT ~45ms（Llama 3.1 8B），vLLM ~82ms；Ollama 胜出
+  - **50 并发**: vLLM ~840 tok/s，Ollama ~142 tok/s；vLLM 吞吐量 6 倍领先
+  - **Apple Silicon**: M4 Pro 64GB 上 MLX-LM 比 Ollama 快 ~3x，Qwen3-Coder-30B
+  - **M4 16GB 7B 实测**: 28-35 tok/s；Mistral Small 3 7B 可达 50 tok/s
+  - **成本**: 100K 请求/月，GPT-4o ~$4500/月；M4 Max 本地硬件摊薄 ~$85/月
+  - **内存效率**: Ollama 空闲 ~5.2GB VRAM（Llama 3.1 8B Q4_K_M），vLLM FP16 ~16.1GB
+- **实施要点**:
+  - 单用户桌面 AI → Ollama（简单、低资源）
+  - 多用户/生产 → vLLM（高吞吐）
+  - Apple Silicon 极限性能 → MLX-LM
+  - M4 16GB 推荐模型：phi:3.8b、mistral-small-3:7b、qwen3:4b
+- **效果量化**: 单用户 $0 API 成本；100K 请求/月 vs 云端节省 $4400/月
+
+### 发现 #073
+- **主题**: OpenClaw 真实用例 2026 — 内容自动化、研究、商业运营
+- **来源**: [ForwardFuture.ai - What People Are Actually Doing With OpenClaw](https://forwardfuture.ai/p/what-people-are-actually-doing-with-openclaw-25-use-cases) | [TLDL - OpenClaw Use Cases 2026](https://www.tldl.io/blog/openclaw-use-cases-2026) | [Kanerika - 15 OpenClaw Use Cases](https://kanerika.com/blogs/openclaw-usecases/) | [Contabo - OpenClaw Business Use Cases](https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/)
+- **核心数据**:
+  - OpenClaw 50+ 工作流覆盖：内容自动化、研究、商业运营、开发、家庭自动化
+  - 典型路径：内容自动化 → 研究 → 效率，随使用深入逐步扩展
+  - 多代理分工：research agent / writing agent / monitoring agent
+  - 企业级：工作流复杂度评估 + 风险管理 + 编排 + 治理框架
+  - OpenClaw + Ollama 私有部署：全数据本地，无云 API 依赖
+- **实施要点**:
+  - 从 Email 自动化入手（最快看到价值）
+  - 完整商业栈：email + CRM + 任务管理 + 简报
+  - Lobster 工作流格式：YAML/JSON，支持条件、审批门、多步路由
+- **效果量化**: 有团队用 OpenClaw 完全运营业务，手机编码到自动化视频生产管道
