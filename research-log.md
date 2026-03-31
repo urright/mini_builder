@@ -1608,3 +1608,113 @@
   - 基础款 M4 16GB 作为 OpenClaw agent 主机：完全足够，agent 主要做 API 编排而非重型推理
   - 边缘 AI 计算棒（67 TOPS/15W）+ Mac Mini OpenClaw：分布式 AI 架构，本地推理更省电
 - **效果量化**: M4 16GB 跑 7B 模型 28-50 tok/s；M4 Pro 64GB 跑 30B 模型 12-18 tok/s（实时聊天速度）
+
+## 研究时间: 2026-03-31 01:30 UTC
+
+### 发现 #078
+- **主题**: Reddit 真实案例 — Mac Mini M4 作为专用 OpenClaw AI Agent 主机（24/7 运行）
+- **来源**: [Reddit r/macmini - Using My Mac Mini as a Dedicated AI Agent Host (2026)](https://www.reddit.com/r/macmini/comments/1qzxvcz/using_my_mac_mini_as_a_dedicated_ai_agent_host/) | [DEV.to - The Homelab AI Stack in 2026](https://dev.to/signal-weekly/the-homelab-ai-stack-in-2026-what-self-hosters-are-actually-running-2d58) | [LinkedIn - Exploring OpenClaw on Mac Mini for AI Automation](https://www.linkedin.com/posts/stephen-w-thomas_openclaw-aiagents-localai-activity-7432466986300825600-9ySS) | [Facebook - Setting up local AI on Mac mini with OpenClaw and Ollama](https://www.facebook.com/groups/openclawusers/posts/698197343342542/)
+- **核心数据**:
+  - **电费 $1-2/月**（~$0.003/小时），比云端 AI 节省 $20-40/月
+  - M4 Mac Mini 作为 OpenClaw agent 主机，16GB 完全足够（agent 主要做 API 编排，非重型推理）
+  - Headless 运行（Screen Sharing 远程控制），零外接显示器
+  - Telegram/WhatsApp/飞书接入，随时随地对话 AI
+  - 睡眠时也在运行任务，晨间自动生成日历 + 天气简报
+  - 通过 Tailscale 实现外网安全访问，Mac Mini 不用暴露公网 IP
+  - **Homelab AI Stack 2026**: n8n + Ollama = 私有 AI 自动化，$0/月运行成本
+  - LinkedIn 实测：Mac mini M4 16GB + OpenClaw + Ollama，配置 qwen3:8b-q4_K_M 等支持 tool calling 的模型，可自动化 IDE 任务
+  - OpenClaw 配置：`openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"`
+  - 推荐模型（支持工具调用）：qwen3:8b-q4_K_M、qwen2.5 7B（推荐）、llama3.2 3B（轻量）
+- **实施要点**:
+  - Base model M4 Mac Mini 16GB 完全满足 OpenClaw agent 主机需求
+  - n8n + Ollama 组合：n8n 做工作流编排，Ollama 提供本地 LLM 能力
+  - LiteLLM 代理层：所有 AI 请求统一路由，一键切换模型后端
+  - OpenClaw cron job 设置每 2-4 小时心跳，维持 24/7 持续运行
+- **效果量化**: $1-2/月电费；$0 API 成本；24/7 在线；比云端 AI 每月节省 $20-40
+- **归属**: 扩展方案 #202603292130（OpenClaw + Ollama 私有本地 AI 助手）
+
+### 发现 #079
+- **主题**: Mac Mini M4 2026 本地 LLM 硬件推荐 — M4 Pro 64GB 成黄金标准，16GB 适合 OpenClaw Agent 主机
+- **来源**: [PopularAI Substack - The Best Mac Mini for Local LLMs 2026](https://popularai.substack.com/p/the-best-mac-mini-for-local-llms) | [like2byte.com - Mac Mini M4 16GB Local LLM Benchmarks ROI](https://like2byte.com/mac-mini-m4-16gb-local-llm-benchmarks-roi/) | [Satechi - Mac Mini M4 Setup for Local AI Guide](https://satechi.com/blogs/news/mac-mini-m4-setup-for-local-ai-the-definitive-guide-to-storage-hubs-and-always-on-performance) | [Medium - Get Ahead with AI Automation Using Mac Mini (2026)](https://medium.com/@mbrmakdag7/get-ahead-of-everyone-with-the-best-ai-automation-all-with-just-one-mac-mini-7a94f283821c)
+- **核心数据**:
+  - **M4 Pro 64GB 是 2026 年本地 LLM 机器的黄金标准**：可跑 30B-class 模型 12-18 tok/s（实时聊天速度）
+  - **M4 16GB** 推荐跑 7B-8B Q4_K_M/Q5 模型：实测 28-35 tok/s，Mistral Small 3 7B 可达 50 tok/s
+  - M4 16GB 作为 OpenClaw agent 主机：完全足够（agent 主要做 API 编排，非重型推理）
+  - RTX 5090 (32GB GDDR7)：~$2000 GPU 本身，可跑 405B 参数模型（量化后）
+  - Mac Mini M4 Pro 64GB 性价比：vs RTX 4090 + 主板 + CPU + 电源 + 散热 >$2500 总成本
+  - **Ollama vs MLX-LM**: M4 Pro 64GB 上 MLX-LM 比 Ollama 快 ~3x（Qwen3-Coder-30B），GPU 频率更低（346 vs 1577 MHz），RAM 占用更少（34.7 vs 40GB）
+  - 存储建议：NVMe SSD（系统）+ 外接 HDD（归档），适合 always-on AI
+  - 关键决策矩阵：
+    - 预算充足 → M4 Pro 64GB / 1TB（$1399-$1999）
+    - 预算有限但以 agent 为主 → M4 16GB（$599），跑 mistral-small-3:7b 或 qwen3:4b
+- **效果量化**: M4 Pro 64GB 可实时跑 30B 模型；M4 16GB 跑 7B 模型 28-50 tok/s；比 RTX 5090 省 $1000+ 硬件成本
+- **归属**: 扩展方案 #202603271630（本地 LLM 方案：Ollama）和 #202603292130（OpenClaw + Ollama）
+
+### 发现 #080
+- **主题**: Mac Mini M4 Docker Home Lab 入门方案 — 2026 最新推荐容器清单
+- **来源**: [VirtualizationHowto - Ultimate Home Lab Starter Stack for 2026](https://www.virtualizationhowto.com/2025/12/ultimate-home-lab-starter-stack-for-2026-key-recommendations/) | [Sinaptica - How to Set Up Your First Homelab in 2026](https://sinapti.ca/post/en/how-to-set-up-your-first-homelab-in-2026-complete-step-by-st-ptwf3y51) | [Stealthpuppy - A Mac mini as a home server](https://stealthpuppy.com/mac-mini-home-server/) | [YouTube - I Built a Mac Mini File Server 2026](https://www.youtube.com/watch?v=am0CIeN-EUM)
+- **核心数据**:
+  - 推荐容器清单：n8n（工作流）、Ollama（本地LLM）、AdGuard（DNS广告拦截）、Homebridge（智能家居）、Jellyfin（媒体服务）、Gitea（自托管Git）、Portainer（Docker可视化管理）、nginx-proxy-manager（反向代理+SSL）、Uptime Kuma（服务监控）、Piwigo（相册）
+  - Docker Desktop on Mac Mini M4：直接支持 Apple Silicon GPU 加速，ollama 容器用 `driver: metal` 充分利用统一内存
+  - 典型 Homelab 功耗：5-15W（vs 传统 PC 服务器 100W+），电费 $2-5/月
+  - 无需 Proxmox：macOS 直接装 Docker Desktop，单机 Docker 完全够用
+  - 反向代理：nginx-proxy-manager 自动申请 Let's Encrypt SSL，一个域名走天下
+  - AdGuard 拦截率实测 15-30%，全网设备自动生效（路由器 DNS 指向 Mac Mini）
+  - Homebridge：让小米/米家/亚马逊设备接入苹果 HomeKit，Mac Mini 作为中枢
+  - 盖子关闭不休眠：`sudo pmset -a sleep 0`（需接电），HDMI dummy plug 欺骗显示器
+- **实施要点**:
+  - Docker Desktop → Portainer（Web UI运维）→ docker-compose.yml（一键部署全家桶）
+  - Ollama 容器加 `--device /dev/metal` 或 `deploy.resources.reservations.devices: {driver: metal, count: all}` 开启 GPU 加速
+  - AdGuard 配置路由器 DNS 指向 Mac Mini IP，所有设备零配置受益
+  - 外接 NAS/HDD 做归档存储，Mac Mini NVMe 做系统盘+容器
+  - 与「文件服务器」方案互补：Mac Mini 跑 Docker 服务，外接 NAS 做存储
+- **效果量化**: 10+ 服务同时运行；$0 软件成本；$2-5/月电费；替代 $20-50/月云服务器
+- **归属**: 扩展方案 #202603301230（Mac Mini Docker Home Lab 入门指南）
+
+## 研究时间: 2026-03-31 03:30 UTC (2026-03-30 20:30 PDT)
+
+### 发现 #081
+- **主题**: AI Automation Hub — Mac Mini M4 单机承载 24/7 自动化工作流
+- **来源**: [Wire Insider Finance - Get Ahead with AI Automation Using Just One Mac Mini (2026)](https://wire.insiderfinance.io/get-ahead-of-everyone-with-the-best-ai-automation-all-with-just-one-mac-mini-7a94f283821c) | [TechFundingNews - Why M4 Mac Mini Clawdbot AI Boom](https://techfundingnews.com/m4-mac-mini-clawdbot-ai-boom/)
+- **核心数据**:
+  - **单台 Mac Mini 可作为完整自动化中枢**：7×24 小时运行脚本和工作流，连接多 AI 服务 API，管理数据
+  - Clawdbot 现象：$599 Mac Mini 脱销，因为可用于运行 24/7 AI 代理，通过消息应用处理 email/日历/terminal
+  - Mac Mini 的低功耗 + 统一内存 = 本地 AI 推理的完美硬件载体
+  - 2026 年 AI Agent 创业方向：基于 Mac Mini 的个人 AI 助手订阅服务
+- **实施要点**:
+  - OpenClaw 作为编排层，7×24 运行，接管重复性工作流
+  - Ollama 处理本地推理，API 编排在 OpenClaw 层面完成
+  - 推荐 16GB 基础款（$599）作为 headless AI agent 主机，零显示器运行
+- **效果量化**: 一台 $599 设备替代月 $20-100 的多个 SaaS 订阅
+
+### 发现 #082
+- **主题**: Mac Mini M4 vs Synology — 2026 家庭服务器选择指南
+- **来源**: [YouTube - Mac Mini vs Synology: Why I Switched in 2026](https://www.youtube.com/watch?v=7l1zOlQtSZI) | [YouTube - Mac Mini Home Server 2026](https://www.youtube.com/watch?v=9SYrdov9I4M) | [Dev.to - Best Home Server Setup 2025](https://dev.to/openclawresource/best-home-server-setup-in-2025-mac-mini-raspberry-pi-nuc-more-1h1f)
+- **核心数据**:
+  - Mac Mini M4 性能远超 Synology（同价位），功耗相近，macOS 更稳定
+  - Synology 优势：成熟 NAS 系统、存储扩展简单、DSM UI 友好
+  - Mac Mini 优势：通用计算 + 本地 LLM + OpenClaw + 更低总价
+  - 最佳方案：Mac Mini + 外接 NAS，Mac Mini 做计算中枢，NAS 做存储
+  - AdGuard + UniFi Network Server + Homebridge 三合一，一台 Mac Mini 替代多个独立设备
+- **实施要点**:
+  - Mac Mini M4 Pro 配置：AdGuard Home（DNS 广告拦截）+ UniFi Controller + Homebridge
+  - Synology 用户迁移路径：保留 NAS 存储，迁移计算任务到 Mac Mini
+  - Mac Mini 静态 IP 配置：路由器 DHCP  reservation，确保服务稳定访问
+- **效果量化**: 节省 Synology 购机费 $300-800 + 年订阅 $156-468；性能提升 5-10x
+
+### 发现 #083
+- **主题**: Ollama + vLLM + MLX-LM 三角格局 — Apple Silicon 本地 LLM 决策指南
+- **来源**: [SitePoint - Ollama vs vLLM Performance Benchmark 2026](https://www.sitepoint.com/ollama-vs-vllm-performance-benchmark-2026/) | [Reddit r/LocalLLM - MLX-LM vs Ollama](https://www.reddit.com/r/LocalLLM/comments/1s18yrt/local_llm_benchmark_mlxlm_vs_ollama/) | [RunMini - Mac Mini M4 for Local LLM 2026](https://runmini.com/blog/articles/mac-mini-m4-ollama-ai-hosting-cost.html) | [LocalAIMaster - Mac Metal GPU Setup 2026](https://localaimaster.com/blog/mac-local-ai-setup)
+- **核心数据**:
+  - **Ollama = 单用户最佳**：TTFT ~45ms（Llama 3.1 8B Q4_K_M），内存占用仅 ~5.2GB，配置简单
+  - **vLLM = 多用户/生产级**：50 并发时吞吐量 ~840 tok/s（vs Ollama ~142 tok/s），但单用户反而更慢
+  - **MLX-LM = Apple Silicon 极限性能**：M4 Pro 64GB 上比 Ollama 快 ~3x（Qwen3-Coder-30B），GPU 频率更低（346 vs 1577 MHz），RAM 占用更少（34.7 vs 40GB）
+  - **关键数据**：每天 100K 请求，GPT-4o ~$4500/月；Mac Mini M4 Max 本地硬件摊薄 ~$85/月
+  - M4 16GB 跑 7B Q4 模型：~28-35 tok/s；Mistral Small 3 7B 可达 50 tok/s
+  - Ollama 在单用户场景的优势：低延迟、低内存占用、零配置
+- **实施要点**:
+  - 日常单用户 → Ollama（简单、低资源、主流模型）
+  - Apple Silicon 极限性能追求 → MLX-LM（需要手动配置）
+  - 多用户/生产服务 → vLLM（需要更多内存）
+  - M4 16GB 推荐：mistral-small-3:7b Q4_K_M（~4GB，50 tok/s）或 qwen3:4b（~3GB）
+- **效果量化**: 单用户 Ollama $0 API 成本；100K 请求/月 vs 云端节省 ~$4400/月
