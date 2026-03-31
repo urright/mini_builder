@@ -1834,3 +1834,68 @@
   - macOS runner 需要：Xcode 合法许可、足够磁盘空间、定期重启防状态漂移
 - **效果量化**: 2000 分钟/月免费额度用完后，自托管 vs GitHub 托管：每月节省 $80-160+（按实际 macOS 用量）
 - **归属**: 扩展方案 #202603281230（GitHub Actions 自托管 Runner）
+
+## 研究时间: 2026-03-31 15:30 UTC
+
+### 发现 #090
+- **主题**: OpenClaw 2026 工作流自动化 — Lobster 工作流引擎 + 真实案例
+- **来源**: [TLDL - OpenClaw Use Cases 2026: 25+ Real Examples](https://www.tldl.io/blog/openclaw-use-cases-2026) | [QuantumByte - How People Use OpenClaw Workflows in 2026](https://quantumbyte.ai/articles/how-people-use-openclaw-workflows-in-2026) | [FlyPix AI - OpenClaw Automations Complete Guide 2026](https://flypix.ai/openclaw-automations-save-time/) | [Hostinger - OpenClaw Use Cases: 25 Ways to Automate](https://www.hostinger.com/tutorials/openclaw-use-cases) | [Contabo Blog - OpenClaw Use Cases for Business 2026](https://contabo.com/blog/openclaw-use-cases-for-business-in-2026/)
+- **核心数据**:
+  - **OpenClaw 工作流引擎 Lobster**：YAML/JSON 格式，支持步骤、环境变量、条件判断、审批门
+  - **常见工作流类型**：内容自动化 → 研究/生产力 → 业务自动化 → DevOps 任务
+  - **企业级案例**：客户入职自动化、运营工作流（减少人工判断但耗时的任务）
+  - **七大核心模块**：内容创作自动化、研究自动化、邮件自动化、截图+发布到 Slack/Discord、草案生成、健康监控
+  - **预算方案**：$10-30/月（基础 VPS + 便宜 LLM API）；生产级 $100+/月
+  - **OpenClaw + Ollama 集成**：本地隐私优先，文档嵌入 + 向量数据库语义搜索
+  - **审批门（Approval Gates）**：工作流可暂停等待人工批准再继续
+  - **Awesome OpenClaw Use Cases** 社区收集：https://github.com/hesamsheikh/awesome-openclaw-usecases
+- **实施要点**:
+  - OpenClaw 可通过浏览器自动化登录、截图、发布到 Slack/Discord 并附摘要
+  - 私人文档助手：上传合同/报告，用自然语言问答，全部留在本地硬件
+  - AI 代理工作流：商业流程自动化、内容创作、DevOps 任务、个人生产力
+  - OpenClaw 本地运行需配置 Ollama 作为 LLM 后端
+- **效果量化**: 本地优先隐私保护；vs Zapier $20+/月自托管免费；vs 云端 API 节省 60-80%
+- **归属**: 扩展方案 #202603281230（OpenClaw + Ollama）
+
+### 发现 #091
+- **主题**: Mac Mini M4 + OpenClaw = 24/7 AI Chief of Staff 实战案例
+- **来源**: [The Fountain Institute - I Bought a Mac Mini to Try OpenClaw](https://pages.thefountaininstitute.com/posts/i-bought-a-mac-mini-to-try-openclaw-the-most-hyped-ai-tool-of-2026) | [GOpenAI Blog - How I Turned a Mac Mini Into a 24/7 AI Chief of Staff with OpenClaw](https://blog.gopenai.com/how-i-set-up-openclaw-on-a-mac-mini-f97d1531061e) | [Simplified - Top 10 OpenClaw Use Cases 2026](https://simplified.com/blog/automation/top-openclaw-use-cases) | [Reddit LocalLLaMA - My local-first AI assistant on Mac Mini M4](https://www.reddit.com/r/LocalLLaMA/comments/1s3p9n9/my_localfirst_ai_assistant_on_a_mac_mini_m4_whats/)
+- **核心数据**:
+  - **Mac Mini M4 入门款**（€590 德国促销）完全够用，运行 OpenClaw 两天完成设置
+  - **核心体验转变**：从"与 Terminal 搏斗"到"躺在沙发上给 AI 发短信"
+  - **Mac Mini 专用 OpenClaw 设置**：创建本地账户（不登录 iCloud），纯做 OpenClaw 服务器
+  - **X 发帖自动化**：OpenClaw sub-agent 自主发布 build-public 更新、技术决策、项目进度
+  - **完整部署流水线愿景**：OpenClaw 负责写代码、测试、推送到 staging、运行 smoke tests，仅在需要人工决策时通知
+  - **本地模型组合**（24GB Mac Mini）：Qwen 3.5 27B（Ollama）离线备用；Faster-Whisper Large v3 语音转文字；Piper TTS 文字转语音；FLUX.1-schnell 本地图像生成
+  - **Whisper 本地运行是必选项**：质量好、异步延迟可接受、不上传语音到云端
+  - **MPS 扩散模型比 CUDA 慢很多**：云端 Sonnet 4.6 为主，本地 Qwen 做备用
+- **实施要点**:
+  - OpenClaw + 云端模型混合使用，本地模型做 fallback
+  - Telegram 作为界面控制本地 AI 助手
+  - Mac Mini M4 $600 是 solid AI server
+  - AI chief of staff = 日程管理 + 发帖 + 代码审查 + 部署流水线
+- **效果量化**: 24/7 运行，成本低于一杯咖啡/月（电费）
+- **归属**: 扩展方案 #202603281230（OpenClaw + Ollama）
+
+### 发现 #092
+- **主题**: Mac Mini M4 作为 Home Server — 网络配置与存储扩展 2026
+- **来源**: [OpenClaw.com - OpenClaw Mac Mini as a Home Server: Networking & Expandability](https://openclawn.com/openclaw-mac-mini-home-server-networking/) | [stealthpuppy - A Mac mini as a home server](https://stealthpuppy.com/mac-mini-home-server/) | [YouTube - Mac Mini vs Synology: Why I Switched to a Mac Home Server in 2026](https://www.youtube.com/watch?v=7l1zOlQtSZI) | [YouTube - Don't Sell Your Old Mac! Do This Instead (Mac Mini Home Server 2026)](https://www.youtube.com/watch?v=9SYrdov9I4M) | [Satechi - Mac Mini M4 Setup for Local AI Definitive Guide](https://satechi.com/blogs/news/mac-mini-m4-setup-for-local-ai-the-definitive-guide-to-storage-hubs-and-always-on-performance)
+- **核心数据**:
+  - **Mac Mini 千兆以太网是基础**，部分型号集成 10GbE；可绑定双网口聚合
+  - **服务器永远不要依赖 Wi-Fi**：必须用有线连接
+  - **OpenClaw Mac Mini 的存储选项**：USB-C 外接 NVMe SSD（如 Samsung T9 2TB）存放模型文件
+  - **Mac Mini M4 已成 AI 本地基础设施定义平台**：24/7 运行特性适合持续 AI 操作
+  - **AdGuard Home**：Mac Mini 运行广告拦截 + DNS 服务器
+  - **Homebridge**：将非 HomeKit 设备接入苹果智能家居生态
+  - **UniFi Network Server**：运行在 Mac Mini 上的网络管理
+  - **Mac Mini M4 Stand & Hub**（如 Satechi）：带 SSD 插槽，持续运行专用
+  - **Mac Mini vs Synology**：Mac Mini 功能更强但更贵；Synology 更省电更静音
+  - **功耗优化**：降低功耗同时改善远程访问性能
+- **实施要点**:
+  - Mac Mini home server 推荐服务：AdGuard Home + Homebridge + UniFi Controller
+  - 外接 SSD 推荐 Samsung T9 2TB（USB-C），用于存储大量 AI 模型
+  - Mac Mini M4 放在哪里都行：家庭办公室、客厅、 closet、地下室、车库
+  - 需要考虑：温度、噪音、电源、网络布线
+  - Mac Mini M4 非常安静，适合放在生活区域
+- **效果量化**: $0 订阅费 vs Synology NAS + 各种云服务；AdGuard Home 去除广告节省带宽
+- **归属**: 扩展方案 #202603281230（OpenClaw + Ollama / Home Server）
