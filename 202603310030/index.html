@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Mini M4 开发者 Homelab 完整指南 - Mini Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { margin-bottom: 40px; }
+        .back { display: inline-flex; align-items: center; gap: 6px; color: #00d9ff; text-decoration: none; font-size: 0.88em; margin-bottom: 20px; padding: 6px 12px; background: rgba(0,217,255,0.1); border-radius: 8px; transition: background 0.2s; }
+        .back:hover { background: rgba(0,217,255,0.2); }
+        h1 { font-size: 2em; color: #fff; margin-bottom: 10px; }
+        .meta { color: #606060; font-size: 0.85em; margin-bottom: 15px; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .tag { font-size: 0.75em; padding: 4px 12px; border-radius: 15px; background: rgba(0,217,255,0.12); color: #00d9ff; }
+        .tag.kanjian { background: rgba(255,200,0,0.15); color: #ffd700; }
+        .desc { color: #909090; font-size: 1.05em; margin-bottom: 30px; line-height: 1.7; }
+        .metrics { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; padding: 20px; background: rgba(255,255,255,0.04); border-radius: 12px; border: 1px solid rgba(0,217,255,0.2); }
+        .metric { text-align: center; }
+        .metric .num { font-size: 1.6em; font-weight: 700; color: #00ff88; }
+        .metric .label { font-size: 0.78em; color: #606060; }
+        h2 { color: #00d9ff; font-size: 1.2em; margin: 35px 0 15px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,217,255,0.2); }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; color: #a0a0a0; }
+        li strong { color: #e8e8e8; }
+        .case { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .case h3 { color: #fff; font-size: 1em; margin-bottom: 8px; }
+        .case p { color: #808080; font-size: 0.88em; margin-bottom: 10px; }
+        .source { font-size: 0.78em; color: #00d9ff; margin-top: 8px; }
+        .source a { color: #00d9ff; text-decoration: none; }
+        .source a:hover { text-decoration: underline; }
+        code { background: rgba(0,217,255,0.08); padding: 2px 8px; border-radius: 5px; font-size: 0.88em; color: #00ff88; }
+        .steps { counter-reset: step; list-style: none; padding-left: 0; }
+        .steps li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: rgba(0,217,255,0.2); border: 1px solid rgba(0,217,255,0.4); border-radius: 50%; text-align: center; line-height: 26px; font-size: 0.8em; color: #00d9ff; font-weight: 700; }
+        .highlight-box { background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.2); border-radius: 12px; padding: 20px; margin: 25px 0; }
+        .highlight-box p { color: #a0d8a0; font-size: 0.95em; }
+        .warn-box { background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.2); border-radius: 12px; padding: 20px; margin: 25px 0; }
+        .warn-box p { color: #d8a0a0; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="back" href="/">← 返回首页</a>
+
+        <header>
+            <h1>🖥️ Mac Mini M4 开发者 Homelab 完整指南</h1>
+            <div class="meta">创建于 2026-03-31 · 更新于 2026-03-31</div>
+            <div class="tags">
+                <span class="tag">Homelab</span>
+                <span class="tag">开发者</span>
+                <span class="tag">Docker</span>
+                <span class="tag">K8s</span>
+                <span class="tag">CI/CD</span>
+                <span class="tag">网络服务</span>
+                <span class="tag">可建站</span>
+            </div>
+            <p class="desc">
+                将 Mac Mini M4 打造成专业开发者 Homelab：容器化服务集群、K8s 本地集群、CI/CD 流水线、网络服务（DNS/代理/VPN）、以及自托管开发工具链。32GB 内存推荐，64GB 最佳。
+            </p>
+            <div class="metrics">
+                <div class="metric"><div class="num">10+</div><div class="label">容器服务</div></div>
+                <div class="metric"><div class="num">$0</div><div class="label">软件成本</div></div>
+                <div class="metric"><div class="num">$2-5</div><div class="label">月电费</div></div>
+                <div class="metric"><div class="num">7GB/s</div><div class="label">SSD 读写</div></div>
+            </div>
+        </header>
+
+        <h2>真实案例</h2>
+
+        <div class="case">
+            <h3>开发者自托管 GitLab + CI/CD Runner</h3>
+            <p>在 Mac Mini M4 上运行自托管 GitLab 实例，配合本地 GitLab Runner 执行 CI/CD 流水线。代码编译、测试、部署全部本地完成，无云服务依赖。</p>
+            <div class="source">来源: <a href="https://openclawn.com/openclaw-mac-mini-homelab-dev/" target="_blank">OpenClaw Mac Mini Homelab for Developers (2026)</a></div>
+        </div>
+
+        <div class="case">
+            <h3>K3s 本地 Kubernetes 集群</h3>
+            <p>用 K3s 在 Mac Mini 上搭建轻量级 Kubernetes 环境，用于学习 K8s、测试 Helm Chart、预发布检查。完全符合生产环境标准，推送到远程集群前可本地验证所有内容。</p>
+            <div class="source">来源: <a href="https://openclawn.com/openclaw-mac-mini-homelab-dev/" target="_blank">OpenClaw Mac Mini Homelab for Developers (2026)</a></div>
+        </div>
+
+        <div class="case">
+            <h3>Pi-hole + NGINX 反向代理全家桶</h3>
+            <p>自建 DNS 解析器（Pi-hole 或 AdGuard Home）实现全网广告拦截，配合 NGINX 或 Caddy 反向代理，用 Tailscale 实现零配置内网穿透，随时随地安全访问 Homelab 服务。</p>
+            <div class="source">来源: <a href="https://openclawn.com/openclaw-mac-mini-homelab-dev/" target="_blank">OpenClaw Mac Mini Homelab for Developers (2026)</a></div>
+        </div>
+
+        <div class="highlight-box">
+            <p>💡 <strong>为什么 Mac Mini M4 是开发者 Homelab 的理想选择？</strong><br>
+            Apple Silicon SoC 架构将 CPU、GPU、Neural Engine 集成于单一芯片，性能/瓦特比极高。7GB/s NVMe SSD 读写速度让虚拟机启动和数据库 I/O 几乎无延迟。Thunderbolt 5 接口支持外接 10GbE 网卡和多盘位存储 enclosure。</p>
+        </div>
+
+        <h2>实施步骤</h2>
+
+        <ol class="steps">
+            <li><strong>分配静态 IP</strong> — 在路由器上为 Mac Mini 分配固定 IP，更新 DNS 记录，确保服务地址稳定不变。</li>
+            <li><strong>安装容器运行时</strong> — Docker Desktop（最简单）或 Colima（轻量替代品，资源占用更少）。Colima 命令：<code>brew install colima && colima start</code></li>
+            <li><strong>部署核心容器</strong> — 先跑基础服务：NGINX 反向代理、AdGuard Home（DNS + 广告拦截）、PostgreSQL、Redis。</li>
+            <li><strong>搭建 K3s 集群</strong>（可选）— <code>curl -sfL https://get.k3s.io | sh -</code>，在桌面上体验完整 Kubernetes 工作流。</li>
+            <li><strong>配置 Tailscale 零信任 VPN</strong> — 一条命令接入内网，无需配置端口转发或担心公网暴露。<code>curl -fsSL https://tailscale.com/install.sh | sh && tailscale up</code></li>
+            <li><strong>搭建开发工具链</strong> — 自托管 Gitea（轻量 Git）、Jenkins 或 GitLab Runner 处理 CI/CD、Prometheus + Grafana 监控。</li>
+            <li><strong>Thunderbolt 外接存储</strong>（可选）— 多盘位 enclosure 构建 ZFS 存储池，为虚拟机和容器提供高速持久化存储。</li>
+            <li><strong>配置 Time Machine + 快照</strong> — 用 macOS Time Machine 备份主机，容器数据定期快照，防止数据丢失。</li>
+        </ol>
+
+        <h2>推荐容器组合（开发者场景）</h2>
+        <ul>
+            <li><strong>NGINX / Caddy</strong> — 反向代理，SSL 终结，域名路由</li>
+            <li><strong>AdGuard Home</strong> — 网络级广告拦截 + 本地 DNS 缓存</li>
+            <li><strong>PostgreSQL / MySQL</strong> — 数据库服务</li>
+            <li><strong>Redis</strong> — 缓存和消息队列</li>
+            <li><strong>Gitea</strong> — 轻量自托管 Git 服务（比 GitLab 资源占用更低）</li>
+            <li><strong>Jenkins / GitLab Runner</strong> — CI/CD 流水线</li>
+            <li><strong>MinIO</strong> — S3 兼容对象存储，本地开发测试用</li>
+            <li><strong>Prometheus + Grafana</strong> — 监控和可视化</li>
+        </ul>
+
+        <h2>关键硬件推荐</h2>
+        <ul>
+            <li><strong>Mac Mini M4 32GB</strong>（$899）— 运行 5-8 个容器 + 1 个 K3s 节点 + 开发工具，内存基本够用</li>
+            <li><strong>Mac Mini M4 Pro 64GB</strong>（$1,999）— 最佳开发者 Homelab 配置，可运行完整 K8s 集群 + 多个重型服务</li>
+            <li><strong>Thunderbolt 5 多盘位存储</strong> — 用于 ZFS 存储池或 Time Machine 备份目标</li>
+            <li><strong>10GbE USB 网卡</strong>（约 $50）— 提升网络吞吐，适合大代码库克隆和容器镜像传输</li>
+        </ul>
+
+        <div class="warn-box">
+            <p>⚠️ <strong>注意事项：</strong>macOS 上的 Docker Desktop 需要在虚拟机内运行 Linux，不是真正的裸机容器。如果追求最小开销，推荐用 Colima（直接调用 hypervisor.framework）或直接用 LXC 容器（通过 UTM）。此外，Apple Silicon 是 ARM 架构，部分 x86 镜像需要使用 ARM 替代品或 emulation。</p>
+        </div>
+
+        <h2>效果量化</h2>
+        <ul>
+            <li>单台 Mac Mini M4 可稳定运行 <strong>10-15 个容器</strong>（32GB 配置）</li>
+            <li>Thunderbolt 5 外接 SSD 读写速度可达 <strong>~7GB/s</strong>，接近内置存储</li>
+            <li>Mac Mini M4 闲时功耗约 <strong>5-10W</strong>，满载约 <strong>60-70W</strong>，7×24 小时运行月电费约 $2-5</li>
+            <li>K3s 集群在 Mac Mini 上的编译速度比树莓派快 <strong>5-10 倍</strong></li>
+        </ul>
+    </div>
+</body>
+</html>

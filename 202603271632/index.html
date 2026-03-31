@@ -128,6 +128,47 @@ tar -xvf haos_ova-*.qcow2.tar.xz</code></pre>
 # 3. 按提示创建管理员账户
 # 4. 开始添加设备</code></pre>
             
+            <h3>方法二：VMware Fusion 13（性能更高，推荐高级用户）</h3>
+            <pre><code># VMware Fusion 13（2024年起免费用于个人）
+# 下载: https://www.vmware.com/products/fusion.html
+
+# 1. 下载 Home Assistant OS VMDK 镜像
+#    访问: https://github.com/home-assistant/operating-system/releases
+#    下载: haos_ova-*.vhdx.tar.xz 并解压得到 .vmdk
+
+# 2. VMware Fusion 创建虚拟机
+#    - 选择 "Install from disc or image"
+#    - 拖入解压后的 VMDK 文件
+#    - 系统选择 "Linux" -> "Other Linux 5.x Kernel"
+#    - 分配: 4核 CPU, 8GB RAM, 64GB 存储
+
+# 3. 启用 UEFI Boot（关键步骤）
+#    - 虚拟机设置 -> Boot Order -> 勾选 UEFI
+#    - 有些版本需要手动在 VM 配置文件添加:
+#    firmware = "efi"
+
+# 4. 启动虚拟机，等待 10-20 分钟初始化
+# 5. 浏览器访问 http://homeassistant.local:8123</code></pre>
+            <p style="color:#8b949e;font-size:0.85em;margin-top:10px;">
+                💡 <strong>UTM vs VMware Fusion 对比</strong>: UTM 免费易上手，适合大多数用户；VMware Fusion 性能更好（接近原生），适合需要同时跑多个 VM 的高级用户。Mac Mini M4 跑 HA OS 两种方案均稳定。
+            </p>
+            <p style="color:#8b949e;font-size:0.85em;margin-top:8px;">
+                📎 <strong>来源</strong>: <a href="https://community.home-assistant.io/t/mac-mini-m4-ha-os/805996" style="color:#00d9ff;">Home Assistant 社区 - Mac Mini M4 HA OS VMware Fusion</a>
+            </p>
+            
+            <h3>方法三：Docker Container（最轻量，推荐有经验用户）</h3>
+            <pre><code># 直接在 macOS 上跑 Home Assistant Container（无完整 OS）
+docker run -d \
+  --name homeassistant \
+  --privileged \
+  --network=host \
+  -v /Users/YOUR_USER/homeassistant/config:/config \
+  --restart=unless-stopped \
+  homeassistant/home-assistant:latest
+
+# 访问 http://localhost:8123
+# 注意：Container 版没有 Supervisor，部分插件不可用</code></pre>
+            
             <h3>第五步：配置自动化示例</h3>
             <pre><code># 示例: 日出时自动开灯
 automation:

@@ -1775,3 +1775,62 @@
   - 推荐 docker-compose.yml 一键部署：n8n + Ollama + 向量数据库
 - **效果量化**: n8n 免费自托管 vs Zapier $20+/月；M4 Pro 24GB 可同时运行 n8n + Ollama + 10+ 容器
 - **归属**: 扩展方案 #202603271633（n8n 工作流自动化）
+
+## 研究时间: 2026-03-31 13:30 UTC
+
+### 发现 #087
+- **主题**: Home Assistant Mac Mini M4 虚拟机安装方案 — VMware Fusion 13 vs UTM 对比
+- **来源**: [Home Assistant Community - Mac Mini M4 HA OS VMware Fusion](https://community.home-assistant.io/t/mac-mini-m4-ha-os/805996) | [Home Assistant Docs - macOS Installation](https://www.home-assistant.io/installation/macos/) | [YouTube - Home Assistant on Apple Silicon UTM Free Install](https://www.youtube.com/watch?v=KbSXk6SgRbA)
+- **核心数据**:
+  - **VMware Fusion 13**（2024年起免费用于个人）可安装 HA OS（Home Assistant Operating System），需要启用 UEFI boot firmware 设置
+  - **UTM**（免费）更简单但性能略低；VMware Fusion 性能更好但配置更复杂
+  - HA OS 在 Mac Mini M4 上需要分配至少 2核/4GB RAM，推荐 4核/8GB RAM
+  - HA OS 无法直接在 macOS 上运行，必须通过虚拟机（HA Yellow/树莓派镜像除外）
+  - Reddit 案例：有人用 Claude 辅助配置 Home Assistant on Mac Mini M4，全程从 iPhone 操作 terminal
+  - Home Assistant Container vs HA OS：Container 版直接在 Docker 运行，更轻量但功能略少
+- **实施要点**:
+  - VMware Fusion 方式：下载 HA OS .vmdk 镜像 → 创建虚拟机 → 配置 UEFI boot → 启动
+  - UTM 方式（更推荐给普通用户）：下载 HA OS .vhdx → UTM 新建虚拟机 → 导入镜像 → 分配 4核/8GB
+  - Mac Mini M4 基础款(16GB)：跑 HA OS + 几个容器勉强够用；24GB+ 更舒适
+  - Home Assistant Container（Docker）：`docker run -d --name homeassistant --privileged --network=host homeassistant/home-assistant`
+- **效果量化**: $0 软件成本；HA OS vs 云端智能家居平台节省 $100-300/年订阅费
+- **归属**: 扩展方案 #202603271632（Home Assistant 智能家居中枢）
+
+### 发现 #088
+- **主题**: Mac Mini M4 vs M4 Pro 2026 选购指南 — 本地 LLM 内存带宽实测数据
+- **来源**: [Popular AI - Best Mac Mini for Local LLMs 2026](https://popularai.substack.com/p/the-best-mac-mini-for-local-llms) | [Olares Blog - Local AI Hardware Benchmarking](https://blog.olares.com/local-ai-hardware-performance-benchmarking/)
+- **核心数据**:
+  - **M4 普通版**：120GB/s 内存带宽，最高 32GB 统一内存，适合 7B-14B Q4 模型
+  - **M4 Pro**：273GB/s 内存带宽，最高 64GB 统一内存，适合 30B+ Q4 模型或多模型并发
+  - **M4 基础款 16GB 不推荐**作为专用本地 AI 机器：无法同时跑大模型+其他服务，内存不够
+  - **推荐配置**：M4 Pro 64GB / 1TB = 本地 AI 专用机黄金配置（~¥9000+ 人民币，~$1200）
+  - **Olares 实测（Mac Mini M4 16GB）**：Q4_0 7B 模型 61.21 tok/s（最快）到 11.68 tok/s（最慢），唯一能跑的就是这个级别
+  - **M4 Pro 64GB** 可同时跑：Ollama 30B + Whisper Large + TTS 服务，内存仍有余量
+  - 外部存储推荐：Samsung T9 2TB（USB-C）用于存放模型文件，避免内部 SSD 被模型塞满
+  - UPS 推荐：APC Back-UPS 650VA，防止下载/推理时被断电损坏
+- **实施要点**:
+  - 纯本地 AI 专用机 → M4 Pro 64GB（一步到位，避免内存天花板）
+  - 多用途（同时是桌面电脑）→ M4 32GB + 外接 SSD 存模型
+  - 模型库管理：Ollama 默认存在 ~/.ollama/models，建议符号链接到外接 SSD
+- **效果量化**: M4 Pro 64GB vs 云端 GPT-4o：硬件摊薄 ~$85/月 vs $4500/月；100%隐私，零 API 账单
+- **归属**: 扩展方案 #202603271630（Ollama）和 #202603281230（OpenClaw + Ollama）
+
+### 发现 #089
+- **主题**: M1 Mac Mini 作为 GitHub Actions 自托管 Runner — 成本节省与配置指南
+- **来源**: [Scaleway - Configure GitHub Actions Runner on Mac Mini](https://www.scaleway.com/en/docs/tutorials/install-github-actions-runner-mac/) | [Laurent Meyer DevBlog - GitHub Self-Hosted Runners](https://meyer-laurent.com/using-github-self-hosted-runners) | [ZoneMac - GitHub Actions Self-Hosted vs Ephemeral Mac CI](https://zonemac.com/en/blog/articles/github-actions-self-hosted-macos-runner-vs-ephemeral-mac-ci-2026/github-actions-self-hosted-macos-runner-vs-ephemeral-mac-ci-2026.html)
+- **核心数据**:
+  - GitHub 免费计划：2000 分钟/月 macOS 构建（分钟数有限）；自托管 Runner 完全不受限制
+  - **macOS GitHub Actions 成本对比**：GitHub 托管 macOS runner $0.08/分钟（Linux $0.008/分钟）；自托管 Mac Mini = $0（电费约 $0.05-0.1/天）
+  - M1 Mac Mini 作为 runner 优势：有状态环境（可缓存依赖）、性能远超 GitHub 托管、最适合 macOS/iOS 原生 CI
+  - GitHub Runner 下载：`sudo ./run.sh` 即可注册，支持自动更新
+  - 多平台支持：GitHub 官方支持 macOS、Linux、Windows self-hosted runners
+  - 长驻 runner vs 临时 runner：长驻 runner 适合需要状态的构建，macOS 构建有状态更重要（缓存 Xcode derivedData）
+  - Mac Mini M4 的 3 显示输出可支持 runner 并行调试（多 VM 并行构建）
+- **实施要点**:
+  - 在 Mac Mini 上：Settings → Sharing → Remote Login 开启 SSH
+  - 下载 runner 包：Settings → GitHub Repository → Actions → Runners → New self-hosted runner
+  - 配置为 LaunchDaemon（开机自启）：`sudo ./svc.sh install`
+  - runner 标签（labels）用于 job 路由，如 `macos`, `self-hosted`, `ARM64`
+  - macOS runner 需要：Xcode 合法许可、足够磁盘空间、定期重启防状态漂移
+- **效果量化**: 2000 分钟/月免费额度用完后，自托管 vs GitHub 托管：每月节省 $80-160+（按实际 macOS 用量）
+- **归属**: 扩展方案 #202603281230（GitHub Actions 自托管 Runner）
