@@ -1718,3 +1718,60 @@
   - 多用户/生产服务 → vLLM（需要更多内存）
   - M4 16GB 推荐：mistral-small-3:7b Q4_K_M（~4GB，50 tok/s）或 qwen3:4b（~3GB）
 - **效果量化**: 单用户 Ollama $0 API 成本；100K 请求/月 vs 云端节省 ~$4400/月
+
+## 研究时间: 2026-03-31 09:30 UTC
+
+### 发现 #084
+- **主题**: Reddit 真实案例 — Mac Mini M4 24GB 作为本地优先 AI 助手（Whisper + Piper + FLUX + Ollama）
+- **来源**: [Reddit r/LocalLLaMA - My local-first AI assistant on a Mac Mini M4](https://www.reddit.com/r/LocalLLaMA/comments/1s3p9n9/my_localfirst_ai_assistant_on_a_mac_mini_m4_whats/) | [DEV.to - Running Local LLMs in 2026: Ollama, LM Studio, and Jan Compared](https://dev.to/synsun/running-local-llms-in-2026-ollama-lm-studio-and-jan-compared-5dii) | [Medium - Best LLMs for Ollama on 16GB VRAM GPU](https://medium.com/@rosgluk/best-llms-for-ollama-on-16gb-vram-gpu-c1bf6c3a10be)
+- **核心数据**:
+  - **Mac Mini M4 24GB 实战栈**：Qwen3.5 27B（Ollama）+ Faster-Whisper Large v3（本地 STT）+ Piper TTS（本地 TTS）+ FLUX.1-schnell（本地图像生成）+ Telegram 作为统一交互界面
+  - Qwen 3.5 27B 可覆盖 ~80% 日常任务；云端模型用于复杂推理
+  - **Whisper 本地化是最大收益**：语音质量优秀，异步处理延迟可接受，且不向云端发送语音录音
+  - Mac Mini M4 $600 价位是本地 AI 服务器的性价比天花板
+  - MPS（Metal Performance Shaders）在 diffusion 模型上比 CUDA 慢得多，图像生成还是云端为主
+  - qwen3:14b（12GB，100% GPU）：实测 3094 eval count / 19 tokens per second
+  - gpt-oss:20b（14GB，100% GPU）：实测 2856 eval count / ~139.93 tok/s（16GB VRAM）
+  - mistral-small3.2:24b（19GB，18%/82% CPU/GPU）：实测 831 eval count / ~19 tokens per second
+- **实施要点**:
+  - 推荐 Telegram Bot 作为统一入口，整合语音/文字/图像生成
+  - 16GB Mac Mini M4：跑 mistral-small-3:7b Q4_K_M（~4GB）或 qwen3:4b（~3GB），Whisper Small（~500MB）
+  - 24GB Mac Mini M4：可跑 qwen3:14b，Whisper Large v3
+  - 一键安装：`brew install ollama && ollama pull qwen3:14b && ollama pull faster-whisper large-v3`
+- **效果量化**: Qwen 3.5 27B 覆盖 80% 任务；Whisper 本地化隐私保证；$0 API 成本（除复杂推理）
+- **归属**: 扩展方案 #202603271630（Ollama）和 #202603281230（OpenClaw + Ollama）
+
+### 发现 #085
+- **主题**: Ollama vs vLLM 性能基准实测 — 单用户 vs 多用户场景数据
+- **来源**: [SitePoint - Ollama vs vLLM: Performance Benchmark 2026](https://www.sitepoint.com/ollama-vs-vllm-performance-benchmark-2026/) | [WebCraft - Ollama on 8GB RAM: 7 Models That Actually Work (2026)](https://webscraft.org/blog/ollama-na-8-gb-ram-yaki-modeli-pratsyuyut-u-2026?lang=en)
+- **核心数据**:
+  - **单用户场景**：Ollama TTFT ~45ms（Llama 3.1 8B Q4_K_M），比 vLLM 的 ~82ms 更快
+  - **多用户场景（50并发）**：vLLM ~840 tok/s，Ollama ~142 tok/s，vLLM 吞吐量是 Ollama 的 ~6x
+  - **内存占用**：Ollama（Llama 3.1 8B Q4_K_M）~5.2GB VRAM；vLLM（FP16）~16.1GB VRAM
+  - **8GB RAM Mac Mini 可跑模型**：Q4_K_M 7B（4-5GB）+ KV-cache（1-2GB）+ 系统开销 = 可用
+  - **最佳性价比组合**：Mistral Small 3 7B Q4_K_M（~4GB）在 M4 16GB 上可达 50 tok/s
+  - 结论：Mac Mini 单用户场景 Ollama 完全够用；多用户/生产级才需要 vLLM
+- **实施要点**:
+  - 单用户日常对话 → Ollama（低延迟、低资源）
+  - 追求极限推理速度 → MLX-LM（M4 Pro 上比 Ollama 快 ~3x）
+  - Ollama 命令：`ollama run mistral-small-3:latest` 或 `ollama run qwen3:4b`
+- **效果量化**: 单用户 Ollama 延迟比 vLLM 低 ~45%；Ollama 内存占用仅为 vLLM 的 1/3
+- **归属**: 扩展方案 #202603271630（Ollama）
+
+### 发现 #086
+- **主题**: n8n on Mac Mini M4 硬件配置讨论 + v2.0 AI Ready 自动化新能力
+- **来源**: [Reddit r/n8n - New Mac Mini: specs to run n8n locally?](https://www.reddit.com/r/n8n/comments/1pkcfc5/new_mac_mini_specs_to_run_n8n_locally/) | [Plain English - The Complete Guidebook to n8n 2026: Mastering Automation with Version 2.0](https://ai.plainenglish.io/the-complete-guidebook-to-n8n-2026-mastering-automation-with-version-2-0-dcc78398ff15) | [Medium - Self-Host n8n on Your Mac: AI Workflow Automation Quickstart](https://medium.com/@lawrencenorman7hills/mastering-ai-workflow-automation-quickstart-to-run-n8n-on-your-mac-local-self-hosting-5747eade5a69)
+- **核心数据**:
+  - **n8n Mac Mini 推荐配置**：M4 Pro 24GB RAM 512GB SSD（Reddit 共识），$999 起
+  - n8n v2.0（2026）定位：从工作流工具升级为 AI-Ready 自动化平台，AI Agent 内置支持
+  - n8n npm 安装：`npm install n8n -g && n8n start`（免费，适合原型/Mac Mini）
+  - n8n + Ollama 组合：n8n 做工作流编排，Ollama 做本地 LLM 后端，完全免费
+  - n8n + Ollama 集成：需配置 `http://host.docker.internal:11434`（Mac Docker Desktop 特殊处理）
+  - n8n 替代方案对比：$0 运行 vs Zapier $20-50/月，多节点并发需更多 RAM
+- **实施要点**:
+  - Mac Mini M4 Pro 24GB：可同时跑 n8n（~500MB-1GB）+ Ollama（4-16GB）+ 其他服务
+  - Docker Desktop on Mac：容器访问宿主机 Ollama → `host.docker.internal` 而不是 localhost
+  - n8n v2.0 新功能：内置 AI Agent 节点，支持 OpenAI/Anthropic/Ollama 统一接口
+  - 推荐 docker-compose.yml 一键部署：n8n + Ollama + 向量数据库
+- **效果量化**: n8n 免费自托管 vs Zapier $20+/月；M4 Pro 24GB 可同时运行 n8n + Ollama + 10+ 容器
+- **归属**: 扩展方案 #202603271633（n8n 工作流自动化）
