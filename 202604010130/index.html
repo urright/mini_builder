@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究 #093 — 2026-04-01 01:30 UTC</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+h1 { color: #333; border-bottom: 2px solid #007AFF; padding-bottom: 10px; }
+h2 { color: #555; margin-top: 30px; }
+.tag { display: inline-block; background: #007AFF; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin: 2px; }
+.url { color: #007AFF; text-decoration: none; }
+.url:hover { text-decoration: underline; }
+.finding { background: #f8f9fa; border-left: 4px solid #007AFF; padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+.back { background: #eee; padding: 10px 20px; border-radius: 8px; text-decoration: none; color: #333; display: inline-block; margin-bottom: 20px; }
+.meta { color: #888; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<a href="../index.html" class="back">← 返回首页</a>
+<h1>🔬 研究会话 #093</h1>
+<p class="meta">时间: 2026-04-01 01:30 UTC | Mac Mini M4 + OpenClaw 增效方案研究</p>
+
+<div class="finding">
+<h2>发现 #093-A</h2>
+<h3>主题: GitHub Actions 自托管 Runner 2026年3月起开始收费</h3>
+<p><strong>来源</strong>:</p>
+<ul>
+<li><a class="url" href="https://www.reddit.com/r/github/comments/1po8bns/github_selfhosted_action_runners_will_be_billed/">Reddit — GitHub: Self-Hosted Action Runners will be billed from March 1, 2026</a></li>
+<li><a class="url" href="https://github.com/orgs/community/discussions/186520">GitHub Community — Self-hosted runner minimum version enforcement v2.329.0</a></li>
+<li><a class="url" href="https://github.com/blog/changelog/2026-02-26-macos-26-is-now-generally-available-for-github-hosted-runners/">GitHub Blog — macOS 26 is now generally available for GitHub-hosted runners</a></li>
+<li><a class="url" href="https://www.scaleway.com/en/docs/tutorials/install-github-actions-runner-mac/">Scaleway — Configure GitHub Actions Runner on Mac mini</a></li>
+</ul>
+
+<p><strong>核心数据</strong>:</p>
+<ul>
+<li><strong>重大变化</strong>: 自2026年3月1日起，GitHub Actions 自托管 runner 开始收费（此消息在 Reddit 获得高热度，score 0.78）</li>
+<li>2026年1月1日起，GitHub 托管 runner 价格下调高达 39%（取决于机器类型）</li>
+<li>自托管 runner 最低版本要求：从 2026 年 3 月 16 日起，GitHub Actions 将阻止低于 v2.329.0 的自托管 runner 配置</li>
+<li>macOS 26 runner 现已全面可用，支持 Apple Silicon (arm64) 和 Intel (x64)</li>
+<li>macOS GitHub runner $0.08/分钟，自托管 Mac Mini 仅需电费（$0.05-0.1/天）</li>
+<li>GitHub 托管 macOS 构建按分钟计费，自托管 Mac Mini 绕过此限制</li>
+</ul>
+
+<p><strong>实施要点</strong>:</p>
+<ul>
+<li>现有自托管 runner 用户需确保版本 ≥ v2.329.0（2025年10月15日发布）</li>
+<li>macOS 26 runner 已GA：新环境包含最新 Xcode，可用于替代本地 runner 测试</li>
+<li>自托管 runner 适合有状态构建（缓存 Xcode derivedData），比 GitHub 托管 runner 更快</li>
+<li>推荐配置 LaunchDaemon 开机自启：`sudo ./svc.sh install`</li>
+</ul>
+
+<p><strong>效果量化</strong>:</p>
+<ul>
+<li>即使开始收费，Mac Mini 自托管 runner 成本仍远低于 GitHub 托管：电费 $0.05-0.1/天 vs $0.08/分钟（按 1000分钟/月 = $80/天 = 远超自托管成本）</li>
+<li>macOS 构建分钟单价是 Linux 的 10 倍，自托管优势更显著</li>
+</ul>
+
+<p><strong>归属</strong>: 扩展方案 #202603281230（GitHub Actions 自托管 Runner）</p>
+<p><strong>标签</strong>: <span class="tag">CI/CD</span><span class="tag">开发者</span><span class="tag">Apple</span><span class="tag">自托管</span><span class="tag">可建站</span></p>
+</div>
+
+<div class="finding">
+<h2>发现 #093-B</h2>
+<h3>主题: 2026年 Homelab AI Stack — n8n + Ollama = $0/月 私有 AI 自动化</h3>
+<p><strong>来源</strong>:</p>
+<ul>
+<li><a class="url" href="https://dev.to/signal-weekly/the-homelab-ai-stack-in-2026-what-self-hosters-are-actually-running-2d58">Dev.to — The Homelab AI Stack in 2026: What Self-Hosters Are Actually Running</a></li>
+<li><a class="url" href="https://tedium.co/2026/03/28/self-hosting-platform-tools-guide/">Tedium — Self-Hosting Tools: Still Worth Trying In 2026?</a></li>
+<li><a class="url" href="https://www.youtube.com/watch?v=mBSjfCBXBUo">YouTube — What I'm Self Hosting for 2026 | Homelab Tour</a></li>
+</ul>
+
+<p><strong>核心数据</strong>:</p>
+<ul>
+<li><strong>2026年杀手级用法</strong>: <strong>n8n + Ollama = 私有 AI 自动化，月成本 $0</strong></li>
+<li>LitellM 作为统一网关：所有应用（n8n、Open WebUI、脚本）通过 <code>http://litellm:4000</code> 访问，统一配置切换模型</li>
+<li>n8n 内置 AI 能力 + 本地 LLM = 自动分类邮件、监控服务器、摘要笔记</li>
+<li>OpenClaw 以 15W 功耗 24/7 运行，同时处理 Telegram 自动化、浏览器控制、cron 作业</li>
+<li>Homelab 推荐工具链：Docker + Tailscale（远程访问）+ n8n + Ollama + OpenClaw</li>
+<li>Umbrel vs Unraid vs HomeDock OS 对比：Homelab 新手友好度、灵活性取舍</li>
+<li>Mac Mini M4 作为 homelab 优势：安静、低功耗、macOS 生态、原生 Docker 支持</li>
+</ul>
+
+<p><strong>实施要点</strong>:</p>
+<ul>
+<li>核心栈：Docker 容器运行 n8n + Ollama + LitellM 网关</li>
+<li>LitellM 配置：单一配置文件切换不同 LLM provider</li>
+<li>Tailscale 作为异地组网方案，取代 port forwarding</li>
+<li>OpenClaw 以 service 方式 15W 常驻，与 n8n 协同工作</li>
+<li>推荐配置：M4 Pro 64GB 以支持多模型并发 + Ollama + n8n 同时运行</li>
+</ul>
+
+<p><strong>效果量化</strong>:</p>
+<ul>
+<li>月成本 $0（软件）+ $2-5（电费）</li>
+<li>对比云端 Zapier + OpenAI API：$20+/月 + $100+/月</li>
+<li>OpenClaw 15W 功耗：极低运行成本</li>
+</ul>
+
+<p><strong>归属</strong>: 扩展方案 #202603301230（Mac Mini Docker Homelab 入门指南）</p>
+<p><strong>标签</strong>: <span class="tag">Homelab</span><span class="tag">Docker</span><span class="tag">n8n</span><span class="tag">Ollama</span><span class="tag">AI自动化</span><span class="tag">可建站</span></p>
+</div>
+
+<div class="finding">
+<h2>发现 #093-C</h2>
+<h3>主题: OpenClaw 2026.2.2 更新 — Feishu/Lark 集成强化 + 安全加固</h3>
+<p><strong>来源</strong>:</p>
+<ul>
+<li><a class="url" href="https://www.reddit.com/r/AISEOInsider/comments/1qzkwqv/openclaw_202622_update_reshapes_how_automation/">Reddit — OpenClaw 2026.2.2 Update Reshapes How Automation Actually Works In Real Businesses</a></li>
+<li><a class="url" href="https://forwardfuture.ai/p/what-people-are-actually-doing-with-openclaw-25-use-cases">ForwardFuture — What People Are Actually Doing With OpenClaw: 25+ Use Cases</a></li>
+<li><a class="url" href="https://kanerika.com/blogs/openclaw-usecases/">Kanerika — 15 OpenClaw Use Cases: What Actually Works in 2026</a></li>
+</ul>
+
+<p><strong>核心数据</strong>:</p>
+<ul>
+<li><strong>OpenClaw 2026.2.2</strong> 扩展 Feishu/Lark 直接集成，显著提升国际团队工作流效率</li>
+<li>安全加固：企业级工作流需要更强的安全防护，2026.2.2 填补了这块空白</li>
+<li>Lobster 工作流引擎：YAML/JSON 格式，支持步骤、环境变量、条件判断、审批门</li>
+<li>审批门（Approval Gates）：工作流可暂停等待人工批准再继续，适合企业流程</li>
+<li>OpenClaw 工作流用例：内容自动化 → 研究/生产力 → 业务自动化 → DevOps 任务</li>
+<li>Reddit 用户反馈：OpenClaw 作为"第二大脑"使用，保存链接/笔记/图片并通过自然语言检索</li>
+</ul>
+
+<p><strong>实施要点</strong>:</p>
+<ul>
+<li>飞书/ Lark 用户可直接将 OpenClaw 自动化集成到团队沟通工作流</li>
+<li>审批门配置示例：报销流程需经理审批后再自动执行付款</li>
+<li>OpenClaw 作为第二大脑：保存信息 → AI 整理 → 按需检索</li>
+<li>工作流模板：邮件自动化、业务运营、内容创作、DevOps 任务</li>
+</ul>
+
+<p><strong>效果量化</strong>:</p>
+<ul>
+<li>企业用户可将重复性多步骤工作流自动化，减少人工判断时间</li>
+<li>相比 Zapier $20+/月，自托管 OpenClaw $0/月</li>
+</ul>
+
+<p><strong>归属</strong>: 扩展方案 #202603271631（OpenClaw 个人效率助手）和 #202603292130（OpenClaw + Ollama 私有本地 AI 助手）</p>
+<p><strong>标签</strong>: <span class="tag">AI助手</span><span class="tag">自动化</span><span class="tag">飞书集成</span><span class="tag">OpenClaw</span><span class="tag">企业自动化</span><span class="tag">可建站</span></p>
+</div>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
   "favorites": [],
   "count": 0,
-  "last_updated": "2026-03-31T14:46:17.826Z",
-  "notes": "Checked at 2026-03-31T14:46:17Z. No favorites. Server responding normally."
+  "last_updated": "2026-04-01T06:46:00.000Z",
+  "notes": "Checked at 2026-04-01T06:46:00Z (2026-03-31 11:46 PM PDT). API returned empty favorites — server has been restarted again, in-memory state lost. HTML file (favorites/index.html) still shows last known state: [202603271630] (Ollama) from pre-restart render. No new favorites detected via API. Architectural issue: no persistence layer. No research triggered."
 }
