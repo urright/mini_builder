@@ -1899,3 +1899,45 @@
   - Mac Mini M4 非常安静，适合放在生活区域
 - **效果量化**: $0 订阅费 vs Synology NAS + 各种云服务；AdGuard Home 去除广告节省带宽
 - **归属**: 扩展方案 #202603281230（OpenClaw + Ollama / Home Server）
+
+## 研究时间: 2026-04-01 17:30 UTC
+
+### 发现 #093
+- **主题**: Mac Mini M4 作为专属 24/7 AI Agent 托管主机 — Reddit 真实案例
+- **来源**: [Reddit r/macmini - Using my Mac Mini as a dedicated AI agent host](https://www.reddit.com/r/macmini/comments/1qzxvcz/using_my_mac_mini_as_a_dedicated_ai_agent_host/) | [AI Checker - The $600 Mac Mini That Runs Your Business 24/7](https://ai-checker.webcoda.com.au/articles/clawdbot-mac-mini-ai-agent-phenomenon-australia-2026)
+- **核心数据**:
+  - Mac Mini M4 作为专用 24/7 AI Agent 主机是"完美用例"：体积小、功耗低、安静、适合一直开着
+  - 运行成本：约 $1-2/月 电费（24/7 运行）
+  - Agent 主要做 API 调用编排，不需要重型本地算力
+  - 基础款 16GB Mac Mini M4 足够用
+  - 通过 Screen Sharing 远程操作，Agent 可从手机通过 Telegram/WhatsApp 访问
+  - 用户体验：睡觉时 AI 在工作，醒来时任务已完成
+  - 早晨简报：日历 + 天气信息推送到手机
+  - Clawdbot（OpenClaw）在澳大利亚社区引起热潮，成为 SME/企业 AI 转型工具
+  - Clawdbot 官方承认"没有完美安全的设置"，运行有 shell 访问权限的 AI agent 被描述为"spicy"
+- **实施要点**:
+  - 基础款 Mac Mini M4 16GB 完全满足 AI Agent 托管需求（不做本地推理）
+  - Telegram/WhatsApp 作为 AI Agent 消息接口
+  - Screen Sharing 远程管理 + Homebrew 维护
+  - AI Agent 编排工作流：早晨简报 → 任务执行 → 通知汇报
+  - 安全考量：有 shell 访问权限的 AI agent 需要做好权限隔离
+- **效果量化**: $1-2/月电费 vs $20+/月云服务；Agent 24/7 无休运行；早晨简报自动化
+
+### 发现 #094
+- **主题**: Mac Mini M4 GitHub Actions 自托管 Runner — 2026 最新配置与安全清单
+- **来源**: [NodeMac - Self-Hosted GitHub Actions Runner on Mac mini M4 (2026)](https://nodemac.com/en/blog/articles/github-actions-self-hosted-macos-runner-mac-mini-m4-2026.html) | [GitHub Blog - Self-hosted runner minimum version enforcement extended](https://github.blog/changelog/2026-02-05-github-actions-self-hosted-runner-minimum-version-enforcement-extended/)
+- **核心数据**:
+  - **2026 年 3 月 16 日起**，GitHub 强制要求自托管 runner 必须升级到 v2.329.0 及以上，低于此版本的 runner 将被永久阻断
+  - 并行构建经济学：12 个并发 macOS jobs × 每周 10 小时 = 每月约 4,800 runner 分钟，托管 macOS runner 每分钟 $0.08 vs 自托管 $0（仅电费）
+  - Mac mini M4 云端租用（如 NodeMac）可按需选择香港、东京、首尔、新加坡、美国节点
+  - 多并发 job 场景适合云端租用方案；固定团队适合自购 Mac Mini 部署
+  - workflow YAML 标签路由：`runs-on: [self-hosted, macOS, m4]`
+  - GitHub 托管 macOS runner vs 自托管：$0.08/分钟 vs $0；前者适合临时需求，后者适合高频使用
+- **实施要点**:
+  - 升级到最新 runner 版本（v2.329.0+）：在 runner 机器上运行 `sudo ./run.sh --version` 检查
+  - 配置 runner labels 用于 job 路由：`macOS`, `self-hosted`, `ARM64`, `M4`
+  - 配置为 LaunchDaemon 开机自启：`sudo ./svc.sh install`
+  - 7 步配置流程：Settings → Sharing → Remote Login → 下载 runner 包 → 配置 → 验证 → workflow 触发
+  - 安全清单：runner 权限最小化、定期重启防止状态漂移、Xcode 合法许可、磁盘空间监控
+- **效果量化**: macOS 构建成本降低 90%+；团队 12+ 并发 job 场景可节省 $80-160/月
+
